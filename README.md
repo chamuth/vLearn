@@ -1,16 +1,15 @@
-# elearnapp
+# eLearnApp
 
-A new Flutter project.
+eLearnApp for companies, institutions to use to collaborate with teachers, students and parents in the teaching and learning process.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* Sign in as a student, teacher or a parent. 
+* Share and see documents of all types in a single place.  
+* Public chatrooms where students and teachers can chat with each other, that can be customized for each class, or each group of students for group projects. 
+* Notice board to publicly pin selected documents. 
+* Create questionnaires, answer them, automatically evaluate answers based on Machine Learning.  
+* Leaderboards/Results for questionnaires presented visually. 
+* Notify users on their results, new questionnaires, messages and etc. 
+* A Progressive web app as well as a mobile app for Android and iOS.  
+* A System fully customizable for the client profile  
