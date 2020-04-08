@@ -4,14 +4,14 @@ import 'package:touchable_opacity/touchable_opacity.dart';
 
 import 'NoticeItem.dart';
 
-class Noticeboard extends StatefulWidget {
-  Noticeboard({Key key}) : super(key: key);
+class NoticeboardCard extends StatefulWidget {
+  NoticeboardCard({Key key}) : super(key: key);
 
   @override
-  _NoticeboardState createState() => _NoticeboardState();
+  _NoticeboardCardState createState() => _NoticeboardCardState();
 }
 
-class _NoticeboardState extends State<Noticeboard> {
+class _NoticeboardCardState extends State<NoticeboardCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +26,7 @@ class _NoticeboardState extends State<Noticeboard> {
               Expanded(flex: 1, child: Text("Noticeboard", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.grey[300]))),
             ]),
 
-            Padding(padding: EdgeInsets.fromLTRB(0, 18, 0, 0), child: 
+            Padding(padding: EdgeInsets.fromLTRB(0, 15, 0, 0), child: 
               SizedBox(
                 height: 55.0,
                 child: ListView(

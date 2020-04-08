@@ -13,3 +13,11 @@ eLearnApp for companies, institutions to use to collaborate with teachers, stude
 * Notify users on their results, new questionnaires, messages and etc. 
 * A Progressive web app as well as a mobile app for Android and iOS.  
 * A System fully customizable for the client profile  
+
+## TODO
+
+DASHBOARD 
+=========
+
+[ ] Noticeboard Functionality
+    [ ] Noticeboard Card in dashboard shows all the posts today (in badges) and other noticeboard posts upto 5.
