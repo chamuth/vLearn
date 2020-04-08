@@ -14,5 +14,5 @@ class Themes
     fontFamily: 'GoogleSans'
   );
 
-  static ThemeData current;
+  static ThemeData current = dark;
 }

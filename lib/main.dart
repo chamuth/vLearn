@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import './Themes/themes.dart';
 import './Screens/start.dart';
 import './Core/Preferences.dart';
+import 'Screens/login.dart';
 
 void main() => runApp(MyApp());
 
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
       } else {
         FlutterStatusbarcolor.setStatusBarColor(Colors.grey[850]);
         FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
-        FlutterStatusbarcolor.setNavigationBarColor(Colors.grey[800]);
+        FlutterStatusbarcolor.setNavigationBarColor(Colors.grey[850]);
         FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
 
         Themes.current = Themes.dark;
@@ -43,7 +44,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'eLearn',
       theme: Themes.current,
-      home: StartScreen(),
+      home: LoginScreen(),
+      darkTheme: Themes.dark,
       debugShowCheckedModeBanner: false,
     );
   }

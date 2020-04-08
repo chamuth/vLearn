@@ -16,6 +16,11 @@ eLearnApp for companies, institutions to use to collaborate with teachers, stude
 
 ## TODO
 
+AUTH
+====
+[ ] LOGIN AND REGISTER PAGE
+
+
 DASHBOARD 
 =========
 

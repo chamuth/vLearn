@@ -26,7 +26,7 @@ class _NoticeboardCardState extends State<NoticeboardCard> {
               Expanded(flex: 1, child: Text("Noticeboard", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.grey[300]))),
             ]),
 
-            Padding(padding: EdgeInsets.fromLTRB(0, 15, 0, 0), child: 
+            Padding(padding: EdgeInsets.fromLTRB(0, 12, 0, 0), child: 
               SizedBox(
                 height: 55.0,
                 child: ListView(
@@ -42,7 +42,7 @@ class _NoticeboardCardState extends State<NoticeboardCard> {
               )
             ),
 
-            Padding(padding: EdgeInsets.fromLTRB(0, 8, 0, 0), child: Divider()),
+            Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 0), child: Divider()),
 
             Padding(child: 
             TouchableOpacity(child: Row(children: <Widget>[

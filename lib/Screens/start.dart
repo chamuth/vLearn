@@ -4,6 +4,7 @@ import 'package:badges/badges.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 
 import './Tabs/chat.dart';
 import './Tabs/dashboard.dart';
@@ -25,6 +26,8 @@ class _StartScreenState extends State<StartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    FlutterStatusbarcolor.setNavigationBarColor(Colors.grey[800]);
+
     return Scaffold(
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.grey[850],
