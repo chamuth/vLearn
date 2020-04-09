@@ -5,7 +5,7 @@ class Styles
 {
   static TextStyle link = TextStyle(
     fontWeight: FontWeight.bold, 
-    color: Themes.current.primaryColor,
+    color: Themes.dark.primaryColor,
     decoration: TextDecoration.underline,
   );
 }

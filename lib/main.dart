@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import './Themes/themes.dart';
 import './Core/Preferences.dart';
 import './Screens/start.dart';
 import './Screens/login.dart';
+import 'Core/ThemeNotifier.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(
+  ChangeNotifierProvider<ThemeNotifier>(
+    child: MyApp(), create: (BuildContext context) { return ThemeNotifier(Themes.dark); },
+  ),
+);
 
 class MyApp extends StatelessWidget {
-  void updateTheme()
+  void updateTheme(themeNotifier)
   {
     Preferences.initialize().then((a)
     {
@@ -24,14 +30,16 @@ class MyApp extends StatelessWidget {
         FlutterStatusbarcolor.setNavigationBarColor(Colors.white);
         FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
 
-        Themes.current = Themes.light;
+        themeNotifier.setTheme(Themes.light);
+        Themes.darkMode = false;
       } else {
         FlutterStatusbarcolor.setStatusBarColor(Colors.grey[850]);
         FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
         FlutterStatusbarcolor.setNavigationBarColor(Colors.grey[850]);
         FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
 
-        Themes.current = Themes.dark;
+        themeNotifier.setTheme(Themes.light);
+        Themes.darkMode = true;
       }
     });
   }
@@ -39,11 +47,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) 
   {
-    updateTheme();
+    Themes.themeNotifier = Provider.of<ThemeNotifier>(context);
+    
+    updateTheme(Themes.themeNotifier);
 
     return MaterialApp(
-      title: 'eLearn',
-      theme: Themes.current,
+      title: 'vLearn',
+      theme: Themes.themeNotifier.getTheme(),
       home: LoginScreen(),
       debugShowCheckedModeBanner: false,
     );

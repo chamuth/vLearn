@@ -31,15 +31,13 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
 
-    FlutterStatusbarcolor.setNavigationBarColor(Colors.grey[850]);
-
     return Scaffold(
-      backgroundColor: (Themes.current == Themes.dark) ? Colors.grey[850] : Colors.white,
+      backgroundColor: (Themes.darkMode) ? Colors.grey[850] : Colors.white,
       body: 
         Center(child: SingleChildScrollView(padding: EdgeInsets.fromLTRB(0, 50, 0, 35), child: Stack(children: <Widget>[
             Padding(child: Column(mainAxisSize: MainAxisSize.min,children: <Widget>[
 
-            (Themes.current == Themes.light) ? SizedBox(child: Image.asset('assets/images/sample_school_logo.png'), width:150) : SizedBox(child: Image.asset('assets/images/sample_school_logo_white.png'), width:150),
+            (!Themes.darkMode) ? SizedBox(child: Image.asset('assets/images/sample_school_logo.png'), width:150) : SizedBox(child: Image.asset('assets/images/sample_school_logo_white.png'), width:150),
             Divider(color: Colors.transparent,  height: 45),
 
             Form(key: _loginFormKey, child: Column(children: <Widget>[

@@ -1,3 +1,4 @@
+import 'package:elearnapp/Core/ThemeNotifier.dart';
 import 'package:flutter/material.dart';
 
 class Themes
@@ -18,5 +19,6 @@ class Themes
     fontFamily: 'GoogleSans'
   );
 
-  static ThemeData current = dark;
+  static ThemeNotifier themeNotifier;
+  static bool darkMode = false;
 }
