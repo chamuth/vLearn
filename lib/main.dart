@@ -3,9 +3,9 @@ import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import './Themes/themes.dart';
-import './Screens/start.dart';
 import './Core/Preferences.dart';
-import 'Screens/login.dart';
+import './Screens/start.dart';
+import './Screens/login.dart';
 
 void main() => runApp(MyApp());
 

@@ -1,7 +1,9 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:elearnapp/Core/Style.dart';
 import 'package:elearnapp/Themes/themes.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
@@ -17,6 +19,15 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  final focus = FocusNode();
+  final _loginFormKey = GlobalKey<FormState>();
+
+  void login()
+  {
+    
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -31,24 +42,59 @@ class _LoginScreenState extends State<LoginScreen> {
             (Themes.current == Themes.light) ? SizedBox(child: Image.asset('assets/images/sample_school_logo.png'), width:150) : SizedBox(child: Image.asset('assets/images/sample_school_logo_white.png'), width:150),
             Divider(color: Colors.transparent,  height: 45),
 
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'E-mail address',
-                hintStyle: TextStyle(fontSize: 18 )
-              ),
-              style: TextStyle(fontSize: 18),
-            ),
-            
-            Divider(color: Colors.transparent,  height: 10),
+            Form(key: _loginFormKey, child: Column(children: <Widget>[
 
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Password',
-                hintStyle: TextStyle(fontSize: 18),
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: 'E-mail address',
+                  hintStyle: TextStyle(fontSize: 18),
+                ),
+                textInputAction: TextInputAction.next,
+                style: TextStyle(fontSize: 18),
+                 validator: (value)
+                {
+                  if (value.isEmpty)
+                  {
+                    return "Please enter your email";
+                  } else if (!EmailValidator.validate(value))
+                  {
+                    return "Please enter a valid email";
+                  }
+                  
+                  return null;
+                },
+                onFieldSubmitted: (v){
+                  FocusScope.of(context).requestFocus(focus);
+                },
               ),
-              obscureText: true,
-              style: TextStyle(fontSize: 18),
-            ),
+              
+              Divider(color: Colors.transparent,  height: 10),
+
+              TextFormField(
+                focusNode: focus,
+                decoration: InputDecoration(
+                  hintText: 'Password',
+                  hintStyle: TextStyle(fontSize: 18),
+                ),
+                obscureText: true,
+                textInputAction: TextInputAction.done,
+                style: TextStyle(fontSize: 18),
+                validator: (value)
+                {
+                  if (value.isEmpty)
+                  {
+                    return "Please enter your password";
+                  } 
+
+                  return null;
+                },
+                onFieldSubmitted: (v)
+                {
+                  login();
+                },
+              ),
+
+            ],),),
 
             Divider(color: Colors.transparent, height: 25),
 
@@ -60,8 +106,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     Padding(child: Icon(Icons.email, size: 18), padding: EdgeInsets.fromLTRB(0, 0, 10, 0)),
                     Text("CONTINUE WITH EMAIL", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))
                   ],)
-              ,color: Colors.red, onPressed: () {},))
+              ,color: Colors.red, onPressed: () {
+                  if (_loginFormKey.currentState.validate()) {
+                    log("SHOWING SHIT");
+                  }
+              },))
             ],),
+
 
             Divider(color: Colors.transparent, height: 10),
 
