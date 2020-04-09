@@ -31,19 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
             (Themes.current == Themes.light) ? SizedBox(child: Image.asset('assets/images/sample_school_logo.png'), width:150) : SizedBox(child: Image.asset('assets/images/sample_school_logo_white.png'), width:150),
             Divider(color: Colors.transparent,  height: 45),
 
-            Row(
-                children: <Widget>[
-                    Expanded(
-                        child: Divider(color:Colors.grey)
-                    ),
-
-                    Padding(padding: EdgeInsets.fromLTRB(11, 0, 11, 0), child: Text("STUDENT LOGIN", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: (Themes.current == Themes.light) ? Colors.grey[600] : Colors.white))),  
-
-                    Expanded(
-                        child: Divider(color:Colors.grey)
-                    ),
-                ]
-            ),
+          
 
             Divider(color: Colors.transparent,  height: 15),
 
