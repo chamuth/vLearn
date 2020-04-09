@@ -6,11 +6,15 @@ class Themes
     brightness: Brightness.dark,
     primaryColor: Colors.red,
     accentColor: Colors.red,
+    backgroundColor: Colors.grey[850],
     fontFamily: 'GoogleSans'
   );
 
   static ThemeData light = ThemeData(
     brightness: Brightness.light,
+    primaryColor: Colors.red,
+    accentColor: Colors.red,
+    backgroundColor: Colors.white,
     fontFamily: 'GoogleSans'
   );
 
