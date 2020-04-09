@@ -50,6 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   hintStyle: TextStyle(fontSize: 18),
                 ),
                 textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.emailAddress,
                 style: TextStyle(fontSize: 18),
                  validator: (value)
                 {
