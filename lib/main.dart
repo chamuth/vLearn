@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       if (!Preferences.prefs.containsKey("darkMode"))
         Preferences.prefs.setBool("darkMode", false);
 
-      if (!Preferences.prefs.getBool("darkMode")) 
+      if (Preferences.prefs.getBool("darkMode")) 
       {
         FlutterStatusbarcolor.setStatusBarColor(Colors.white);
         FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) 
   {
-    updateTheme();    
+    updateTheme();
 
     return MaterialApp(
       title: 'eLearn',

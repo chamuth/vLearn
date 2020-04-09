@@ -4,16 +4,16 @@ class Themes
 {
   static ThemeData dark = ThemeData(
     brightness: Brightness.dark,
-    primaryColor: Colors.red,
-    accentColor: Colors.red,
+    primaryColor: Colors.blueAccent[200],
+    accentColor: Colors.blueAccent[200],
     backgroundColor: Colors.grey[850],
     fontFamily: 'GoogleSans'
   );
 
   static ThemeData light = ThemeData(
     brightness: Brightness.light,
-    primaryColor: Colors.red,
-    accentColor: Colors.red,
+    primaryColor: Colors.blueAccent[200],
+    accentColor: Colors.blueAccent[200],
     backgroundColor: Colors.white,
     fontFamily: 'GoogleSans'
   );
