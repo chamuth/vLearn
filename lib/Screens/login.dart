@@ -31,10 +31,6 @@ class _LoginScreenState extends State<LoginScreen> {
             (Themes.current == Themes.light) ? SizedBox(child: Image.asset('assets/images/sample_school_logo.png'), width:150) : SizedBox(child: Image.asset('assets/images/sample_school_logo_white.png'), width:150),
             Divider(color: Colors.transparent,  height: 45),
 
-          
-
-            Divider(color: Colors.transparent,  height: 15),
-
             TextField(
               decoration: InputDecoration(
                 hintText: 'E-mail address',
