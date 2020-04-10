@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
     Preferences.initialize().then((a)
     {
       Preferences.prefs.setBool("darkMode", true);
-
-      if (!Preferences.prefs.getBool("darkMode")) 
+      
+      if (!Preferences.prefs.getBool("darkMode") ?? true) 
       {
         FlutterStatusbarcolor.setStatusBarColor(Colors.white);
         FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
