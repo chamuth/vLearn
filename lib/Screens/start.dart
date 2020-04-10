@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:badges/badges.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:elearnapp/Themes/themes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
@@ -26,7 +27,9 @@ class _StartScreenState extends State<StartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    FlutterStatusbarcolor.setNavigationBarColor(Colors.grey[800]);
+    
+    if (Themes.darkMode)
+      FlutterStatusbarcolor.setNavigationBarColor(Colors.grey[800]);
 
     return Scaffold(
       bottomNavigationBar: CurvedNavigationBar(
@@ -56,7 +59,6 @@ class _StartScreenState extends State<StartScreen> {
           child: new RawMaterialButton(
             onPressed: () { log("Profile clicked"); },
             child: CircleAvatar(
-              backgroundImage: NetworkImage("https://media-exp1.licdn.com/dms/image/C5603AQGiCLyv056B2g/profile-displayphoto-shrink_200_200/0?e=1586390400&v=beta&t=8VyC5mEi0Sa2DSzE3SOSvdma3Qc8Az9DmzJ99_EJ-Lk"),
               backgroundColor: Colors.red,
               foregroundColor: Colors.black,
             ),

@@ -1,4 +1,4 @@
-package com.example.elearnapp
+package com.vdeploy.vlearn
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

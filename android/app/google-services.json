@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "979920851037",
+    "firebase_url": "https://vlearn-lanka.firebaseio.com",
+    "project_id": "vlearn-lanka",
+    "storage_bucket": "vlearn-lanka.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:979920851037:android:f6ee4fe0ecdb979a423db4",
+        "android_client_info": {
+          "package_name": "com.vdeploy.vlearn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "979920851037-gm453b9pgtpv3dp31s1v7pr372nlb1rs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDI5JeuRJRTUzU0YN3vU7sm1DzsBFz3Svs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "979920851037-gm453b9pgtpv3dp31s1v7pr372nlb1rs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

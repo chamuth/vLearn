@@ -1,3 +1,4 @@
+import 'package:elearnapp/Screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +12,7 @@ import 'Core/ThemeNotifier.dart';
 
 void main() => runApp(
   ChangeNotifierProvider<ThemeNotifier>(
-    child: MyApp(), create: (BuildContext context) { return ThemeNotifier(Themes.dark); },
+    child: MyApp(), create: (BuildContext context) { return ThemeNotifier(Themes.light); },
   ),
 );
 
@@ -20,8 +21,7 @@ class MyApp extends StatelessWidget {
   {
     Preferences.initialize().then((a)
     {
-      if (!Preferences.prefs.containsKey("darkMode"))
-        Preferences.prefs.setBool("darkMode", false);
+      Preferences.prefs.setBool("darkMode", true);
 
       if (!Preferences.prefs.getBool("darkMode")) 
       {
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         FlutterStatusbarcolor.setNavigationBarColor(Colors.grey[850]);
         FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
 
-        themeNotifier.setTheme(Themes.light);
+        themeNotifier.setTheme(Themes.dark);
         Themes.darkMode = true;
       }
     });
@@ -54,7 +54,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'vLearn',
       theme: Themes.themeNotifier.getTheme(),
-      home: LoginScreen(),
+      home: SplashScreen(),
+      routes: <String, WidgetBuilder>{
+        '/login' : (BuildContext context) => LoginScreen(),
+        '/dashboard' : (BuildContext context) => StartScreen(),
+      },
       debugShowCheckedModeBanner: false,
     );
   }

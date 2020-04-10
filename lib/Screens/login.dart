@@ -11,6 +11,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key key}) : super(key: key);
 
@@ -22,10 +24,23 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final focus = FocusNode();
   final _loginFormKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   void login()
   {
-    
+    FirebaseAuth.instance
+      .signInWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text)
+      .then((res) 
+        {
+          log(res.user.uid);
+        })
+      .catchError((err) {
+        
+      });
+
   }
 
   @override
@@ -49,13 +64,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.emailAddress,
+                controller: _emailController,
                 style: TextStyle(fontSize: 18),
-                 validator: (value)
+                validator: (value)
                 {
                   if (value.isEmpty)
                   {
                     return "Please enter your email";
-                  } else if (!EmailValidator.validate(value))
+                  } 
+                  else if (!EmailValidator.validate(value))
                   {
                     return "Please enter a valid email";
                   }
@@ -75,6 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   hintText: 'Password',
                   hintStyle: TextStyle(fontSize: 18),
                 ),
+                controller: _passwordController,
                 obscureText: true,
                 textInputAction: TextInputAction.done,
                 style: TextStyle(fontSize: 18),
@@ -89,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 onFieldSubmitted: (v)
                 {
-                  login();
+
                 },
               ),
 
@@ -107,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],)
               ,color: Colors.red, onPressed: () {
                   if (_loginFormKey.currentState.validate()) {
-                    log("SHOWING SHIT");
+                    login();
                   }
               },))
             ],),
