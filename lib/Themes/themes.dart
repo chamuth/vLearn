@@ -8,6 +8,7 @@ class Themes
     primaryColor: Colors.blueAccent[200],
     accentColor: Colors.blueAccent[200],
     backgroundColor: Colors.grey[850],
+    textSelectionHandleColor: Colors.blueAccent[200],
     fontFamily: 'GoogleSans'
   );
 
@@ -16,6 +17,7 @@ class Themes
     primaryColor: Colors.blueAccent[200],
     accentColor: Colors.blueAccent[200],
     backgroundColor: Colors.white,
+    textSelectionHandleColor: Colors.blueAccent[200],
     fontFamily: 'GoogleSans'
   );
 

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:elearnapp/Themes/themes.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
 
       // user has been signed up
+      Fluttertoast.showToast(
+        msg: "Successfully signed up!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 16.0
+      );
 
+      Navigator.pushReplacementNamed(context, "/dashboard");
 
     } catch (e) {
       var message = "";
@@ -68,6 +79,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         textColor: Colors.white,
         fontSize: 16.0
       );
+
+      registering = false;
     }
   }
 
@@ -79,12 +92,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
          backgroundColor: Theme.of(context).backgroundColor,
          elevation: 0,
          leading: ButtonBar(children: <Widget>[
-           IconButton(icon: Icon(Icons.arrow_back), onPressed: () { Navigator.maybePop(context); })
+           IconButton(icon: Icon(Icons.arrow_back, color: (Themes.darkMode) ?  Colors.white : Colors.grey[600], ), onPressed: () { Navigator.maybePop(context); })
          ],),
-         title: Text("Create an Account", style: TextStyle(fontWeight: FontWeight.bold)),
+         title: Text("Create an Account", style: TextStyle(fontWeight: FontWeight.bold, color: (Themes.darkMode) ?  Colors.white : Theme.of(context).primaryColor)),
          centerTitle: true,
        ),
-       body: Center(child:
+       body: Stack(children: <Widget>[
+        Center(child:
           ListView(shrinkWrap: true, children: <Widget>[
             Padding(child: Column(children: <Widget>[
             
@@ -280,7 +294,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               padding: EdgeInsets.fromLTRB(0, 5, 0, 35)),
 
               Row(children: <Widget>[
-                Expanded(child: RaisedButton(child: Text("CREATE ACCOUNT"), onPressed: () {
+                Expanded(child: RaisedButton(color: Theme.of(context).primaryColor, textColor: Colors.white, child: Text("CREATE ACCOUNT"), onPressed: () {
                     if (_registerFormKey.currentState.validate()) {
                       register();
                     }
@@ -292,11 +306,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ]))
 
         ],), padding: EdgeInsets.fromLTRB(30, 0, 30, 0))])
-  
-      ,)
+        ,),
+
+        if (registering)
+          AnimatedOpacity(child: Container(
+            color: Theme.of(context).backgroundColor,
+            child: Center(child: Column(
+              mainAxisSize: MainAxisSize.min, children: <Widget>[
+              CircularProgressIndicator(),
+              Divider(color: Colors.transparent, height:25),
+              Text("Please wait...", style: TextStyle(fontSize:18))
+            ],)),
+          ), opacity: (registering) ? 0.95 : 0, duration: Duration(milliseconds: 500))
+
+       ],)
     );
   }
-}
-
-class _confirmPasswordController {
 }
