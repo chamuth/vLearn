@@ -38,6 +38,7 @@ dependencies:
   flutter_breadcrumb: ^0.1.2
   faker: 1.2.1
   fluttertoast: ^4.0.0
+  grouped_buttons: 1.0.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
