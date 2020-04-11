@@ -1,4 +1,5 @@
 import 'package:elearnapp/Core/NoticeType.dart';
+import 'package:elearnapp/Themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 
@@ -23,7 +24,7 @@ class _NoticeboardCardState extends State<NoticeboardCard> {
           Column(children: <Widget>[
             Row(children: <Widget>[
               Padding(padding: EdgeInsets.fromLTRB(0, 0, 13, 0), child: Icon(Icons.developer_board, color: Colors.grey)),
-              Expanded(flex: 1, child: Text("Noticeboard", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.grey[300]))),
+              Expanded(flex: 1, child: Text("Noticeboard", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.grey[300] : Colors.grey[500]))),
             ]),
 
             Padding(padding: EdgeInsets.fromLTRB(0, 12, 0, 0), child: 

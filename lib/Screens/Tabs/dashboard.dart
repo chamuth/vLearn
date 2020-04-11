@@ -1,4 +1,6 @@
 
+import 'package:elearnapp/Components/ClassItem.dart';
+import 'package:elearnapp/Components/Seperator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -30,24 +32,36 @@ class DashboardTabState extends State<DashboardTab> {
 
   @override
   Widget build(BuildContext context) {
-    return SmartRefresher(
+    return Padding(child: SmartRefresher(
       enablePullDown: true,
       header: WaterDropHeader(),
       onRefresh: _onRefresh,
       onLoading: _onLoading,
       controller: _refreshController,
-      child: Container(
-      padding: EdgeInsets.all(10),
-      child: Column(children: <Widget>[
+      child: ListView(children: <Widget>[
         Row(children: <Widget>[
           Expanded(flex: 1, child: NoticeboardCard()),
         ],),
         Row(children: <Widget>[
           Expanded(flex: 1, child: AssignmentsCard()),
           Expanded(flex: 1, child: ToDoListCard()),
-        ],)
+        ],),
+        Seperator(title: "My Classes"),
+
+        Column(children: <Widget>[
+          ClassItem(subject: "Physics", grade: "Grade 12", hostName: "Mr. John Doe"),
+          ClassItem(subject: "Chemistry", grade: "Grade 12", hostName: "Mrs. Jane Doe"),
+          ClassItem(subject: "Combined Mathematics", grade: "Grade 12", hostName: "Mr. Nibarian"),
+          ClassItem(subject: "General English", grade: "Grade 12", hostName: "Mr. English Bro"),
+
+          Padding(child: 
+            Row(mainAxisAlignment: MainAxisAlignment.center,children: <Widget>[
+              Expanded(child: OutlineButton(child: Text("VIEW ALL CLASSES"), onPressed: () {},),),
+            ],)
+          ,padding: EdgeInsets.fromLTRB(10, 10, 10, 0))
+        ],),
+
       ],)
-      )
-    );
+    ), padding: EdgeInsets.fromLTRB(10, 0, 10, 0));
   }
 }

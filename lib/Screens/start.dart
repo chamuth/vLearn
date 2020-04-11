@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:badges/badges.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:elearnapp/Themes/themes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,30 +23,37 @@ class _StartScreenState extends State<StartScreen> {
 
   List<Widget> tabs  = <Widget>[DashboardTab(), FolderTab(), ChatTab(), NotificationsTab(), ProfileTab()]; 
   int selectedIndex = 0;
+  double pageOpacity = 1;
 
   @override
   Widget build(BuildContext context) {
     
-    if (Themes.darkMode)
-      FlutterStatusbarcolor.setNavigationBarColor(Colors.grey[800]);
-
     return Scaffold(
-      bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Colors.grey[850],
-        color:Colors.grey[800],
-        height:53,
-        animationDuration: Duration(milliseconds: 200),
-        items: <Widget>[
-          Icon(Icons.dashboard, size: 30),
-          Icon(Icons.folder_shared, size: 30),
-          Icon(Icons.chat, size: 30),
-          Icon(Icons.notifications, size: 30),
-          Icon(Icons.settings, size: 30),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
+        items:  <BottomNavigationBarItem>[
+          BottomNavigationBarItem(title: Text("Dashboard"), icon: Icon(Icons.dashboard, size: 25)),
+          BottomNavigationBarItem(title: Text("Spaces"), icon: Icon(Icons.folder_shared, size: 25)),
+          BottomNavigationBarItem(title: Text("Chats"), icon: Icon(Icons.chat, size: 25)),
+          BottomNavigationBarItem(title: Text("Notifications"), icon: Icon(Icons.notifications, size: 25)),
+          BottomNavigationBarItem(title: Text("Settings"), icon: Icon(Icons.settings, size: 25)),
         ],
+        elevation: 1,
+        currentIndex: selectedIndex,
+        selectedItemColor: Theme.of(context).primaryColor,
+        unselectedItemColor: (Themes.darkMode) ? Colors.grey : Colors.grey,
         onTap: (index) {
           //Handle button tap
           setState(() {
-            selectedIndex = index;
+            pageOpacity = 0;
+
+            Future.delayed(const Duration(milliseconds: 150), () {
+              setState(() {
+                selectedIndex = index;
+                pageOpacity = 1;
+              });
+            });
+
             log("Selected" + index.toString());
           });
         },
@@ -59,7 +65,8 @@ class _StartScreenState extends State<StartScreen> {
           child: new RawMaterialButton(
             onPressed: () { log("Profile clicked"); },
             child: CircleAvatar(
-              backgroundColor: Colors.red,
+              backgroundImage: NetworkImage("https://www.beautycastnetwork.com/images/banner-profile_pic.jpg"),
+              backgroundColor: Theme.of(context).primaryColor,
               foregroundColor: Colors.black,
             ),
             shape: new CircleBorder(),
@@ -67,14 +74,16 @@ class _StartScreenState extends State<StartScreen> {
             fillColor: Colors.white,
           ),
         ),
+
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.search), onPressed: () { log("search button clicked"); }, tooltip: "Search entire space",),
+          IconButton(icon: Icon(Icons.search), onPressed: () { log("search button clicked"); }, tooltip: "Search entire space", color: (Themes.darkMode) ? Colors.white : Colors.grey[800],),
           Padding(
             padding: EdgeInsets.fromLTRB(0, 0, 5, 0), 
             child: Badge(
               badgeContent: Text("3"),
               position: BadgePosition.topRight(top: 1, right: 1), 
               child: IconButton(
+                color: (Themes.darkMode) ? Colors.white : Colors.grey[800],
                 icon: Icon(Icons.notifications), 
                 onPressed: () { log("notifications button clicked"); }, tooltip: "Show notifications",
               )
@@ -82,9 +91,9 @@ class _StartScreenState extends State<StartScreen> {
           ),
         ],
         centerTitle: true,
-        backgroundColor: Colors.grey[850],
+        backgroundColor: Theme.of(context).backgroundColor,
       ),
-      body: tabs[selectedIndex]
+      body: AnimatedOpacity(opacity: pageOpacity, duration: Duration(milliseconds:150), child: Container(child: tabs[selectedIndex], color: (Themes.darkMode) ? Colors.grey[850] : Colors.white)),
     
     );
   }

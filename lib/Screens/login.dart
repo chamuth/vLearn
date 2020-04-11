@@ -39,6 +39,8 @@ class _LoginScreenState extends State<LoginScreen> {
       loggingIn = false;
 
       Scaffold.of(context).showSnackBar(SnackBar(content: Text("Successfully logged in!", style:TextStyle(color: Colors.white)), backgroundColor: Colors.green,));
+
+      Navigator.pushReplacementNamed(context, "/dashboard");
       
     } catch (e) {
       var message = "";

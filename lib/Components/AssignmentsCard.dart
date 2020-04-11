@@ -1,3 +1,4 @@
+import 'package:elearnapp/Themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 
@@ -20,7 +21,7 @@ class _AssignmentsCardState extends State<AssignmentsCard> {
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
             Row(children: <Widget>[
               Padding(padding: EdgeInsets.fromLTRB(0, 0, 13, 0), child: Icon(Icons.assignment, color: Colors.grey)),
-              Expanded(flex: 1, child: Text("2", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.grey[300]))),
+              Expanded(flex: 1, child: Text("2", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.grey[300] : Colors.grey[500]))),
             ]),
 
             Padding(child: Text("Assignments due", textAlign: TextAlign.left, style: TextStyle(fontSize:18, color: Colors.grey[500], fontWeight: FontWeight.bold)), padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),

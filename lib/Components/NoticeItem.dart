@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:elearnapp/Themes/themes.dart';
 import 'package:flutter/material.dart';
 import './../Core/NoticeType.dart';
 
@@ -23,7 +24,7 @@ class _NoticeItemState extends State<NoticeItem> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.grey[700],
+      color: (Themes.darkMode) ? Colors.grey[700] : Colors.grey[300],
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
@@ -43,7 +44,7 @@ class _NoticeItemState extends State<NoticeItem> {
         if (!widget.latest)
           Text(widget.title)
         else
-          Badge(child: Text(widget.title), position: BadgePosition.topRight(right:-22, top:1),)
+          Badge(child: Text(widget.title), badgeColor: Theme.of(context).primaryColor, position: BadgePosition.topRight(right:-22, top:1),)
       ],), padding: (widget.latest) ? EdgeInsets.fromLTRB(15, 0, 35, 0) : EdgeInsets.fromLTRB(15, 0, 15, 0))
     );
   }

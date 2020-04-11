@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
           if (currentUser == null)
             Navigator.pushReplacementNamed(context, "/login");
           else 
-            Navigator.pushReplacementNamed(context, "/login");
+            Navigator.pushReplacementNamed(context, "/dashboard");
         });
 
     super.initState();
