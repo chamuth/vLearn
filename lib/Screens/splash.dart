@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:elearnapp/Core/User.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,10 @@ class _SplashScreenState extends State<SplashScreen> {
             if (currentUser == null)
               Navigator.pushReplacementNamed(context, "/login");
             else 
+            {
+              User.retrieveUserData();
               Navigator.pushReplacementNamed(context, "/dashboard");
+            }
           });    
     });
 

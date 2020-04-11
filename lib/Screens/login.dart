@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:elearnapp/Core/Style.dart';
+import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Themes/themes.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +40,9 @@ class _LoginScreenState extends State<LoginScreen> {
       loggingIn = false;
 
       Scaffold.of(context).showSnackBar(SnackBar(content: Text("Successfully logged in!", style:TextStyle(color: Colors.white)), backgroundColor: Colors.green,));
+
+      // get the user data and save it
+      User.retrieveUserData();
 
       Navigator.pushReplacementNamed(context, "/dashboard");
       

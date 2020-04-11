@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Themes/themes.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -58,6 +59,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         textColor: Colors.white,
         fontSize: 16.0
       );
+
+      User.retrieveUserData();
 
       Navigator.pushReplacementNamed(context, "/dashboard");
 
