@@ -10,7 +10,7 @@ import './Tabs/chat.dart';
 import './Tabs/dashboard.dart';
 import './Tabs/folder.dart';
 import './Tabs/notifications.dart';
-import './Tabs/profile.dart';
+import './Tabs/settings.dart';
 
 class StartScreen extends StatefulWidget {
   StartScreen({Key key}) : super(key: key);
@@ -21,7 +21,7 @@ class StartScreen extends StatefulWidget {
 
 class _StartScreenState extends State<StartScreen> {
 
-  List<Widget> tabs  = <Widget>[DashboardTab(), FolderTab(), ChatTab(), NotificationsTab(), ProfileTab()]; 
+  List<Widget> tabs  = <Widget>[DashboardTab(), FolderTab(), ChatTab(), NotificationsTab(), SettingsTab()]; 
   int selectedIndex = 0;
   double pageOpacity = 1;
 
@@ -33,7 +33,7 @@ class _StartScreenState extends State<StartScreen> {
         backgroundColor: Colors.white,
         items:  <BottomNavigationBarItem>[
           BottomNavigationBarItem(title: Text("Dashboard"), icon: Icon(Icons.dashboard, size: 25)),
-          BottomNavigationBarItem(title: Text("Spaces"), icon: Icon(Icons.folder_shared, size: 25)),
+          BottomNavigationBarItem(title: Text("Shared Folder"), icon: Icon(Icons.folder_shared, size: 25)),
           BottomNavigationBarItem(title: Text("Chats"), icon: Icon(Icons.chat, size: 25)),
           BottomNavigationBarItem(title: Text("Notifications"), icon: Icon(Icons.notifications, size: 25)),
           BottomNavigationBarItem(title: Text("Settings"), icon: Icon(Icons.settings, size: 25)),

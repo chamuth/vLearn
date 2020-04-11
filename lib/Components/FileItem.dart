@@ -18,7 +18,7 @@ class FileItem extends StatefulWidget {
 class _FileItemState extends State<FileItem> {
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return RawMaterialButton(child: Card(
       child: Column(children: <Widget>[
         Expanded(flex:1, child: 
           Padding(child: Icon(Icons.class_, size:70, color:(Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor), padding: EdgeInsets.fromLTRB(0, 25, 0, 0))
@@ -33,6 +33,6 @@ class _FileItemState extends State<FileItem> {
           ],)
         )
       ],)
-    );
+    ), onPressed: () { });
   }
 }

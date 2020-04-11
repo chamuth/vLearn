@@ -1,4 +1,3 @@
-
 import 'package:elearnapp/Components/ClassItem.dart';
 import 'package:elearnapp/Components/Seperator.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,6 +39,7 @@ class DashboardTabState extends State<DashboardTab> {
       onLoading: _onLoading,
       controller: _refreshController,
       child: ListView(children: <Widget>[
+                
         Row(children: <Widget>[
           Expanded(flex: 1, child: NoticeboardCard()),
         ],),
