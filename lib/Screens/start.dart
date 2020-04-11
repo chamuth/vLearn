@@ -80,8 +80,9 @@ class _StartScreenState extends State<StartScreen> {
           Padding(
             padding: EdgeInsets.fromLTRB(0, 0, 5, 0), 
             child: Badge(
-              badgeContent: Text("3"),
+              badgeContent: Text("3", style: TextStyle(color:  Colors.white)),
               position: BadgePosition.topRight(top: 1, right: 1), 
+              badgeColor: Theme.of(context).primaryColor,
               child: IconButton(
                 color: (Themes.darkMode) ? Colors.white : Colors.grey[800],
                 icon: Icon(Icons.notifications), 

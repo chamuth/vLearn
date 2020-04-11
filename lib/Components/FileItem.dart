@@ -1,3 +1,4 @@
+import 'package:elearnapp/Themes/themes.dart';
 import 'package:flutter/material.dart';
 
 enum FileItemType 
@@ -20,14 +21,15 @@ class _FileItemState extends State<FileItem> {
     return Card(
       child: Column(children: <Widget>[
         Expanded(flex:1, child: 
-          Padding(child: Icon(Icons.class_, size:70), padding: EdgeInsets.fromLTRB(0, 25, 0, 0))
+          Padding(child: Icon(Icons.class_, size:70, color:(Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor), padding: EdgeInsets.fromLTRB(0, 25, 0, 0))
         ,),
         Padding(padding: EdgeInsets.all(12), child: 
           Row(children: <Widget>[
             Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
-              Padding(child: Text("Physics", style: TextStyle(fontWeight: FontWeight.bold)), padding: EdgeInsets.fromLTRB(0, 0, 0, 3)),
+              Padding(child: Text("Physics", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor)), padding: EdgeInsets.fromLTRB(0, 0, 0, 3)),
               Text("Grade 12", style: TextStyle(color: Colors.grey)),
             ],)
+            
           ],)
         )
       ],)

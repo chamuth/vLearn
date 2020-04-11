@@ -23,8 +23,8 @@ class _NoticeboardCardState extends State<NoticeboardCard> {
         child: Container(padding: EdgeInsets.fromLTRB(14, 14, 0, 9), child: 
           Column(children: <Widget>[
             Row(children: <Widget>[
-              Padding(padding: EdgeInsets.fromLTRB(0, 0, 13, 0), child: Icon(Icons.developer_board, color: Colors.grey)),
-              Expanded(flex: 1, child: Text("Noticeboard", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.grey[300] : Colors.grey[500]))),
+              Padding(padding: EdgeInsets.fromLTRB(0, 0, 13, 0), child: Icon(Icons.developer_board, color: (Themes.darkMode) ? Colors.grey : Theme.of(context).primaryColor)),
+              Expanded(flex: 1, child: Text("Noticeboard", style: TextStyle(fontSize: 20, color: (Themes.darkMode) ? Colors.grey[300] : Theme.of(context).primaryColor, fontWeight: FontWeight.bold))),
             ]),
 
             Padding(padding: EdgeInsets.fromLTRB(0, 12, 0, 0), child: 

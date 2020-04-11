@@ -1,3 +1,4 @@
+import 'package:elearnapp/Components/ConversationItem.dart';
 import 'package:flutter/material.dart';
 
 class ChatTab extends StatefulWidget {
@@ -10,8 +11,11 @@ class ChatTab extends StatefulWidget {
 class ChatTabState extends State<ChatTab> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-       child: Text("CHAAT"),
-    );
+    return ListView(children: <Widget>[
+      RawMaterialButton(child: ConversationItem(conversationTitle: "Mr. John Doe", lastMessage: "Last conversation is good...",unreadMessages: 12,), onPressed: () { }),
+      RawMaterialButton(child: ConversationItem(conversationTitle: "Mr. John Doe", lastMessage: "Last conversation is good...",unreadMessages: 3,), onPressed: () { }),
+      RawMaterialButton(child: ConversationItem(conversationTitle: "Mr. John Doe", lastMessage: "Last conversation is good...",unreadMessages: 2,), onPressed: () { }),
+      RawMaterialButton(child: ConversationItem(conversationTitle: "Mr. John Doe", lastMessage: "Last conversation is good...",unreadMessages: 0,), onPressed: () { }),
+    ],);
   }
 }

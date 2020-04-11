@@ -20,8 +20,8 @@ class _ToDoListCardState extends State<ToDoListCard> {
         child: Container(padding: EdgeInsets.fromLTRB(14, 14, 14, 9), child: 
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
             Row(children: <Widget>[
-              Padding(padding: EdgeInsets.fromLTRB(0, 0, 13, 0), child: Icon(Icons.assignment, color: Colors.grey)),
-              Expanded(flex: 1, child: Text("5", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.grey[300] : Colors.grey[500]))),
+              Padding(padding: EdgeInsets.fromLTRB(0, 0, 13, 0), child: Icon(Icons.list, color: (Themes.darkMode) ? Colors.grey : Theme.of(context).primaryColor)),
+              Expanded(flex: 1, child: Text("5", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.grey[300] : Theme.of(context).primaryColor))),
             ]),
 
             Padding(child: Text("To Do List items", textAlign: TextAlign.left, style: TextStyle(fontSize:18, color: Colors.grey[500], fontWeight: FontWeight.bold)), padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),

@@ -1,3 +1,4 @@
+import 'package:elearnapp/Themes/themes.dart';
 import 'package:flutter/material.dart';
 
 class ClassItem extends StatefulWidget {
@@ -16,11 +17,12 @@ class _ClassItemState extends State<ClassItem> {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(child: Row(children: <Widget>[
-        Icon(Icons.class_, size: 30),
+        
+        Icon(Icons.class_, size: 30, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor),
          
         Expanded(child: Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0), child: 
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-            Text(widget.subject, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+            Text(widget.subject, style: TextStyle(color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor, fontSize: 17, fontWeight: FontWeight.bold)),
             Padding(child: Text(widget.grade, style: TextStyle(color: Colors.grey)), padding: EdgeInsets.fromLTRB(0, 2, 0, 0))
           ],))
         ),

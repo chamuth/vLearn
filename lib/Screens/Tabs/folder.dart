@@ -41,7 +41,7 @@ class FolderTabState extends State<FolderTab> {
             Padding(child: 
               BreadCrumb(
                 items: <BreadCrumbItem>[
-                  BreadCrumbItem(content: Text("My Classes", style: TextStyle(color: Colors.grey))),
+                  BreadCrumbItem(content: Text("My Classes", style: TextStyle(fontSize: 16, color: Colors.grey))),
                 ],
                 divider: Icon(Icons.chevron_right, color: Colors.grey[500], size: 14)
               ), padding: EdgeInsets.fromLTRB(15, 10, 0, 0)
