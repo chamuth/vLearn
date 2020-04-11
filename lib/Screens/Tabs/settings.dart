@@ -1,3 +1,4 @@
+import 'package:elearnapp/Core/User.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -38,7 +39,7 @@ class SettingsTabState extends State<SettingsTab> {
            Padding(child: Icon(Icons.exit_to_app, size:25, color: Colors.grey[400]), padding: EdgeInsets.fromLTRB(0, 0, 20, 0)),
            Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
              Padding(child: Text("Log out", style: TextStyle(fontSize:18, fontWeight:FontWeight.bold)), padding: EdgeInsets.fromLTRB(0, 0, 0, 2)),
-             Text("from c.chamandana@gmail.com", style: TextStyle(fontSize:17, color: Colors.grey)),
+             Text("from " + User.me.email, style: TextStyle(fontSize:17, color: Colors.grey)),
            ],))
          ],), padding: EdgeInsets.fromLTRB(25, 15, 25, 15)), onPressed: () {
            logout();
