@@ -9,6 +9,7 @@ import './Core/Preferences.dart';
 import './Screens/start.dart';
 import './Screens/login.dart';
 import 'Core/ThemeNotifier.dart';
+import 'Screens/Register/register.dart';
 
 void main() => runApp(
   ChangeNotifierProvider<ThemeNotifier>(
@@ -58,6 +59,7 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/login' : (BuildContext context) => LoginScreen(),
         '/dashboard' : (BuildContext context) => StartScreen(),
+        '/register' : (BuildContext context) => RegisterScreen(),
       },
       debugShowCheckedModeBanner: false,
     );

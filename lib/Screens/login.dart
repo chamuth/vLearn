@@ -165,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     TouchableOpacity(child: Text("Forgot your Password?", style: Styles.link), onTap: () { },)
                   ),
                   Expanded(flex: 1, child: Align(alignment: Alignment.centerRight, child: 
-                    TouchableOpacity(child: Text("Create new Account", style: Styles.link), onTap: () { })
+                    TouchableOpacity(child: Text("Create new Account", style: Styles.link), onTap: () { Navigator.pushNamed(context, "/register"); })
                   ))
                 ],),
 

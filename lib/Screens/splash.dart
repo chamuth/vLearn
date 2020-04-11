@@ -13,15 +13,17 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   initState() {
-    FirebaseAuth.instance
-        .currentUser()
-        .then((currentUser) 
-        {
-          if (currentUser == null)
-            Navigator.pushReplacementNamed(context, "/login");
-          else 
-            Navigator.pushReplacementNamed(context, "/dashboard");
-        });
+    Future.delayed(const Duration(seconds: 1), () {
+      FirebaseAuth.instance
+          .currentUser()
+          .then((currentUser) 
+          {
+            if (currentUser == null)
+              Navigator.pushReplacementNamed(context, "/login");
+            else 
+              Navigator.pushReplacementNamed(context, "/dashboard");
+          });    
+    });
 
     super.initState();
   }
@@ -32,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
         child: Container(
           color: Theme.of(context).backgroundColor,
-          child: Text("Loading..."),
+          child:  SizedBox(width: 150, child: Image.asset("assets/images/sample_school_logo_white.png"))
         ),
       ),
     );
