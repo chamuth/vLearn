@@ -19,9 +19,9 @@ class _ConversationItemState extends State<ConversationItem> {
        child: Row(children: <Widget>[
          Padding(child: CircleAvatar(child: Text("J"), backgroundColor: Theme.of(context).primaryColor, foregroundColor: Colors.white,), padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-           Text(widget.conversationTitle, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
-           Divider(height: 2, color: Colors.transparent),
-           Text(widget.lastMessage, style: TextStyle(color: Colors.grey[400], fontSize:15))
+          Text(widget.conversationTitle, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+          Divider(height: 2, color: Colors.transparent),
+          Text((widget.lastMessage.length > 35) ? widget.lastMessage.substring(0, 35) + "..." : widget.lastMessage, style: TextStyle(color: Colors.grey[400], fontSize:15))
          ],)),
 
         if (widget.unreadMessages > 0)

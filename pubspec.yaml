@@ -36,6 +36,7 @@ dependencies:
   firebase_auth: 0.15.5+3
   cloud_firestore: 0.13.4+2
   flutter_breadcrumb: ^0.1.2
+  faker: 1.2.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

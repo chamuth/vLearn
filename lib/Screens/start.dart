@@ -94,6 +94,9 @@ class _StartScreenState extends State<StartScreen> {
         centerTitle: true,
         backgroundColor: Theme.of(context).backgroundColor,
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add), onPressed: () {},
+      ),
       body: AnimatedOpacity(opacity: pageOpacity, duration: Duration(milliseconds:150), child: Container(child: tabs[selectedIndex], color: (Themes.darkMode) ? Colors.grey[850] : Colors.white)),
     
     );

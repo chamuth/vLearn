@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:elearnapp/Components/ConversationItem.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 
 class ChatTab extends StatefulWidget {
@@ -11,11 +14,11 @@ class ChatTab extends StatefulWidget {
 class ChatTabState extends State<ChatTab> {
   @override
   Widget build(BuildContext context) {
-    return ListView(children: <Widget>[
-      RawMaterialButton(child: ConversationItem(conversationTitle: "Mr. John Doe", lastMessage: "Last conversation is good...",unreadMessages: 12,), onPressed: () { }),
-      RawMaterialButton(child: ConversationItem(conversationTitle: "Mr. John Doe", lastMessage: "Last conversation is good...",unreadMessages: 3,), onPressed: () { }),
-      RawMaterialButton(child: ConversationItem(conversationTitle: "Mr. John Doe", lastMessage: "Last conversation is good...",unreadMessages: 2,), onPressed: () { }),
-      RawMaterialButton(child: ConversationItem(conversationTitle: "Mr. John Doe", lastMessage: "Last conversation is good...",unreadMessages: 0,), onPressed: () { }),
-    ],);
+    var faker = new Faker();
+    var rng = new Random();
+
+    return ListView.builder(itemCount: 15, itemBuilder: (context, index) {
+      return RawMaterialButton(child: ConversationItem(conversationTitle: faker.person.prefix() + " " + faker.person.name(), lastMessage: faker.lorem.sentence(), unreadMessages: rng.nextInt(4),), onPressed: () { });
+    });
   }
 }
