@@ -18,14 +18,14 @@ eLearnApp for companies, institutions to use to collaborate with teachers, stude
 
 AUTH
 ====
-[ ] LOGIN AND REGISTER PAGE
+[X] LOGIN AND 
     [X] Page Design
-    [ ] Logging in using email
+    [X] Logging in using email
     [ ] Logging in using Facebook
     [ ] ......... Google
     [ ] ......... Twitter
-
-
+[X] REGISTER PAGE
+    [X] Registering using emails
 
 DASHBOARD 
 =========
