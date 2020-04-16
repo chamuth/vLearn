@@ -74,17 +74,24 @@ class User
     var classes = result.data["classes"];
 
     var org = getMyOrg();
+    var submissions = org.collection("submissions");
 
     var count = 0;
 
     for (var i = 0; i < classes.length; i++)
     {
       var query = await org.collection("assignments").where("class", isEqualTo: classes[i]).getDocuments();
-      count = count + query.documents.length;
-      // for (var j = 0; j < query.documents.length; j ++)
-      // {
-        
-      // }
+      
+      // check if already submitted or not
+      for (var j = 0; j < query.documents.length; j ++)
+      {
+         var mySub = await submissions.where("assignment", isEqualTo: query.documents[j].documentID).where("user", isEqualTo: me.uid).getDocuments();
+
+         if (mySub.documents.length == 0)
+         {
+           count++;
+         }
+      }
     }
 
     return count.toString();
