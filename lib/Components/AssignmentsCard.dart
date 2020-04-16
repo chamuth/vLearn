@@ -31,7 +31,7 @@ class _AssignmentsCardState extends State<AssignmentsCard> {
                   secondChild: SizedBox(child: CircularProgressIndicator( strokeWidth: 2,), width:15, height: 15),
                 );
 
-              }, future: User.getMyAssignments())
+              }, future: User.getMyAssignmentsCount())
             ]),
 
             Padding(child: Text("Assignments due", textAlign: TextAlign.left, style: TextStyle(fontSize:18, color: Colors.grey[500], fontWeight: FontWeight.bold)), padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),

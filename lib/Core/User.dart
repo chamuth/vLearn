@@ -65,7 +65,7 @@ class User
     return returnClasses;
   }
 
-  static Future<String> getMyAssignments() async
+  static Future<String> getMyAssignmentsCount() async
   {
     if (me.uid == null)
       await retrieveUserData();
@@ -95,5 +95,15 @@ class User
     }
 
     return count.toString();
+  }
+
+  static Future<String> getMyTodoCount() async
+  {
+    if (me.uid == null)
+      await retrieveUserData();
+
+    var result = await Firestore.instance.collection("users").document(me.uid).collection("todo").where("completed", isEqualTo: false).getDocuments();
+
+    return (result.documents.length.toString());
   }
 }
