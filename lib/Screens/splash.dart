@@ -23,8 +23,9 @@ class _SplashScreenState extends State<SplashScreen> {
               Navigator.pushReplacementNamed(context, "/login");
             else 
             {
-              User.retrieveUserData();
-              Navigator.pushReplacementNamed(context, "/dashboard");
+              User.retrieveUserData().then((res) {
+                Navigator.pushReplacementNamed(context, "/dashboard");
+              });
             }
           });    
     });

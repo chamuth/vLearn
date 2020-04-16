@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:badges/badges.dart';
+import 'package:elearnapp/Components/MainAppBar.dart';
 import 'package:elearnapp/Themes/themes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -58,45 +59,7 @@ class _StartScreenState extends State<StartScreen> {
           });
         },
       ),
-      appBar:AppBar(
-        elevation: 0,
-        leading: Padding(
-          padding: EdgeInsets.all(11),
-          child: new RawMaterialButton(
-            onPressed: () { log("Profile clicked"); },
-            child: CircleAvatar(
-              backgroundImage: NetworkImage("https://www.beautycastnetwork.com/images/banner-profile_pic.jpg"),
-              backgroundColor: Theme.of(context).primaryColor,
-              foregroundColor: Colors.black,
-            ),
-            shape: new CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.white,
-          ),
-        ),
-
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.search), onPressed: () { log("search button clicked"); }, tooltip: "Search entire space", color: (Themes.darkMode) ? Colors.white : Colors.grey[800],),
-          Padding(
-            padding: EdgeInsets.fromLTRB(0, 0, 5, 0), 
-            child: Badge(
-              badgeContent: Text("3", style: TextStyle(color:  Colors.white)),
-              position: BadgePosition.topRight(top: 1, right: 1), 
-              badgeColor: Theme.of(context).primaryColor,
-              child: IconButton(
-                color: (Themes.darkMode) ? Colors.white : Colors.grey[800],
-                icon: Icon(Icons.notifications), 
-                onPressed: () { log("notifications button clicked"); }, tooltip: "Show notifications",
-              )
-            )
-          ),
-        ],
-        centerTitle: true,
-        backgroundColor: Theme.of(context).backgroundColor,
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add), onPressed: () {},
-      ),
+      appBar: MainAppBar.get(context),
       body: AnimatedOpacity(opacity: pageOpacity, duration: Duration(milliseconds:150), child: Container(child: tabs[selectedIndex], color: (Themes.darkMode) ? Colors.grey[850] : Colors.white)),
     
     );

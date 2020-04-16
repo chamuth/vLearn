@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elearnapp/Core/User.dart';
+import 'package:elearnapp/Data/Organization.dart';
 import 'package:elearnapp/Themes/themes.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -45,7 +46,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
           'last_name' : _lastNameController.text, 
           'phone' : _phoneNumberController.text, 
           'teacher' : (_accType == AccountType.teacher),
-          'uid' : uid 
+          'uid' : uid,
+          'organization' : Organization.currentOrganizationId,
+          'classes' : [],
         }
       );
 
