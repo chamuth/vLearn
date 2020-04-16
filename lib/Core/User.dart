@@ -34,6 +34,11 @@ class User
     return result;
   }
 
+  static DocumentReference getMyOrg()
+  {
+    return Firestore.instance.collection("organizations").document(Organization.currentOrganizationId);
+  }
+
   static Future getMyClasses() async
   {
     if (me.uid == null)
@@ -43,14 +48,11 @@ class User
     var returnClasses = [];
 
     var classes = result.data["classes"];
+    var org = getMyOrg();
 
     for (var i = 0; i < classes.length; i ++)
     {        
-      var classResult = await Firestore.instance.collection("organizations")
-        .document(Organization.currentOrganizationId)
-        .collection("classes")
-        .document(classes[i]).get();
-      
+      var classResult = await org.collection("classes").document(classes[i]).get();
       var host = await getUserData(classResult["host"]);
 
       returnClasses.add({
@@ -61,5 +63,30 @@ class User
     }
 
     return returnClasses;
+  }
+
+  static Future<String> getMyAssignments() async
+  {
+    if (me.uid == null)
+      await retrieveUserData();
+    
+    var result = await Firestore.instance.collection("users").document(me.uid).get();
+    var classes = result.data["classes"];
+
+    var org = getMyOrg();
+
+    var count = 0;
+
+    for (var i = 0; i < classes.length; i++)
+    {
+      var query = await org.collection("assignments").where("class", isEqualTo: classes[i]).getDocuments();
+      count = count + query.documents.length;
+      // for (var j = 0; j < query.documents.length; j ++)
+      // {
+        
+      // }
+    }
+
+    return count.toString();
   }
 }
