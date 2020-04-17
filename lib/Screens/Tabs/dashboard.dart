@@ -54,21 +54,22 @@ class DashboardTabState extends State<DashboardTab> {
           future: User.getMyClasses(),
           builder: (context, results)
           {
-            if (results.connectionState == ConnectionState.done) 
+            if (results.data != null)
             {
-              if (results.data.length > 0)
-              {
-                return ListView.builder(
+              return AnimatedCrossFade(duration: Duration(milliseconds: 250), crossFadeState: (results.connectionState == ConnectionState.done) ? CrossFadeState.showFirst : CrossFadeState.showSecond, firstChild: 
+                ListView.builder(
                   itemCount : results.data.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index)
                   {
                     return TouchableOpacity(child: ClassItem(subject: results.data[index]["subject"], grade: results.data[index]["grade"], hostName: results.data[index]["host"]), onTap: () { });
                   },
-                );
-              } else {
-                return Container();
-              }
+                )
+              ,secondChild: Container(
+                  child: Center(child: 
+                    CircularProgressIndicator()
+                  ,), padding: EdgeInsets.fromLTRB(0, 10, 0, 10)
+              ));
             } else {
               return Container(
                 child: Center(child: 

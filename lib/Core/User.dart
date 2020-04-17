@@ -80,7 +80,7 @@ class User
 
     for (var i = 0; i < classes.length; i++)
     {
-      var query = await org.collection("assignments").where("class", isEqualTo: classes[i]).getDocuments();
+      var query = await org.collection("assignments").where("class", isEqualTo: classes[i]).where("duedate", isGreaterThan: Timestamp.now()).getDocuments();
       
       // check if already submitted or not
       for (var j = 0; j < query.documents.length; j ++)
@@ -105,5 +105,13 @@ class User
     var result = await Firestore.instance.collection("users").document(me.uid).collection("todo").where("completed", isEqualTo: false).getDocuments();
 
     return (result.documents.length.toString());
+  }
+
+  static Future loadNoticeboard() async
+  {
+    var org = getMyOrg();
+    var results  = await org.collection("noticeboard").where("created", isGreaterThan: Timestamp.fromDate(DateTime.now().subtract(new Duration(days: 30)))).orderBy("created", descending: true).getDocuments();
+
+    return results.documents;
   }
 }

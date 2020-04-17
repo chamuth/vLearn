@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elearnapp/Core/NoticeType.dart';
+import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
@@ -28,19 +30,28 @@ class _NoticeboardCardState extends State<NoticeboardCard> {
             ]),
 
             Padding(padding: EdgeInsets.fromLTRB(0, 12, 0, 0), child: 
-              SizedBox(
-                height: 55.0,
-                child: ListView(
-                  
-                  // This next line does the trick.
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    NoticeItem(title: "2020 March Assignment", type: NoticeType.assignment, latest: true),
-                    NoticeItem(title: "Mechanics sheet", type: NoticeType.text),
-                    NoticeItem(title: "GGD Anatomy", type: NoticeType.image),
-                  ],
-                )
-              )
+              FutureBuilder(future: User.loadNoticeboard(), builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.data == null)
+                {
+                  return Container(padding: EdgeInsets.all(5), child: CircularProgressIndicator());
+                } else {
+                  return AnimatedCrossFade(crossFadeState: (snapshot.connectionState == ConnectionState.done) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                    duration: Duration(milliseconds:250),
+                    firstChild: SizedBox(
+                      height: 55.0,
+                      child: ListView.builder(  
+                        // This next line does the trick.
+                        scrollDirection: Axis.horizontal, 
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return NoticeItem(title: snapshot.data[index]["title"], type: NoticeType.text, latest: (DateTime.now().difference((snapshot.data[index]["created"] as Timestamp).toDate()) < Duration(days: 1)) );
+                        },
+                      )
+                    ),
+                    secondChild: Container(padding: EdgeInsets.all(5), child: CircularProgressIndicator()),
+                  );
+                }
+              }, )
             ),
 
             Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 0), child: Divider()),
