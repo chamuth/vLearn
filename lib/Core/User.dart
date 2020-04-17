@@ -56,6 +56,7 @@ class User
       var host = await getUserData(classResult["host"]);
 
       returnClasses.add({
+        "id" : classes[i],
         "host": host["first_name"] + " " + host["last_name"], 
         "subject" : classResult["subject"],
         "grade" : classResult["grade"]

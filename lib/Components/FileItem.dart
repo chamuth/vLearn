@@ -8,8 +8,10 @@ enum FileItemType
 
 class FileItem extends StatefulWidget {
   FileItemType type;
-  String filename;
-  FileItem({Key key, this.type = FileItemType.classItem, this.filename = "Class"}) : super(key: key); 
+  Function onPressed; 
+  String title;
+  String subtitle;
+  FileItem({Key key, this.type = FileItemType.classItem, this.title = "Class", this.subtitle = "Grade 12", this.onPressed}) : super(key: key); 
 
   @override
   _FileItemState createState() => _FileItemState();
@@ -26,13 +28,13 @@ class _FileItemState extends State<FileItem> {
         Padding(padding: EdgeInsets.all(12), child: 
           Row(children: <Widget>[
             Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
-              Padding(child: Text("Physics", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor)), padding: EdgeInsets.fromLTRB(0, 0, 0, 3)),
-              Text("Grade 12", style: TextStyle(color: Colors.grey)),
+              Padding(child: Text(widget.title, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor)), padding: EdgeInsets.fromLTRB(0, 0, 0, 3)),
+              Text(widget.subtitle, style: TextStyle(color: Colors.grey)),
             ],)
             
           ],)
         )
       ],)
-    ), onPressed: () { });
+    ), onPressed: () { widget.onPressed(); });
   }
 }
