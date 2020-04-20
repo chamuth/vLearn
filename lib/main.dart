@@ -1,3 +1,4 @@
+import 'package:elearnapp/Questionaires/MCQ.dart';
 import 'package:elearnapp/Screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
@@ -10,6 +11,7 @@ import './Screens/start.dart';
 import './Screens/login.dart';
 import 'Core/ThemeNotifier.dart';
 import 'Screens/Register/register.dart';
+import 'Questionaires/MCQ.dart';
 
 void main() => runApp(
   ChangeNotifierProvider<ThemeNotifier>(
@@ -55,11 +57,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'vLearn',
       theme: Themes.themeNotifier.getTheme(),
-      home: SplashScreen(),
+      home: MCQScreen(),
       routes: <String, WidgetBuilder>{
         '/login' : (BuildContext context) => LoginScreen(),
         '/dashboard' : (BuildContext context) => StartScreen(),
         '/register' : (BuildContext context) => RegisterScreen(),
+        '/test' : (BuildContext context) => MCQScreen(),
       },
       debugShowCheckedModeBanner: false,
     );

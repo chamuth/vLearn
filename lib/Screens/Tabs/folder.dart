@@ -69,7 +69,6 @@ class FolderTabState extends State<FolderTab> {
         {
           shared = shared.child(splits[i]);
         }
-
     }
 
     return folder;
