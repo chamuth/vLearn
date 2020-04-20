@@ -29,6 +29,7 @@ class _MCQScreenState extends State<MCQScreen> {
   int questionsCount = 50;
   int currentQuestionIndex = 0;
   bool showOverview = false;
+  bool uploadingAnswers = false;
   Duration examDuration = Duration(minutes: 1);
 
   @override
@@ -167,7 +168,9 @@ class _MCQScreenState extends State<MCQScreen> {
                         Expanded(child: Text("Submit Now", textAlign: TextAlign.center,)),
                         VerticalDivider(width:10, color: Colors.transparent),
                         Icon(Icons.file_upload, size:15),
-                      ],), onPressed: () { },), flex: 1),
+                      ],), onPressed: () { setState(() {
+                        uploadingAnswers = true;
+                      }); },), flex: 1),
                     ],),
 
                   ],)
@@ -186,7 +189,18 @@ class _MCQScreenState extends State<MCQScreen> {
             )
           ],)
           ,padding: EdgeInsets.fromLTRB(0, 75, 0, 0))
-        ))
+        )),
+
+        IgnorePointer(ignoring: (!uploadingAnswers), child: AnimatedOpacity(child: 
+            Container(color:Theme.of(context).backgroundColor, child: Center(child: Column(mainAxisSize: MainAxisSize.min,children: <Widget>[
+              CircularProgressIndicator(),
+              Divider(color:Colors.transparent, height:30),
+              Text("SUBMITTING ANSWERS", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize:17)),
+              Divider(color:Colors.transparent, height: 5),
+              Text("Please do not exit the application", style: TextStyle(fontSize: 16)),
+            ],)))
+          , duration: Duration(milliseconds: 250), opacity: (uploadingAnswers) ? 1 : 0),
+        ),
 
       ],)
     );
