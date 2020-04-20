@@ -32,66 +32,10 @@ class _MCQScreenState extends State<MCQScreen> {
   bool uploadingAnswers = false;
   bool changingQuestion = false;
   Duration examDuration = Duration(minutes: 30);
+  int currentSelection = -1;
+  List<int> myAnswers = [];
 
-  @override
-  void initState() {
-    Timer.periodic(Duration(seconds: 1), (t) {
-      setState(() {
-        if (examDuration.inSeconds == 0)
-        {
-          showOverview = true;
-          t.cancel();
-        } else {
-          examDuration = Duration(seconds: examDuration.inSeconds - 1);
-        }
-      });
-    });
-
-    super.initState();
-  }
-
-  formatDuration(Duration d) => d.toString().split('.').first.padLeft(8, "0");
-
-  void changeQuestion(Function func)
-  {
-    changingQuestion = true;
-
-    Future.delayed(Duration(milliseconds: 500), () 
-    {
-      func();
-
-      setState(() {
-        changingQuestion = false;
-      });
-    });
-  }
-
-  void nextQuestion()
-  {
-    changeQuestion(() 
-    {
-      if (currentQuestionIndex < questionsCount - 1)
-      {
-        currentQuestionIndex++;
-      }
-    });
-  }
-
-  void previousQuestion()
-  {
-    changeQuestion(()
-    {
-      if(currentQuestionIndex > 0)
-      {
-        currentQuestionIndex--;
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    List<Question> questions = [
+   List<Question> questions = [
       Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
         "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
       ]),
@@ -109,8 +53,77 @@ class _MCQScreenState extends State<MCQScreen> {
       ]),
     ];
 
-    questionsCount = questions.length;
+  @override
+  void initState() {
+    Timer.periodic(Duration(seconds: 1), (t) {
+      setState(() {
+        if (examDuration.inSeconds == 0)
+        {
+          showOverview = true;
+          t.cancel();
+        } else {
+          examDuration = Duration(seconds: examDuration.inSeconds - 1);
+        }
+      });
+    });
 
+    questionsCount = questions.length;
+    myAnswers = new List<int>(questions.length);
+
+    super.initState();
+  }
+
+  formatDuration(Duration d) => d.toString().split('.').first.padLeft(8, "0");
+
+  void changeQuestion(Function func)
+  {
+    changingQuestion = true;
+
+    Future.delayed(Duration(milliseconds: 500), () 
+    {
+      if (func())
+      {
+        myAnswers[currentQuestionIndex - 1] = currentSelection; // save the answers
+        print(myAnswers);
+        currentSelection = -1; // deselect any selected answers
+      }
+
+      setState(() {
+        changingQuestion = false;
+      });
+    });
+  }
+
+  void nextQuestion()
+  {
+    changeQuestion(() 
+    {
+      if (currentQuestionIndex < questionsCount - 1)
+      {
+        currentQuestionIndex++;
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
+
+  void previousQuestion()
+  {
+    changeQuestion(()
+    {
+      if(currentQuestionIndex > 0)
+      {
+        currentQuestionIndex--;
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(children: <Widget>[
       
@@ -128,8 +141,10 @@ class _MCQScreenState extends State<MCQScreen> {
                   Text(questions[currentQuestionIndex].question, style: TextStyle(fontSize:23, fontWeight: FontWeight.bold),),
                   Divider(height: 25, color:Colors.transparent),
 
-                  for (var answer in questions[currentQuestionIndex].answers) 
-                    MCQAnswerItem(answer: answer, selected: (answer == "naki"),),
+                  for (var i = 0; i < questions[currentQuestionIndex].answers.length; i ++) 
+                    MCQAnswerItem(answer: questions[currentQuestionIndex].answers[i], selected: (i == currentSelection), onPressed: () { setState(() {
+                      currentSelection = i;
+                    });},),
 
                 ],), opacity: (changingQuestion) ? 0 : 1, duration: Duration(milliseconds: 200)),
 
@@ -203,15 +218,39 @@ class _MCQScreenState extends State<MCQScreen> {
                 if (examDuration.inSeconds > 0)
                   Row(children: <Widget>[ Expanded(child: Text("Select questions to answer, tap outwards go back", textAlign: TextAlign.center, style: TextStyle(fontSize:15, color: Colors.grey[600])))]),
 
-                if (examDuration.inSeconds == 0)
-                  Column(children: <Widget>[
-                    Divider(),
+                Column(children: <Widget>[
+                  Divider(),
 
-                    Divider(height: 20, color:Colors.transparent),
+                  Divider(height: 20, color:Colors.transparent),
+
+                  if (examDuration.inSeconds == 0)
                     Text("Your time has ran out. Would you like to submit the given answers to your questions, or you can try again later?", style: TextStyle(fontSize: 17), textAlign: TextAlign.center,),
+                  if (examDuration.inSeconds != 0)
+                    Text("Would you like to submit the given answers to your questions, or you can try again later?", style: TextStyle(fontSize: 17), textAlign: TextAlign.center,),
 
-                    Divider(height: 12, color:Colors.transparent),
+                  Divider(height: 12, color:Colors.transparent),
 
+                  if (examDuration.inSeconds > 0)
+                    Row(children: <Widget>[
+                      Expanded(child: RaisedButton(child: Row(children: <Widget>[
+                        Icon(Icons.arrow_back, size:15),
+                        VerticalDivider(width:10, color: Colors.transparent),
+                        Expanded(child: Text("Back to Question", textAlign: TextAlign.center,))
+                      ],), onPressed: () { 
+                        setState(() {
+                          showOverview = false;
+                        });
+                       },), flex: 1),
+                      VerticalDivider(width: 10),
+                      Expanded(child: RaisedButton(child: Row(children: <Widget>[
+                        Expanded(child: Text("Submit Now", textAlign: TextAlign.center,)),
+                        VerticalDivider(width:10, color: Colors.transparent),
+                        Icon(Icons.file_upload, size:15),
+                      ],), onPressed: () { setState(() {
+                        uploadingAnswers = true;
+                      }); },), flex: 1),
+                    ],),
+                  if (examDuration.inSeconds == 0)
                     Row(children: <Widget>[
                       Expanded(child: RaisedButton(child: Row(children: <Widget>[
                         Icon(Icons.home, size:15),
@@ -228,7 +267,7 @@ class _MCQScreenState extends State<MCQScreen> {
                       }); },), flex: 1),
                     ],),
 
-                  ],)
+                ],)
               ],))
             ],))),
           duration: Duration(milliseconds: 250), opacity: (!showOverview) ? 0 : 1,)
