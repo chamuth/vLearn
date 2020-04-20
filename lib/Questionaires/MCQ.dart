@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:elearnapp/Components/AllQuestionsDisplayItem.dart';
 import 'package:elearnapp/Components/MCQAnswerItem.dart';
+import 'package:elearnapp/Components/Seperator.dart';
 import 'package:flutter/material.dart';
 
 class MCQScreen extends StatefulWidget {
@@ -28,13 +29,19 @@ class _MCQScreenState extends State<MCQScreen> {
   int questionsCount = 50;
   int currentQuestionIndex = 0;
   bool showOverview = false;
-  Duration examDuration = Duration(minutes: 30);
+  Duration examDuration = Duration(minutes: 1);
 
   @override
   void initState() {
     Timer.periodic(Duration(seconds: 1), (t) {
       setState(() {
-        examDuration = Duration(seconds: examDuration.inSeconds - 1);
+        if (examDuration.inSeconds == 0)
+        {
+          showOverview = true;
+          t.cancel();
+        } else {
+          examDuration = Duration(seconds: examDuration.inSeconds - 1);
+        }
       });
     });
 
@@ -107,16 +114,19 @@ class _MCQScreenState extends State<MCQScreen> {
             child: Container(child: Center(child: ListView(shrinkWrap: true, children: <Widget>[
               Padding(padding:EdgeInsets.all(35), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
                 
-                Row(children: <Widget>[ Expanded(child: Text("All Questions", textAlign: TextAlign.center, style: TextStyle(fontSize:18, fontWeight: FontWeight.bold, color: Colors.grey)))]),
+                // Row(children: <Widget>[ Expanded(child: Text("All Questions", textAlign: TextAlign.center, style: TextStyle(fontSize:18, fontWeight: FontWeight.bold, color: Colors.grey)))]),
+                Seperator(title: "All Questions"),
                 Divider(height: 15, color:Colors.transparent),
 
-                SizedBox(height: 160, child: 
-                  GridView.count(
-                    crossAxisCount: 10,
-                    children: List.generate(50, (index) {
-                      return AllQuestionsDisplayItem(index: index, answered: ([2,22,41,20].contains(index + 1)));
-                    }),
-                  )
+                IgnorePointer(ignoring: false, child: 
+                  SizedBox(height: 160, child: 
+                    GridView.count(
+                      crossAxisCount: 10,
+                      children: List.generate(50, (index) {
+                        return AllQuestionsDisplayItem(index: index, answered: ([2,5,33,22,41,20].contains(index + 1)));
+                      }),
+                    )
+                  ),
                 ),
 
                 Divider(height: 15, color:Colors.transparent),
@@ -134,7 +144,33 @@ class _MCQScreenState extends State<MCQScreen> {
 
                 Divider(height: 35, color:Colors.transparent),
 
-                Row(children: <Widget>[ Expanded(child: Text("Select questions to answer, tap outwards go back", textAlign: TextAlign.center, style: TextStyle(fontSize:15, color: Colors.grey[600])))]),
+                if (examDuration.inSeconds > 0)
+                  Row(children: <Widget>[ Expanded(child: Text("Select questions to answer, tap outwards go back", textAlign: TextAlign.center, style: TextStyle(fontSize:15, color: Colors.grey[600])))]),
+
+                if (examDuration.inSeconds == 0)
+                  Column(children: <Widget>[
+                    Divider(),
+
+                    Divider(height: 20, color:Colors.transparent),
+                    Text("Your time has ran out. Would you like to submit the given answers to your questions, or you can try again later?", style: TextStyle(fontSize: 17), textAlign: TextAlign.center,),
+
+                    Divider(height: 12, color:Colors.transparent),
+
+                    Row(children: <Widget>[
+                      Expanded(child: RaisedButton(child: Row(children: <Widget>[
+                        Icon(Icons.home, size:15),
+                        VerticalDivider(width:10, color: Colors.transparent),
+                        Expanded(child: Text("Go to Home", textAlign: TextAlign.center,))
+                      ],), onPressed: () { },), flex: 1),
+                      VerticalDivider(width: 10),
+                      Expanded(child: RaisedButton(child: Row(children: <Widget>[
+                        Expanded(child: Text("Submit Now", textAlign: TextAlign.center,)),
+                        VerticalDivider(width:10, color: Colors.transparent),
+                        Icon(Icons.file_upload, size:15),
+                      ],), onPressed: () { },), flex: 1),
+                    ],),
+
+                  ],)
               ],))
             ],))),
           duration: Duration(milliseconds: 250), opacity: (!showOverview) ? 0 : 1,)
@@ -145,7 +181,7 @@ class _MCQScreenState extends State<MCQScreen> {
           Padding(child: Column(children: <Widget>[
             Text("Time Remaining : ", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
             Divider(color: Colors.transparent, height: 10),
-            Container(decoration: BoxDecoration(shape: BoxShape.rectangle, borderRadius: BorderRadius.circular(5), color: Colors.grey), 
+            Container(decoration: BoxDecoration(shape: BoxShape.rectangle, borderRadius: BorderRadius.circular(5), color: (examDuration.inSeconds < 60) ? Colors.red : Colors.grey), 
               child: Text(formatDuration(examDuration), style: TextStyle(fontSize: 25, fontFamily: "Number", fontWeight: FontWeight.bold)), padding: EdgeInsets.fromLTRB(10, 5, 10, 4)
             )
           ],)
