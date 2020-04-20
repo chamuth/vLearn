@@ -77,7 +77,7 @@ class _MCQScreenState extends State<MCQScreen> {
                     Icon(Icons.arrow_back, size:15),
                     VerticalDivider(width:10, color: Colors.transparent),
                     Expanded(child: Text("Previous", textAlign: TextAlign.center,))
-                  ],), color:Colors.grey[700], onPressed: () { },), flex: 1),
+                  ],), onPressed: () { },), flex: 1),
                   VerticalDivider(width: 10),
                   Expanded(child: RaisedButton(child: Row(children: <Widget>[
                     Expanded(child: Text("Next", textAlign: TextAlign.center,)),
@@ -90,7 +90,7 @@ class _MCQScreenState extends State<MCQScreen> {
                   Expanded(child: RaisedButton(child: Row(children: <Widget>[
                     Icon(Icons.question_answer, size:15),
                     Expanded(child: Text("Questionaire Overview", textAlign: TextAlign.center,))
-                  ],), color:Colors.grey[700], onPressed: () { setState(() {
+                  ],), color:Theme.of(context).secondaryHeaderColor, onPressed: () { setState(() {
                     showOverview = true;
                   }); },), flex: 1),
                 ],)
@@ -142,9 +142,14 @@ class _MCQScreenState extends State<MCQScreen> {
 
         Container(child: Align(alignment: Alignment.topCenter, child: 
           
-          Padding(child: 
-            Text(formatDuration(examDuration), style: TextStyle(fontSize: 25, fontFamily: "Number"))
-          ,padding: EdgeInsets.fromLTRB(0, 70, 0, 0))
+          Padding(child: Column(children: <Widget>[
+            Text("Time Remaining : ", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
+            Divider(color: Colors.transparent, height: 10),
+            Container(decoration: BoxDecoration(shape: BoxShape.rectangle, borderRadius: BorderRadius.circular(5), color: Colors.grey), 
+              child: Text(formatDuration(examDuration), style: TextStyle(fontSize: 25, fontFamily: "Number", fontWeight: FontWeight.bold)), padding: EdgeInsets.fromLTRB(10, 5, 10, 4)
+            )
+          ],)
+          ,padding: EdgeInsets.fromLTRB(0, 75, 0, 0))
         ))
 
       ],)
