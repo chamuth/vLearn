@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:wakelock/wakelock.dart';
+
 import 'package:elearnapp/Components/AllQuestionsDisplay.dart';
 import 'package:elearnapp/Components/AllQuestionsDisplayItem.dart';
 import 'package:elearnapp/Components/MCQAnswerItem.dart';
@@ -113,6 +115,8 @@ class _MCQScreenState extends State<MCQScreen> {
 
     questionsCount = questions.length;
     myAnswers = new List<int>(questions.length);
+
+    Wakelock.enable();
 
     super.initState();
   }
