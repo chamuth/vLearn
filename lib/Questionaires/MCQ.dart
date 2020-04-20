@@ -30,7 +30,8 @@ class _MCQScreenState extends State<MCQScreen> {
   int currentQuestionIndex = 0;
   bool showOverview = false;
   bool uploadingAnswers = false;
-  Duration examDuration = Duration(minutes: 1);
+  bool changingQuestion = false;
+  Duration examDuration = Duration(minutes: 30);
 
   @override
   void initState() {
@@ -51,14 +52,64 @@ class _MCQScreenState extends State<MCQScreen> {
 
   formatDuration(Duration d) => d.toString().split('.').first.padLeft(8, "0");
 
+  void changeQuestion(Function func)
+  {
+    changingQuestion = true;
+
+    Future.delayed(Duration(milliseconds: 500), () 
+    {
+      func();
+
+      setState(() {
+        changingQuestion = false;
+      });
+    });
+  }
+
+  void nextQuestion()
+  {
+    changeQuestion(() 
+    {
+      if (currentQuestionIndex < questionsCount - 1)
+      {
+        currentQuestionIndex++;
+      }
+    });
+  }
+
+  void previousQuestion()
+  {
+    changeQuestion(()
+    {
+      if(currentQuestionIndex > 0)
+      {
+        currentQuestionIndex--;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
 
     List<Question> questions = [
       Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
         "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
-      ])
+      ]),
+      Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
+        "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
+      ]),
+      Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
+        "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
+      ]),
+      Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
+        "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
+      ]),
+      Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
+        "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
+      ]),
     ];
+
+    questionsCount = questions.length;
 
     return Scaffold(
       body: Stack(children: <Widget>[
@@ -68,15 +119,19 @@ class _MCQScreenState extends State<MCQScreen> {
             Container(child: Center(child: ListView(shrinkWrap: true, children: <Widget>[
               
               Padding(padding:EdgeInsets.all(35), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                
-                Text("Question " + (currentQuestionIndex + 1).toString() + " / $questionsCount", style: TextStyle(fontSize:16, color: Colors.grey, fontWeight: FontWeight.bold),),
-                Divider(height: 10),
-                Divider(height: 5, color:Colors.transparent),
-                Text(questions[currentQuestionIndex].question, style: TextStyle(fontSize:23, fontWeight: FontWeight.bold),),
-                Divider(height: 25, color:Colors.transparent),
 
-                for (var answer in questions[currentQuestionIndex].answers) 
-                  MCQAnswerItem(answer: answer, selected: (answer == "naki"),),
+                AnimatedOpacity(child: Column(children: <Widget>[
+
+                  Text("Question " + (currentQuestionIndex + 1).toString() + " / $questionsCount", style: TextStyle(fontSize:16, color: Colors.grey, fontWeight: FontWeight.bold),),
+                  Divider(height: 10),
+                  Divider(height: 5, color:Colors.transparent),
+                  Text(questions[currentQuestionIndex].question, style: TextStyle(fontSize:23, fontWeight: FontWeight.bold),),
+                  Divider(height: 25, color:Colors.transparent),
+
+                  for (var answer in questions[currentQuestionIndex].answers) 
+                    MCQAnswerItem(answer: answer, selected: (answer == "naki"),),
+
+                ],), opacity: (changingQuestion) ? 0 : 1, duration: Duration(milliseconds: 200)),
 
                 Divider(height: 25, color:Colors.transparent),
 
@@ -85,13 +140,13 @@ class _MCQScreenState extends State<MCQScreen> {
                     Icon(Icons.arrow_back, size:15),
                     VerticalDivider(width:10, color: Colors.transparent),
                     Expanded(child: Text("Previous", textAlign: TextAlign.center,))
-                  ],), onPressed: () { },), flex: 1),
+                  ],), onPressed: () { previousQuestion(); },), flex: 1),
                   VerticalDivider(width: 10),
                   Expanded(child: RaisedButton(child: Row(children: <Widget>[
                     Expanded(child: Text("Next", textAlign: TextAlign.center,)),
                     VerticalDivider(width:10, color: Colors.transparent),
                     Icon(Icons.arrow_forward, size:15),
-                  ],), onPressed: () { },), flex: 1),
+                  ],), onPressed: () { nextQuestion(); },), flex: 1),
                 ],),
 
                 Row(children: <Widget>[
