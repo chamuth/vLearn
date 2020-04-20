@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:elearnapp/Components/AllQuestionsDisplayItem.dart';
 import 'package:elearnapp/Components/MCQAnswerItem.dart';
 import 'package:elearnapp/Components/Seperator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:touchable_opacity/touchable_opacity.dart';
 
 class MCQScreen extends StatefulWidget {
   MCQScreen({Key key}) : super(key: key);
@@ -35,23 +38,63 @@ class _MCQScreenState extends State<MCQScreen> {
   int currentSelection = -1;
   List<int> myAnswers = [];
 
-   List<Question> questions = [
-      Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
-        "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
-      ]),
-      Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
-        "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
-      ]),
-      Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
-        "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
-      ]),
-      Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
-        "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
-      ]),
-      Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
-        "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
-      ]),
-    ];
+  List<Question> questions = [
+    Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
+      "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
+    ]),
+    Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
+      "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
+    ]),
+    Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
+      "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
+    ]),
+    Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
+      "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
+    ]),
+    Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
+      "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
+    ]),
+    Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
+      "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
+    ]),
+    Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
+      "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
+    ]),
+    Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
+      "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
+    ]),
+    Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
+      "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
+    ]),
+    Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
+      "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
+    ]),
+    Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
+      "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
+    ]),
+    Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
+      "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
+    ]),
+  ];
+
+  showAlertDialog(BuildContext context,String title, String question, buttons) {
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(title),
+      content: Text(question),
+      actions: buttons,
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (_) => Material(
+        type: MaterialType.transparency,
+        child: alert
+      )
+    );
+  }
 
   @override
   void initState() {
@@ -96,16 +139,21 @@ class _MCQScreenState extends State<MCQScreen> {
 
   void nextQuestion()
   {
-    changeQuestion(() 
-    {
-      if (currentQuestionIndex < questionsCount - 1)
+    if (currentQuestionIndex + 1 == questions.length)
+      setState(() {
+        showOverview = true;
+      });
+    else 
+      changeQuestion(() 
       {
-        currentQuestionIndex++;
-        return true;
-      } else {
-        return false;
-      }
-    });
+        if (currentQuestionIndex < questionsCount - 1)
+        {
+          currentQuestionIndex++;
+          return true;
+        } else {
+          return false;
+        }
+      });
   }
 
   void previousQuestion()
@@ -158,7 +206,7 @@ class _MCQScreenState extends State<MCQScreen> {
                   ],), onPressed: () { previousQuestion(); },), flex: 1),
                   VerticalDivider(width: 10),
                   Expanded(child: RaisedButton(child: Row(children: <Widget>[
-                    Expanded(child: Text("Next", textAlign: TextAlign.center,)),
+                    Expanded(child: Text((questions.length == currentQuestionIndex + 1) ? "Overview" : "Next", textAlign: TextAlign.center,)),
                     VerticalDivider(width:10, color: Colors.transparent),
                     Icon(Icons.arrow_forward, size:15),
                   ],), onPressed: () { nextQuestion(); },), flex: 1),
@@ -189,18 +237,26 @@ class _MCQScreenState extends State<MCQScreen> {
                 Seperator(title: "All Questions"),
                 Divider(height: 15, color:Colors.transparent),
 
-                IgnorePointer(ignoring: false, child: 
-                  SizedBox(height: 160, child: 
+                IgnorePointer(ignoring: !(examDuration.inSeconds > 0), child: 
+                  SizedBox(child: 
                     GridView.count(
-                      crossAxisCount: 10,
-                      children: List.generate(50, (index) {
-                        return AllQuestionsDisplayItem(index: index, answered: ([2,5,33,22,41,20].contains(index + 1)));
+                      crossAxisCount: (questionsCount > 5) ? 10 : 5,
+                      crossAxisSpacing: (questionsCount > 5) ? 2 : 10,
+                      mainAxisSpacing: (questionsCount > 5) ? 2 : 10,
+                      shrinkWrap: true,
+                      children: List.generate(questionsCount, (index) {
+                        return TouchableOpacity(child: AllQuestionsDisplayItem(index: index, answered: (myAnswers[index] != null && myAnswers[index] != -1)), onTap: () {
+                          setState(() {
+                            currentQuestionIndex = index;
+                            showOverview = false;
+                          });                          
+                         },);
                       }),
                     )
                   ),
                 ),
 
-                Divider(height: 15, color:Colors.transparent),
+                Divider(height: 35, color:Colors.transparent),
 
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
                   SizedBox(child: Container(decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(5)),), width:15, height:15),
@@ -216,7 +272,7 @@ class _MCQScreenState extends State<MCQScreen> {
                 Divider(height: 35, color:Colors.transparent),
 
                 if (examDuration.inSeconds > 0)
-                  Row(children: <Widget>[ Expanded(child: Text("Select questions to answer, tap outwards go back", textAlign: TextAlign.center, style: TextStyle(fontSize:15, color: Colors.grey[600])))]),
+                  Row(children: <Widget>[ Expanded(child: Text("Tap question number to answer, tap outwards go back", textAlign: TextAlign.center, style: TextStyle(fontSize:15, color: Colors.grey[600])))]),
 
                 Column(children: <Widget>[
                   Divider(),
@@ -247,7 +303,22 @@ class _MCQScreenState extends State<MCQScreen> {
                         VerticalDivider(width:10, color: Colors.transparent),
                         Icon(Icons.file_upload, size:15),
                       ],), onPressed: () { setState(() {
-                        uploadingAnswers = true;
+                         // set up the buttons
+                        Widget cancelButton = FlatButton(
+                          child: Text("Cancel"),
+                          onPressed:  () { 
+                            Navigator.of(context).pop(); 
+                          },
+                        );
+                        Widget continueButton = FlatButton(
+                          child: Text("Submit"),
+                          onPressed:  () {  
+                            Navigator.of(context).pop(); 
+                            uploadingAnswers = true;
+                          },
+                        );
+                        
+                        showAlertDialog(context, "Submitting Answers", "Would you like to submit the given answers to your teacher?", [cancelButton, continueButton] );
                       }); },), flex: 1),
                     ],),
                   if (examDuration.inSeconds == 0)
