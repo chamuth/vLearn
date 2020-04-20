@@ -124,9 +124,10 @@ class _MCQScreenState extends State<MCQScreen> {
 
     Future.delayed(Duration(milliseconds: 500), () 
     {
+      myAnswers[currentQuestionIndex] = currentSelection; // save the answers
+
       if (func())
       {
-        myAnswers[currentQuestionIndex - 1] = currentSelection; // save the answers
         print(myAnswers);
         currentSelection = -1; // deselect any selected answers
       }
@@ -158,16 +159,14 @@ class _MCQScreenState extends State<MCQScreen> {
 
   void previousQuestion()
   {
-    changeQuestion(()
+    if(currentQuestionIndex > 0)
     {
-      if(currentQuestionIndex > 0)
+      changeQuestion(()
       {
-        currentQuestionIndex--;
-        return true;
-      } else {
-        return false;
-      }
-    });
+          currentQuestionIndex--;
+          return true;
+      });
+    }
   }
 
   @override
@@ -203,7 +202,7 @@ class _MCQScreenState extends State<MCQScreen> {
                     Icon(Icons.arrow_back, size:15),
                     VerticalDivider(width:10, color: Colors.transparent),
                     Expanded(child: Text("Previous", textAlign: TextAlign.center,))
-                  ],), onPressed: () { previousQuestion(); },), flex: 1),
+                  ],), onPressed: (currentQuestionIndex == 0) ? null : () { previousQuestion(); },), flex: 1),
                   VerticalDivider(width: 10),
                   Expanded(child: RaisedButton(child: Row(children: <Widget>[
                     Expanded(child: Text((questions.length == currentQuestionIndex + 1) ? "Overview" : "Next", textAlign: TextAlign.center,)),
