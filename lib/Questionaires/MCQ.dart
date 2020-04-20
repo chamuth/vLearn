@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:elearnapp/Components/AllQuestionsDisplay.dart';
 import 'package:elearnapp/Components/AllQuestionsDisplayItem.dart';
 import 'package:elearnapp/Components/MCQAnswerItem.dart';
 import 'package:elearnapp/Components/Seperator.dart';
@@ -121,15 +122,16 @@ class _MCQScreenState extends State<MCQScreen> {
   void changeQuestion(Function func)
   {
     changingQuestion = true;
+    setState(() {
+      myAnswers[currentQuestionIndex] = currentSelection; // save the answers
+    });
 
     Future.delayed(Duration(milliseconds: 500), () 
     {
-      myAnswers[currentQuestionIndex] = currentSelection; // save the answers
-
       if (func())
       {
         print(myAnswers);
-        currentSelection = -1; // deselect any selected answers
+        currentSelection = myAnswers[currentQuestionIndex] ?? -1; // deselect any selected answers
       }
 
       setState(() {
@@ -238,20 +240,10 @@ class _MCQScreenState extends State<MCQScreen> {
 
                 IgnorePointer(ignoring: !(examDuration.inSeconds > 0), child: 
                   SizedBox(child: 
-                    GridView.count(
-                      crossAxisCount: (questionsCount > 5) ? 10 : 5,
-                      crossAxisSpacing: (questionsCount > 5) ? 2 : 10,
-                      mainAxisSpacing: (questionsCount > 5) ? 2 : 10,
-                      shrinkWrap: true,
-                      children: List.generate(questionsCount, (index) {
-                        return TouchableOpacity(child: AllQuestionsDisplayItem(index: index, answered: (myAnswers[index] != null && myAnswers[index] != -1)), onTap: () {
-                          setState(() {
-                            currentQuestionIndex = index;
-                            showOverview = false;
-                          });                          
-                         },);
-                      }),
-                    )
+                    AllQuestionsDisplay(myAnswers: myAnswers, questionsCount : questionsCount, onTap: (index) { 
+                      currentQuestionIndex = index;
+                      showOverview = false;                
+                    },),
                   ),
                 ),
 
