@@ -8,7 +8,7 @@ import 'AllQuestionsDisplayItem.dart';
 class AllQuestionsDisplay extends StatefulWidget {
   AllQuestionsDisplay({Key key, this.myAnswers, this.questionsCount, this.onTap }) : super(key: key);
 
-  List<int> myAnswers;
+  List<String> myAnswers;
   int questionsCount;
   Function onTap;
 
@@ -26,7 +26,7 @@ class _AllQuestionsDisplayState extends State<AllQuestionsDisplay> {
       mainAxisSpacing: (widget.questionsCount > 5) ? 2 : 10,
       shrinkWrap: true,
       children: List.generate(widget.questionsCount, (index) {
-        return AllQuestionsDisplayItem(index: index, answered: !(widget.myAnswers[index] == null || widget.myAnswers[index] == -1), onTap: widget.onTap,);
+        return AllQuestionsDisplayItem(index: index, answered: !(widget.myAnswers[index] == null || widget.myAnswers[index] == "-1" || widget.myAnswers[index].trim() == ""), onTap: widget.onTap,);
       })
     );
   }

@@ -38,12 +38,12 @@ class _MCQScreenState extends State<MCQScreen> {
   bool changingQuestion = false;
   Duration examDuration = Duration(minutes: 30);
   int currentSelection = -1;
-  List myAnswers = [];
+  List<String> myAnswers = [];
 
-  List<Question> questions = [
-    Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
-      "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
-    ]),
+  List<Question> questions = 
+  [
+    Question(question: "ඇම්පියරය අර්ඨ දක්වන්න", answers: []),
+
     Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
       "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
     ]),
@@ -115,7 +115,7 @@ class _MCQScreenState extends State<MCQScreen> {
     });
 
     questionsCount = questions.length;
-    myAnswers = new List<int>(questions.length);
+    myAnswers = new List<String>(questions.length);
 
     Wakelock.enable();
 
@@ -126,15 +126,19 @@ class _MCQScreenState extends State<MCQScreen> {
     super.initState();
   }
 
-
   formatDuration(Duration d) => d.toString().split('.').first.padLeft(8, "0");
 
   void changeQuestion(Function func)
   {
     changingQuestion = true;
+
     setState(() {
-      var ans = [];
-      myAnswers[currentQuestionIndex] = currentSelection; // save the answers
+      if (questions[currentQuestionIndex].answers.length > 0)
+      {
+        myAnswers[currentQuestionIndex] = currentSelection.toString(); // save the answers
+      } else {
+        myAnswers[currentQuestionIndex] = _answerController.text;
+      }
     });
 
     Future.delayed(Duration(milliseconds: 500), () 
@@ -142,7 +146,13 @@ class _MCQScreenState extends State<MCQScreen> {
       if (func())
       {
         print(myAnswers);
-        currentSelection = myAnswers[currentQuestionIndex] ?? -1; // deselect any selected answers
+        if (questions[currentQuestionIndex].answers.length > 0)
+        {
+          currentSelection = int.tryParse(myAnswers[currentQuestionIndex] ?? "-1") ?? -1; // deselect any selected answers
+        } else {
+          _answerController.text = myAnswers[currentQuestionIndex] ?? "";
+          currentSelection = -1;
+        }
       }
 
       setState(() {
@@ -219,12 +229,15 @@ class _MCQScreenState extends State<MCQScreen> {
     super.dispose();
   }
 
+  TextEditingController _answerController = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(onWillPop: _onWillPop,
       child: Scaffold(
         body: Stack(children: <Widget>[
         
+          // Main panel
           IgnorePointer(ignoring: showOverview, child: 
             AnimatedOpacity(child: 
               Container(child: Center(child: ListView(shrinkWrap: true, children: <Widget>[
@@ -239,10 +252,21 @@ class _MCQScreenState extends State<MCQScreen> {
                     Text(questions[currentQuestionIndex].question, style: TextStyle(fontSize:23, fontWeight: FontWeight.bold),),
                     Divider(height: 25, color:Colors.transparent),
 
-                    for (var i = 0; i < questions[currentQuestionIndex].answers.length; i ++) 
-                      MCQAnswerItem(answer: questions[currentQuestionIndex].answers[i], selected: (i == currentSelection), onPressed: () { setState(() {
-                        currentSelection = i;
-                      });},),
+                    if (questions[currentQuestionIndex].answers.length > 0)
+                      for (var i = 0; i < questions[currentQuestionIndex].answers.length; i ++) 
+                        MCQAnswerItem(answer: questions[currentQuestionIndex].answers[i], selected: (i == currentSelection), onPressed: () { setState(() {
+                          currentSelection = i;
+                        });},),
+                    if (questions[currentQuestionIndex].answers.length == 0)
+                      TextFormField(maxLines: 10, controller: _answerController, 
+                        decoration: InputDecoration(
+                          hintText: "Write your answer here",
+                          contentPadding: EdgeInsets.fromLTRB(15,12,15,12),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      )
 
                   ],), opacity: (changingQuestion) ? 0 : 1, duration: Duration(milliseconds: 200)),
 
@@ -278,6 +302,7 @@ class _MCQScreenState extends State<MCQScreen> {
             ),
           ),
 
+          // Overview panel
           IgnorePointer(ignoring: !showOverview, child:
             AnimatedOpacity(
               child: Container(child: Center(child: ListView(shrinkWrap: true, children: <Widget>[
@@ -384,6 +409,7 @@ class _MCQScreenState extends State<MCQScreen> {
             duration: Duration(milliseconds: 250), opacity: (!showOverview) ? 0 : 1,)
           ),
 
+          // Remaining time countdown
           Container(child: Align(alignment: Alignment.topCenter, child: 
             
             Padding(child: Column(children: <Widget>[
@@ -393,9 +419,10 @@ class _MCQScreenState extends State<MCQScreen> {
                 child: Text(formatDuration(examDuration), style: TextStyle(fontSize: 25, fontFamily: "Number", fontWeight: FontWeight.bold)), padding: EdgeInsets.fromLTRB(10, 5, 10, 4)
               )
             ],)
-            ,padding: EdgeInsets.fromLTRB(0, 75, 0, 0))
+            ,padding: EdgeInsets.fromLTRB(0, 70, 0, 0))
           )),
 
+          // Submitting Answers Section with Progress Indicator
           IgnorePointer(ignoring: (!uploadingAnswers), child: AnimatedOpacity(child: 
               Container(color:Theme.of(context).backgroundColor, child: Center(child: Column(mainAxisSize: MainAxisSize.min,children: <Widget>[
                 CircularProgressIndicator(),
