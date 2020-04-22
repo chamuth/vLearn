@@ -17,7 +17,7 @@ class _MCQAnswerItemState extends State<MCQAnswerItem> {
   Widget build(BuildContext context) {
     return Container(
       child: Row(children: <Widget>[
-        Expanded(child: OutlineButton(borderSide: BorderSide(color: (widget.selected) ? Theme.of(context).primaryColor : Colors.grey), onPressed: () { widget.onPressed(); }, child: Text(widget.answer, textAlign: TextAlign.start,)),)
+        Expanded(child: OutlineButton(borderSide: BorderSide(color: (widget.selected) ? Theme.of(context).primaryColor : Colors.grey), onPressed: () { widget.onPressed(); }, child: Text(widget.answer, style:TextStyle(fontSize: 17), textAlign: TextAlign.start,)),)
       ],)
     );
   }

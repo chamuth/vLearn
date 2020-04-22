@@ -26,9 +26,7 @@ class _AllQuestionsDisplayState extends State<AllQuestionsDisplay> {
       mainAxisSpacing: (widget.questionsCount > 5) ? 2 : 10,
       shrinkWrap: true,
       children: List.generate(widget.questionsCount, (index) {
-        return TouchableOpacity(child: AllQuestionsDisplayItem(index: index, answered: !(widget.myAnswers[index] == null || widget.myAnswers[index] == -1)), onTap: () {
-          widget.onTap(index);
-        },);
+        return AllQuestionsDisplayItem(index: index, answered: !(widget.myAnswers[index] == null || widget.myAnswers[index] == -1), onTap: widget.onTap,);
       })
     );
   }
