@@ -21,7 +21,7 @@ class User
     var user  = await FirebaseAuth.instance.currentUser();
     var ds = await Firestore.instance.collection("users").document(user.uid).get();
     
-    me.firstName =  ds.data["fisrt_name"];
+    me.firstName =  ds.data["first_name"];
     me.lastName =  ds.data["last_name"];
     me.email =  ds.data["email"];
     me.phone =  ds.data["phone"];
@@ -29,6 +29,20 @@ class User
     me.uid =  ds.data["uid"];
 
     return me;
+  }
+
+  static String getSanitizedName(User user)
+  {
+    return user.firstName + " " + user.lastName;
+  }
+  
+  static Future<User> getUser(uid) async 
+  {
+    var data = await getUserData(uid);
+    var user = User.fromName(data["first_name"], data["last_name"]);
+    user.email = data["email"];
+
+    return user;
   }
 
   static Future getUserData(uid) async

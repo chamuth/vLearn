@@ -6,7 +6,9 @@ import 'package:elearnapp/Components/MainAppBar.dart';
 import 'package:elearnapp/Components/Seperator.dart';
 import 'package:elearnapp/Core/Classes.dart';
 import 'package:elearnapp/Core/User.dart';
+import 'package:elearnapp/Data/Organization.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 
 
@@ -30,6 +32,7 @@ class ClassView extends StatefulWidget {
 class _ClassViewState extends State<ClassView> {
 
   ClassData data = ClassData("", "", "");
+  User host = User.fromName("", "");
 
   List<ClassAction> actions = [
     ClassAction(Icons.assignment, "Assignments", 2, () => { }),
@@ -44,9 +47,15 @@ class _ClassViewState extends State<ClassView> {
   {
     var classID = ModalRoute.of(context).settings.arguments;
     var temp = await ClassData.getClass(classID);
-    setState(() {
-      data = temp;
-    });
+    var tempHost = await User.getUser(temp.host);
+
+    if (mounted)
+    {
+      setState(() {
+        host = tempHost;
+        data = temp;
+      });
+    }
   }
 
   @override
@@ -63,75 +72,87 @@ class _ClassViewState extends State<ClassView> {
       appBar: MainAppBar.get(context, "English Language - Grade 6"),
       body: Container(child: 
         ListView(children: <Widget>[
-          Padding(
-            child: Card(
-              child: Stack(children: <Widget>[
+          AnimatedCrossFade(duration: Duration(milliseconds: 250), crossFadeState: CrossFadeState.showSecond, firstChild: 
+            Padding(
+              child: Card(
+                child: Stack(children: <Widget>[
 
-                Container(
-                  height:200,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage(
-                        "assets/images/45593361_526088287868521_6651631862953279488_n.jpg"
+                  Container(
+                    height:200,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage(
+                          "assets/images/45593361_526088287868521_6651631862953279488_n.jpg"
+                        )
                       )
                     )
-                  )
-                ),
-
-                Container(
-                  height:200,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: FractionalOffset.topCenter,
-                      end: FractionalOffset.bottomCenter,
-                      colors: [
-                        Theme.of(context).cardColor.withOpacity(0.65),
-                        Theme.of(context).cardColor.withOpacity(1.0),
-                      ],
-                      stops: [0.0, 1.0]
-                    )
                   ),
-                ),
 
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                      Row(children: <Widget>[
-                        Text(data.grade, style: TextStyle(fontSize: 16, color: Colors.grey[350], fontWeight: FontWeight.bold)),
-                        VerticalDivider(width: 8),
-                        Text("·", style: TextStyle(color: Colors.grey[400], fontSize: 20)),
-                        VerticalDivider(width: 8),
-                        Text("Wisdom International", style: TextStyle(fontSize: 16, color: Colors.grey[350], fontWeight: FontWeight.bold)),
-                      ],),
-                      Divider(color: Colors.transparent, height: 3),
-                      Text(data.subject, style: TextStyle(fontSize: 30)),
-                      Divider(color: Colors.transparent, height: 7),
+                  Container(
+                    height:200,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: FractionalOffset.topCenter,
+                        end: FractionalOffset.bottomCenter,
+                        colors: [
+                          Theme.of(context).cardColor.withOpacity(0.65),
+                          Theme.of(context).cardColor.withOpacity(1.0),
+                        ],
+                        stops: [0.0, 1.0]
+                      )
+                    ),
+                  ),
 
-                      Row(children: <Widget>[
-                        Text("By ", style: TextStyle(fontSize: 17, color: Colors.grey[400], fontWeight: FontWeight.bold)),
-                        TouchableOpacity(child: Text("English Man", style: TextStyle(fontSize: 17, color: Colors.grey[100], fontWeight: FontWeight.bold)), onTap: () { 
+                  Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                        Row(children: <Widget>[
+                          Text(data.grade, style: TextStyle(fontSize: 16, color: Colors.grey[350], fontWeight: FontWeight.bold)),
+                          VerticalDivider(width: 8),
+                          Text("·", style: TextStyle(color: Colors.grey[400], fontSize: 20)),
+                          VerticalDivider(width: 8),
+                          Text(Organization.me.name, style: TextStyle(fontSize: 16, color: Colors.grey[350], fontWeight: FontWeight.bold)),
+                        ],),
+                        Divider(color: Colors.transparent, height: 3),
+                        Text(data.subject, style: TextStyle(fontSize: 30)),
+                        Divider(color: Colors.transparent, height: 7),
 
-                        },)
+                        Row(children: <Widget>[
+                          Text("By ", style: TextStyle(fontSize: 17, color: Colors.grey[400], fontWeight: FontWeight.bold)),
+                          Text(User.getSanitizedName(host), style: TextStyle(fontSize: 17, color: Colors.grey[100], fontWeight: FontWeight.bold))
+                        ])
                       ])
-                    ])
-                  ),
+                    ),
 
-                  Padding(
-                    child: GridView.count(shrinkWrap: true, crossAxisCount: 3, children: List.generate(actions.length, (index) {
-                      return ActionItem(actions: actions, index: index);
-                    })),
-                    padding: EdgeInsets.fromLTRB(5, 5, 5, 7)
-                  ),
+                    Padding(
+                      child: GridView.count(shrinkWrap: true, crossAxisCount: 3, children: List.generate(actions.length, (index) {
+                        return ActionItem(actions: actions, index: index);
+                      })),
+                      padding: EdgeInsets.fromLTRB(5, 5, 5, 7)
+                    ),
 
-                ]),
+                  ]),
 
-              ],) 
-              , shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), clipBehavior: Clip.antiAlias,
+                ],) 
+                , shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), clipBehavior: Clip.antiAlias,
+              ), 
+              padding: EdgeInsets.fromLTRB(10, 5, 10, 5)
             ), 
-            padding: EdgeInsets.fromLTRB(10, 5, 10, 5)
+            secondChild: Padding(child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 250.0,
+              child: Shimmer.fromColors(
+                baseColor: Theme.of(context).cardColor,
+                highlightColor: Colors.grey[500],
+                child: Card(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), clipBehavior: Clip.antiAlias,
+                )
+              ),
+            ), padding: EdgeInsets.fromLTRB(10, 5, 10, 5))
           ),
+          // LATEST ACTIVITY FEED
           Padding(child: Column(mainAxisSize: MainAxisSize.min,children: <Widget>[
             Seperator(title: "LATEST ACTIVITY"),
           ],), padding: EdgeInsets.fromLTRB(10, 0, 10, 0)),
@@ -139,7 +160,21 @@ class _ClassViewState extends State<ClassView> {
           Column(children: List.generate(5, (index){
             return Padding(child: Row(children: <Widget>[
               Expanded(child: 
-                LatestActivityItem(person: User.fromName("Chamuth", "Chamandana"), actionType: ActionTypes.comment, target: "January Assignment 2020",)
+                AnimatedCrossFade(duration: Duration(milliseconds: 250), crossFadeState: CrossFadeState.showSecond, 
+                  firstChild: LatestActivityItem(person: User.fromName("Chamuth", "Chamandana"), actionType: ActionTypes.comment, target: "January Assignment 2020",),
+                  secondChild:  Card(child: Padding(
+                    child: Row(children: <Widget>[
+                      Shimmer.fromColors(child: CircleAvatar(radius: 18, backgroundColor: Theme.of(context).primaryColor,), baseColor: Colors.grey[700], highlightColor: Colors.grey[500]),
+                      VerticalDivider(),
+                      Expanded(child: Row(children: <Widget>[
+                        Shimmer.fromColors(child: SizedBox(height: 25, child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(0)),)), baseColor: Colors.grey[700], highlightColor: Colors.grey[500])
+                      ],)),
+                      Shimmer.fromColors(child: CircleAvatar(radius: 15, backgroundColor: Theme.of(context).primaryColor,), baseColor: Colors.grey[700], highlightColor: Colors.grey[500]),
+                      VerticalDivider(width:10),
+                    ],), 
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10)
+                  ))
+                ),
               )
             ]), padding: EdgeInsets.fromLTRB(10, 0, 10, 0));
           })),
