@@ -117,13 +117,18 @@ class _ClassViewState extends State<ClassView> {
             Seperator(title: "LATEST ACTIVITY"),
           ],), padding: EdgeInsets.fromLTRB(10, 0, 10, 0)),
           
-          Column(children: List.generate(15, (index){
+          Column(children: List.generate(5, (index){
             return Padding(child: Row(children: <Widget>[
               Expanded(child: 
                 LatestActivityItem(person: User.fromName("Chamuth", "Chamandana"), actionType: ActionTypes.comment, target: "January Assignment 2020",)
               )
             ]), padding: EdgeInsets.fromLTRB(10, 0, 10, 0));
           })),
+
+          Padding(
+            child: OutlineButton(child: Text("LOAD ALL ACTIVITY"), onPressed: () { },),
+            padding: EdgeInsets.fromLTRB(15, 10, 15, 0)
+          )
 
         ],)
       ,),
