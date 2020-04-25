@@ -14,21 +14,38 @@ eLearnApp for companies, institutions to use to collaborate with teachers, stude
 * A Progressive web app as well as a mobile app for Android and iOS.  
 * A System fully customizable for the client profile  
 
-## TODO
+## TODO List
 
-AUTH
-====
-[X] LOGIN AND 
+### AUTHENTICATION
+
+[X] LOGIN PAGE
     [X] Page Design
     [X] Logging in using email
     [ ] Logging in using Facebook
-    [ ] ......... Google
-    [ ] ......... Twitter
+    [ ] Logging in using Google
+    [ ] Logging in using Twitter
 [X] REGISTER PAGE
     [X] Registering using emails
 
-DASHBOARD 
-=========
+### DASHBOARD
+[ ] Dashboard Tab Design
+    [ ] Shared Folder
+    [ ] Chats
+    [ ] Notifications
+    [ ] Settings
+
+### USER INTERACTIONS
+[X] Q&A Screen
+    [X] MCQ Questions
+    [X] Writing Questions
+    [X] Submit screen
+    [ ] Anticheat options
+
+[ ] Settings Screen
+    [ ] Logging out
+
+
+### DASHBOARD 
 
 [ ] Noticeboard Functionality
     [ ] Noticeboard Card in dashboard shows all the posts today (in badges) and other noticeboard posts upto 5.

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 class MainAppBar
 {
-  static AppBar get(BuildContext context)
+  static AppBar get(BuildContext context, String title)
   {
     return AppBar(
         elevation: 0,
@@ -25,7 +25,7 @@ class MainAppBar
           ),
         ),
 
-        title: Text("Dashboard", style: TextStyle(fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.grey[300] : Theme.of(context).primaryColor)),
+        title: Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.grey[300] : Theme.of(context).primaryColor)),
 
         actions: <Widget>[
           IconButton(icon: Icon(Icons.search), onPressed: () { log("search button clicked"); }, tooltip: "Search entire space", color: (Themes.darkMode) ? Colors.white : Colors.grey[800],),

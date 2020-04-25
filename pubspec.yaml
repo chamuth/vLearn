@@ -31,7 +31,7 @@ dependencies:
   timeago: 2.0.26
   wakelock: 0.1.4+1
   unicode: 0.2.3
-  
+
 flutter:
   uses-material-design: true
   assets:

@@ -41,7 +41,7 @@ class DashboardTabState extends State<DashboardTab> {
       controller: _refreshController,
       child: ListView(children: <Widget>[
                 
-        Row(children: <Widget>[
+        Row(children: <Widget>[ 
           Expanded(flex: 1, child: NoticeboardCard()),
         ],),
         Row(children: <Widget>[
@@ -62,7 +62,9 @@ class DashboardTabState extends State<DashboardTab> {
                   shrinkWrap: true,
                   itemBuilder: (context, index)
                   {
-                    return TouchableOpacity(child: ClassItem(subject: results.data[index]["subject"], grade: results.data[index]["grade"], hostName: results.data[index]["host"]), onTap: () { });
+                    return TouchableOpacity(child: ClassItem(subject: results.data[index]["subject"], grade: results.data[index]["grade"], hostName: results.data[index]["host"]), onTap: () { 
+                      
+                    });
                   },
                 )
               ,secondChild: Container(
