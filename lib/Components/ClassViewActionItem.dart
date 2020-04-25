@@ -19,7 +19,7 @@ class ActionItemState extends State<ActionItem> {
     return Padding(child: RawMaterialButton(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       clipBehavior: Clip.antiAlias,
-      child: Container(color: (Themes.darkMode) ?  Colors.grey[700] : Colors.white.withOpacity(0.85), child: Center(child: Column(mainAxisSize: MainAxisSize.min,children: <Widget>[
+      child: Container(color: (Themes.darkMode) ?  Colors.grey[700].withOpacity(0.9) : Colors.white.withOpacity(0.85), child: Center(child: Column(mainAxisSize: MainAxisSize.min,children: <Widget>[
         if (widget.actions[widget.index].notificationCount > 0)
           Badge(
             child: Icon(widget.actions[widget.index].actionIcon, size: 35, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor),

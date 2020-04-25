@@ -11,7 +11,10 @@ class User
   bool teacher;
   String uid;
 
-  static User me = new User();
+  static User me = new User.empty();
+
+  User.empty();
+  User.fromName(this.firstName, this.lastName);
 
   static Future retrieveUserData() async
   {

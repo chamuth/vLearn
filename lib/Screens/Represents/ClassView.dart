@@ -1,7 +1,9 @@
 import 'package:badges/badges.dart';
 import 'package:elearnapp/Components/ClassViewActionItem.dart';
+import 'package:elearnapp/Components/LatestActivityItem.dart';
 import 'package:elearnapp/Components/MainAppBar.dart';
 import 'package:elearnapp/Components/Seperator.dart';
+import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Themes/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -102,7 +104,7 @@ class _ClassViewState extends State<ClassView> {
                       return ActionItem(actions: actions, index: index);
                     })),
                     padding: EdgeInsets.fromLTRB(5, 5, 5, 7)
-                  )
+                  ),
 
                 ]),
 
@@ -110,7 +112,19 @@ class _ClassViewState extends State<ClassView> {
               , shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), clipBehavior: Clip.antiAlias,
             ), 
             padding: EdgeInsets.fromLTRB(10, 5, 10, 5)
-          )
+          ),
+          Padding(child: Column(mainAxisSize: MainAxisSize.min,children: <Widget>[
+            Seperator(title: "LATEST ACTIVITY"),
+          ],), padding: EdgeInsets.fromLTRB(10, 0, 10, 0)),
+          
+          Column(children: List.generate(15, (index){
+            return Padding(child: Row(children: <Widget>[
+              Expanded(child: 
+                LatestActivityItem(person: User.fromName("Chamuth", "Chamandana"), actionType: ActionTypes.comment, target: "January Assignment 2020",)
+              )
+            ]), padding: EdgeInsets.fromLTRB(10, 0, 10, 0));
+          })),
+
         ],)
       ,),
     );
