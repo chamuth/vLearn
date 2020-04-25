@@ -166,10 +166,11 @@ class _ClassViewState extends State<ClassView> {
                     child: Row(children: <Widget>[
                       Shimmer.fromColors(child: CircleAvatar(radius: 18, backgroundColor: Theme.of(context).primaryColor,), baseColor: Colors.grey[700], highlightColor: Colors.grey[500]),
                       VerticalDivider(),
-                      Expanded(child: Row(children: <Widget>[
-                        Shimmer.fromColors(child: SizedBox(height: 25, child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(0)),)), baseColor: Colors.grey[700], highlightColor: Colors.grey[500])
+                      Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                        SizedBox(child: Shimmer.fromColors(child: Card(), baseColor: Colors.grey[700], highlightColor: Colors.grey[500]), width: MediaQuery.of(context).size.width * 0.3, height: 20),
+                        SizedBox(child: Shimmer.fromColors(child: Card(), baseColor: Colors.grey[700], highlightColor: Colors.grey[500]), width: MediaQuery.of(context).size.width * 0.5, height: 20)
                       ],)),
-                      Shimmer.fromColors(child: CircleAvatar(radius: 15, backgroundColor: Theme.of(context).primaryColor,), baseColor: Colors.grey[700], highlightColor: Colors.grey[500]),
+                      Shimmer.fromColors(child: CircleAvatar(radius: 12, backgroundColor: Theme.of(context).primaryColor,), baseColor: Colors.grey[700], highlightColor: Colors.grey[500]),
                       VerticalDivider(width:10),
                     ],), 
                     padding: EdgeInsets.fromLTRB(10, 10, 10, 10)
