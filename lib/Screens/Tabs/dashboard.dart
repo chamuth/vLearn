@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:elearnapp/Components/ClassItem.dart';
 import 'package:elearnapp/Components/Seperator.dart';
 import 'package:elearnapp/Core/User.dart';
+import 'package:elearnapp/Screens/Represents/ClassView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -63,7 +66,7 @@ class DashboardTabState extends State<DashboardTab> {
                   itemBuilder: (context, index)
                   {
                     return TouchableOpacity(child: ClassItem(subject: results.data[index]["subject"], grade: results.data[index]["grade"], hostName: results.data[index]["host"]), onTap: () { 
-                      
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassView(), settings: RouteSettings(arguments: results.data[index]["id"])));
                     });
                   },
                 )

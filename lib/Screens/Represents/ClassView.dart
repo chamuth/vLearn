@@ -1,12 +1,12 @@
-import 'package:badges/badges.dart';
+import 'dart:developer';
+
 import 'package:elearnapp/Components/ClassViewActionItem.dart';
 import 'package:elearnapp/Components/LatestActivityItem.dart';
 import 'package:elearnapp/Components/MainAppBar.dart';
 import 'package:elearnapp/Components/Seperator.dart';
+import 'package:elearnapp/Core/Classes.dart';
 import 'package:elearnapp/Core/User.dart';
-import 'package:elearnapp/Themes/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 
 
@@ -29,6 +29,8 @@ class ClassView extends StatefulWidget {
 
 class _ClassViewState extends State<ClassView> {
 
+  ClassData data = ClassData("", "", "");
+
   List<ClassAction> actions = [
     ClassAction(Icons.assignment, "Assignments", 2, () => { }),
     ClassAction(Icons.query_builder, "Questionaires", 2, () => { }),
@@ -38,8 +40,25 @@ class _ClassViewState extends State<ClassView> {
     ClassAction(Icons.more_horiz, "More", 0, () => { }),
   ];
 
+  void loadClass() async
+  {
+    var classID = ModalRoute.of(context).settings.arguments;
+    var temp = await ClassData.getClass(classID);
+    setState(() {
+      data = temp;
+    });
+  }
+
+  @override
+  void dispose() {
+    
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    loadClass();
+  
     return Scaffold(
       appBar: MainAppBar.get(context, "English Language - Grade 6"),
       body: Container(child: 
@@ -80,14 +99,14 @@ class _ClassViewState extends State<ClassView> {
                     padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
                       Row(children: <Widget>[
-                        Text("Grade 6", style: TextStyle(fontSize: 16, color: Colors.grey[350], fontWeight: FontWeight.bold)),
+                        Text(data.grade, style: TextStyle(fontSize: 16, color: Colors.grey[350], fontWeight: FontWeight.bold)),
                         VerticalDivider(width: 8),
                         Text("·", style: TextStyle(color: Colors.grey[400], fontSize: 20)),
                         VerticalDivider(width: 8),
                         Text("Wisdom International", style: TextStyle(fontSize: 16, color: Colors.grey[350], fontWeight: FontWeight.bold)),
                       ],),
                       Divider(color: Colors.transparent, height: 3),
-                      Text("English Language", style: TextStyle(fontSize: 30)),
+                      Text(data.subject, style: TextStyle(fontSize: 30)),
                       Divider(color: Colors.transparent, height: 7),
 
                       Row(children: <Widget>[
