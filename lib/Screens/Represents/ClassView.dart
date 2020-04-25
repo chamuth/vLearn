@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:elearnapp/Components/ClassViewActionItem.dart';
 import 'package:elearnapp/Components/MainAppBar.dart';
 import 'package:elearnapp/Components/Seperator.dart';
 import 'package:elearnapp/Themes/themes.dart';
@@ -6,12 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 
-class ClassView extends StatefulWidget {
-  ClassView({Key key}) : super(key: key);
-
-  @override
-  _ClassViewState createState() => _ClassViewState();
-}
 
 class ClassAction
 {
@@ -21,6 +16,13 @@ class ClassAction
   Function onTap;
   
   ClassAction (this.actionIcon, this.actionName, this.notificationCount, this.onTap);
+}
+
+class ClassView extends StatefulWidget {
+  ClassView({Key key}) : super(key: key);
+
+  @override
+  _ClassViewState createState() => _ClassViewState();
 }
 
 class _ClassViewState extends State<ClassView> {
@@ -97,23 +99,7 @@ class _ClassViewState extends State<ClassView> {
 
                   Padding(
                     child: GridView.count(shrinkWrap: true, crossAxisCount: 3, children: List.generate(actions.length, (index) {
-                      return Padding(child: RawMaterialButton(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                        clipBehavior: Clip.antiAlias,
-                        child: Container(color: (Themes.darkMode) ?  Colors.grey[700] : Colors.white.withOpacity(0.85), child: Center(child: Column(mainAxisSize: MainAxisSize.min,children: <Widget>[
-                          if (actions[index].notificationCount > 0)
-                            Badge(
-                              child: Icon(actions[index].actionIcon, size: 35, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor),
-                              badgeContent: Text(actions[index].notificationCount.toString())
-                            ),
-                          if (actions[index].notificationCount == 0)
-                            Icon(actions[index].actionIcon, size: 35, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor),
-
-                          Divider(height: 12, color: Colors.transparent),
-                          Text(actions[index].actionName, style: TextStyle(color: (Themes.darkMode) ? Colors.grey[300] : Theme.of(context).primaryColor, fontWeight: FontWeight.bold, fontSize:16))
-                        ],))),
-                        onPressed: () { actions[index].onTap(); },
-                      ), padding: EdgeInsets.all(4));
+                      return ActionItem(actions: actions, index: index);
                     })),
                     padding: EdgeInsets.fromLTRB(5, 5, 5, 7)
                   )
