@@ -39,7 +39,7 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MainAppBar.get(context, User.getSanitizedName(user) ),
+      appBar: MainAppBar.get(context, User.getSanitizedName(user), poppable: true ),
       body: Container(child: 
         ListView(children: <Widget>[
 

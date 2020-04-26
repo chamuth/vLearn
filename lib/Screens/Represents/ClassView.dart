@@ -76,7 +76,7 @@ class _ClassViewState extends State<ClassView> {
     loadClass();
   
     return Scaffold(
-      appBar: MainAppBar.get(context, (data.subject == "") ? "Loading..." : data.subject + " - " + data.grade),
+      appBar: MainAppBar.get(context, (data.subject == "") ? "Loading..." : data.subject + " - " + data.grade, poppable: true),
       body: Container(child: 
         ListView(children: <Widget>[
           AnimatedCrossFade(duration: Duration(milliseconds: 250), crossFadeState: (classDataLoaded) ? CrossFadeState.showFirst : CrossFadeState.showSecond, firstChild: 
