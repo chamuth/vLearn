@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearnapp/Components/ClassViewActionItem.dart';
 import 'package:elearnapp/Components/LatestActivityItem.dart';
@@ -11,8 +9,6 @@ import 'package:elearnapp/Data/Organization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:touchable_opacity/touchable_opacity.dart';
-
 
 class ClassAction
 {
@@ -102,7 +98,6 @@ class _ClassViewState extends State<ClassView> {
                     errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
                   
-
                   Container(
                     height:200,
                     decoration: BoxDecoration(
