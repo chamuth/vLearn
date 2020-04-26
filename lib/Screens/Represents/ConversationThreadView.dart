@@ -32,12 +32,16 @@ enum MessageStatus
 
 class _ConversationThreadViewState extends State<ConversationThreadView> {
 
-  List<Message> messages = Faker().lorem.sentences(10).map((s) => Message(type: MessageItemType.Message, content: s, messageStatus: (random.boolean()) ? MessageStatus.Incoming : MessageStatus.Sent)).toList();
+  List<Message> messages = Faker().lorem.sentences(25).map((s) => Message(type: MessageItemType.Message, content: s, messageStatus: (random.boolean()) ? MessageStatus.Incoming : MessageStatus.Sent)).toList();
 
   @override
   void initState() {
     setState(() {
       messages.add(Message(type: MessageItemType.Start));
+      var indices = random.numbers(25, 3);
+      indices.forEach((f) {
+        messages.insert(f, Message(type: MessageItemType.DateTime));
+      });
     });
     super.initState();
   }
@@ -61,7 +65,7 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
         ],),
         leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () { }),
         actions: <Widget>[
-          Padding(child: IconButton(icon: Icon(Icons.info_outline), onPressed: (){
+          Padding(child: IconButton(tooltip: "Chat Information", icon: Icon(Icons.info_outline), onPressed: (){
 
           },), padding: EdgeInsets.fromLTRB(0, 0, 5, 0)),
         ],
@@ -87,10 +91,10 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
                 child: Stack(children: <Widget>[
                   
                   Padding(
-                    child: Text(messages[i].content, style: TextStyle(fontSize: 16,), textAlign: TextAlign.start), 
-                  padding: EdgeInsets.fromLTRB(10, 8, 55, 8)),
+                    child: Text(messages[i].content, style: TextStyle(fontSize: 17,), textAlign: TextAlign.start), 
+                  padding: EdgeInsets.fromLTRB(10, 8, 58, 8)),
 
-                  Positioned(bottom: 8, right: 10, child: Opacity(child: Row(children: <Widget>[
+                  Positioned(bottom: 8, right: 8, child: Opacity(child: Row(children: <Widget>[
                     Text("11:52"),
                     if (messages[i].messageStatus != MessageStatus.Incoming)
                       VerticalDivider(color: Colors.transparent, width:5),
@@ -101,11 +105,14 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
                 ],)
               )
             ), 
-            padding: EdgeInsets.fromLTRB(15, 5, 15, (i == 0) ? 85 : 5));
+            padding: EdgeInsets.fromLTRB(15, (messages[i+1].messageStatus != messages[i].messageStatus) ? 8: 3, 15, (i == 0) ? 85 : 3));
           }
           else if (messages[i].type == MessageItemType.Start)
           {
-            return Padding(child: Seperator(title: "Chat starts here!"), padding: EdgeInsets.fromLTRB(10, 10, 10, 5));
+            return Padding(child: Seperator(title: "The chat starts here!"), padding: EdgeInsets.fromLTRB(10, 10, 10, 5));
+          } else if (messages[i].type == MessageItemType.DateTime)
+          {
+            return Padding(child: Seperator(title: "April 14"), padding: EdgeInsets.fromLTRB(10, 10, 10, 5));
           }
         }, itemCount: messages.length),
 
@@ -132,7 +139,7 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
               child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
                 Expanded(
                   child: Padding(
-                    child: TextFormField(style: TextStyle(fontSize: 16), 
+                    child: TextFormField(style: TextStyle(fontSize: 17), 
                       decoration: InputDecoration(
                         hintText: "Enter your message here",
                         border: InputBorder.none,
@@ -145,7 +152,7 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
                     maxLines: null,
                     
                     textCapitalization: TextCapitalization.sentences,
-                  ), padding: EdgeInsets.fromLTRB(17, 0, 10, 0)),
+                  ), padding: EdgeInsets.fromLTRB(17, 0, 10, 1)),
                 ),
 
                 IconButton(icon: Icon(Icons.attach_file), tooltip: "Attach a file", onPressed: () {},),
