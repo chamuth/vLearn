@@ -18,7 +18,7 @@ class _LoadedProfileViewCardState extends State<LoadedProfileViewCard> {
       child: Stack(children: <Widget>[
         Container(
           height: 175,
-          decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/test_backdrop.jpg"), fit: BoxFit.cover)),
+          decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/IMG_20191002_150704.jpg"), fit: BoxFit.cover)),
         ),
 
         Container(

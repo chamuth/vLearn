@@ -17,6 +17,7 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
 
   bool profileLoaded = false;
+  User user = User.fromName("Chamuth", "Chamandana");
 
   @override
   void initState() {
@@ -33,7 +34,7 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MainAppBar.get(context, "Chamuth Chamandana"),
+      appBar: MainAppBar.get(context, User.getSanitizedName(user) ),
       body: Container(child: 
         ListView(children: <Widget>[
 
@@ -83,6 +84,8 @@ class _ProfileViewState extends State<ProfileView> {
             }),), 
             padding: EdgeInsets.fromLTRB(10, 0, 10, 0)
           ),
+
+          Padding(child: Seperator(title: "About " + User.getSanitizedName(user)), padding: EdgeInsets.fromLTRB(15, 0, 15, 0)),
         ],
       ),),
     );
