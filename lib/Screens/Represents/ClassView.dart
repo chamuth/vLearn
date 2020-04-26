@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearnapp/Components/ClassViewActionItem.dart';
 import 'package:elearnapp/Components/LatestActivityItem.dart';
 import 'package:elearnapp/Components/MainAppBar.dart';
@@ -7,6 +8,7 @@ import 'package:elearnapp/Components/Seperator.dart';
 import 'package:elearnapp/Core/Classes.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Data/Organization.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
@@ -33,6 +35,9 @@ class _ClassViewState extends State<ClassView> {
 
   ClassData data = ClassData("", "", "");
   User host = User.fromName("", "");
+  bool classDataLoaded = false;
+  int activitySize = -1;
+  String backdropImageURL = "";
 
   List<ClassAction> actions = [
     ClassAction(Icons.assignment, "Assignments", 2, () => { }),
@@ -49,11 +54,17 @@ class _ClassViewState extends State<ClassView> {
     var temp = await ClassData.getClass(classID);
     var tempHost = await User.getUser(temp.host);
 
+    var ref = FirebaseStorage.instance.ref().child("organizations").child(Organization.currentOrganizationId).child("class_backdrops").child(classID.toString() + ".jpg");
+    var url = await ref.getDownloadURL();
+
     if (mounted)
     {
       setState(() {
         host = tempHost;
         data = temp;
+        backdropImageURL = url.toString();
+
+        classDataLoaded = true;
       });
     }
   }
@@ -69,25 +80,28 @@ class _ClassViewState extends State<ClassView> {
     loadClass();
   
     return Scaffold(
-      appBar: MainAppBar.get(context, "English Language - Grade 6"),
+      appBar: MainAppBar.get(context, (data.subject == "") ? "Loading..." : data.subject + " - " + data.grade),
       body: Container(child: 
         ListView(children: <Widget>[
-          AnimatedCrossFade(duration: Duration(milliseconds: 250), crossFadeState: CrossFadeState.showSecond, firstChild: 
+          AnimatedCrossFade(duration: Duration(milliseconds: 250), crossFadeState: (classDataLoaded) ? CrossFadeState.showFirst : CrossFadeState.showSecond, firstChild: 
             Padding(
               child: Card(
                 child: Stack(children: <Widget>[
-
-                  Container(
-                    height:200,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage(
-                          "assets/images/45593361_526088287868521_6651631862953279488_n.jpg"
+                  CachedNetworkImage(
+                    imageUrl: backdropImageURL,
+                    imageBuilder: (context, imageProvider) => Container(
+                      height:200,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: imageProvider
                         )
-                      )
-                    )
+                      )  
+                    ),
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
+                  
 
                   Container(
                     height:200,
@@ -157,32 +171,37 @@ class _ClassViewState extends State<ClassView> {
             Seperator(title: "LATEST ACTIVITY"),
           ],), padding: EdgeInsets.fromLTRB(10, 0, 10, 0)),
           
-          Column(children: List.generate(5, (index){
-            return Padding(child: Row(children: <Widget>[
-              Expanded(child: 
-                AnimatedCrossFade(duration: Duration(milliseconds: 250), crossFadeState: CrossFadeState.showSecond, 
-                  firstChild: LatestActivityItem(person: User.fromName("Chamuth", "Chamandana"), actionType: ActionTypes.comment, target: "January Assignment 2020",),
-                  secondChild:  Card(child: Padding(
-                    child: Row(children: <Widget>[
-                      Shimmer.fromColors(child: CircleAvatar(radius: 18, backgroundColor: Theme.of(context).primaryColor,), baseColor: Colors.grey[700], highlightColor: Colors.grey[500]),
-                      VerticalDivider(),
-                      Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                        SizedBox(child: Shimmer.fromColors(child: Card(), baseColor: Colors.grey[700], highlightColor: Colors.grey[500]), width: MediaQuery.of(context).size.width * 0.3, height: 20),
-                        SizedBox(child: Shimmer.fromColors(child: Card(), baseColor: Colors.grey[700], highlightColor: Colors.grey[500]), width: MediaQuery.of(context).size.width * 0.5, height: 20)
-                      ],)),
-                      Shimmer.fromColors(child: CircleAvatar(radius: 12, backgroundColor: Theme.of(context).primaryColor,), baseColor: Colors.grey[700], highlightColor: Colors.grey[500]),
-                      VerticalDivider(width:10),
-                    ],), 
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10)
-                  ))
-                ),
-              )
-            ]), padding: EdgeInsets.fromLTRB(10, 0, 10, 0));
-          })),
+          // LATEST ACTIVITY
+          AnimatedCrossFade(duration: Duration(milliseconds: 250), crossFadeState: (activitySize != 0) ? CrossFadeState.showFirst : CrossFadeState.showSecond, firstChild: 
+            Column(children: List.generate(5, (index){
+              return Padding(child: Row(children: <Widget>[
+                Expanded(child: 
+                  AnimatedCrossFade(duration: Duration(milliseconds: 250), crossFadeState: (classDataLoaded) ? CrossFadeState.showFirst : CrossFadeState.showSecond, 
+                    firstChild: LatestActivityItem(person: User.fromName("Chamuth", "Chamandana"), actionType: ActionTypes.comment, target: "January Assignment 2020",),
+                    secondChild:  Card(child: Padding(
+                      child: Row(children: <Widget>[
+                        Shimmer.fromColors(child: CircleAvatar(radius: 18, backgroundColor: Theme.of(context).primaryColor,), baseColor: Colors.grey[700], highlightColor: Colors.grey[500]),
+                        VerticalDivider(),
+                        Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                          SizedBox(child: Shimmer.fromColors(child: Card(), baseColor: Colors.grey[700], highlightColor: Colors.grey[500]), width: MediaQuery.of(context).size.width * 0.3, height: 20),
+                          SizedBox(child: Shimmer.fromColors(child: Card(), baseColor: Colors.grey[700], highlightColor: Colors.grey[500]), width: MediaQuery.of(context).size.width * 0.5, height: 20)
+                        ],)),
+                        Shimmer.fromColors(child: CircleAvatar(radius: 12, backgroundColor: Theme.of(context).primaryColor,), baseColor: Colors.grey[700], highlightColor: Colors.grey[500]),
+                        VerticalDivider(width:10),
+                      ],), 
+                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10)
+                    ))
+                  ),
+                )
+              ]), padding: EdgeInsets.fromLTRB(10, 0, 10, 0));
+            })),
 
-          Padding(
-            child: OutlineButton(child: Text("LOAD ALL ACTIVITY"), onPressed: () { },),
-            padding: EdgeInsets.fromLTRB(15, 10, 15, 0)
+            secondChild: Column(children: <Widget>[
+              Divider(height:25, color: Colors.transparent),
+              Icon(Icons.timer_off, size: 50, color: Colors.grey),
+              Divider(height:15, color: Colors.transparent),
+              Text("No activity in this class", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 18))
+            ],)
           )
 
         ],)
