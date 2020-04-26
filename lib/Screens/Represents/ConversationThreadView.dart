@@ -1,4 +1,5 @@
 import 'package:elearnapp/Components/MainAppBar.dart';
+import 'package:elearnapp/Components/Seperator.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 
@@ -13,8 +14,15 @@ class Message
 {
   String content;
   MessageStatus messageStatus;
+  MessageItemType type;
+  DateTime sent;
 
-  Message({this.content, this.messageStatus});
+  Message({this.content, this.messageStatus, this.type, this.sent});
+}
+
+enum MessageItemType
+{
+  Message, DateTime, Start
 }
 
 enum MessageStatus
@@ -24,7 +32,15 @@ enum MessageStatus
 
 class _ConversationThreadViewState extends State<ConversationThreadView> {
 
-  List<Message> messages = Faker().lorem.sentences(10).map((s) => Message(content: s, messageStatus: (random.boolean()) ? MessageStatus.Incoming : MessageStatus.Sent)).toList();
+  List<Message> messages = Faker().lorem.sentences(10).map((s) => Message(type: MessageItemType.Message, content: s, messageStatus: (random.boolean()) ? MessageStatus.Incoming : MessageStatus.Sent)).toList();
+
+  @override
+  void initState() {
+    setState(() {
+      messages.add(Message(type: MessageItemType.Start));
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,19 +73,40 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
         // Conversation items list
         ListView.builder(shrinkWrap: false, reverse: true,scrollDirection: Axis.vertical, itemBuilder: (context, i)
         {
-          return Padding(child: 
+          if (messages[i].type == MessageItemType.Message)
+          {
+            return Padding(child: 
             Align(
               alignment: (messages[i].messageStatus != MessageStatus.Incoming) ? Alignment.centerRight : Alignment.centerLeft, 
               child: Container(
                 constraints:  BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.80),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15), 
-                  color: (messages[i].messageStatus != MessageStatus.Incoming) ? Colors.blue : Colors.grey[700]), 
-                  child: Padding(child: Text(messages[i].content, style: TextStyle(fontSize: 16,), textAlign: TextAlign.start), padding: EdgeInsets.fromLTRB(10, 8, 10, 8)
-                )
+                  color: (messages[i].messageStatus != MessageStatus.Incoming) ? Colors.blue : Colors.grey[700]
+                ), 
+                child: Stack(children: <Widget>[
+                  
+                  Padding(
+                    child: Text(messages[i].content, style: TextStyle(fontSize: 16,), textAlign: TextAlign.start), 
+                  padding: EdgeInsets.fromLTRB(10, 8, 55, 8)),
+
+                  Positioned(bottom: 8, right: 10, child: Opacity(child: Row(children: <Widget>[
+                    Text("11:52"),
+                    if (messages[i].messageStatus != MessageStatus.Incoming)
+                      VerticalDivider(color: Colors.transparent, width:5),
+                    if (messages[i].messageStatus != MessageStatus.Incoming)
+                      Icon(Icons.done_all, size: 15),
+                  ]), opacity: 0.65)),
+                  
+                ],)
               )
             ), 
             padding: EdgeInsets.fromLTRB(15, 5, 15, (i == 0) ? 85 : 5));
+          }
+          else if (messages[i].type == MessageItemType.Start)
+          {
+            return Padding(child: Seperator(title: "Chat starts here!"), padding: EdgeInsets.fromLTRB(10, 10, 10, 5));
+          }
         }, itemCount: messages.length),
 
         // Text Fader
