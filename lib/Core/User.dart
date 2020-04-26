@@ -8,7 +8,7 @@ class User
   String lastName;
   String email;
   String phone;
-  bool teacher;
+  bool teacher = false;
   String uid;
 
   static User me = new User.empty();

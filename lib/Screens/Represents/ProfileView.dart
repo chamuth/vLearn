@@ -1,6 +1,7 @@
 import 'package:elearnapp/Components/ClassItem.dart';
 import 'package:elearnapp/Components/LoadedProfileViewCard.dart';
 import 'package:elearnapp/Components/MainAppBar.dart';
+import 'package:elearnapp/Components/ProfileDetailItem.dart';
 import 'package:elearnapp/Components/Seperator.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:flutter/material.dart';
@@ -18,11 +19,15 @@ class _ProfileViewState extends State<ProfileView> {
 
   bool profileLoaded = false;
   User user = User.fromName("Chamuth", "Chamandana");
-
+  
   @override
   void initState() {
+
+    setState(() {
+      user.teacher = true;
+    });
     
-    Future.delayed(Duration(seconds: 5), (){
+    Future.delayed(Duration(seconds: 4), (){
       setState(() {
         profileLoaded = true;
       });
@@ -40,11 +45,11 @@ class _ProfileViewState extends State<ProfileView> {
 
           AnimatedCrossFade(
             firstChild: Padding(
-              child: LoadedProfileViewCard(user: User.fromName("Chamuth", "Chamandana")),
+              child: LoadedProfileViewCard(user: user),
               padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
             ),
             secondChild: Padding(
-              child: Card(child: Container(height: 90, child: Stack(children: <Widget>[
+              child: Card(child: Container(height: 150, child: Stack(children: <Widget>[
                 Positioned(width: MediaQuery.of(context).size.width - 30,child: Padding(child: Row(children: <Widget>[
 
                   Shimmer.fromColors(child: CircleAvatar(radius: 25, backgroundColor: Theme.of(context).primaryColor,), baseColor: Colors.grey[700], highlightColor: Colors.grey[500]),
@@ -76,16 +81,59 @@ class _ProfileViewState extends State<ProfileView> {
             duration: Duration(milliseconds: 250)
           ),
 
-          Padding(child: Seperator(title: "Joined Classes"), padding: EdgeInsets.fromLTRB(15, 0, 15, 0)),
+          if (!user.teacher)
+            Column(children: <Widget>[
 
-          Padding(
-            child: Column(children: List.generate(3, (index) {
-              return ClassItem(subject: "Combined Mathematics", grade: "Grade 12", hostName: "NIBRO");
-            }),), 
-            padding: EdgeInsets.fromLTRB(10, 0, 10, 0)
-          ),
+              Padding(child: Seperator(title: "Joined Classes"), padding: EdgeInsets.fromLTRB(15, 0, 15, 0)),
+
+              // todo: load the classes here
+              if (true)
+                Padding(
+                  child: Column(children: List.generate(1, (index) {
+                    return ClassItem(subject: "Combined Mathematics", grade: "Grade 12", hostName: "Maths Nigga");
+                  }),), 
+                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0)
+                ),
+              if (false)
+                Padding(
+                  child: Column(children: <Widget>[
+                    Divider(height:10, color: Colors.transparent),
+                    Icon(Icons.timer_off, size: 50, color: Colors.grey),
+                    Divider(height:15, color: Colors.transparent),
+                    Text("User hasn't joined any classes", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 18))
+                  ],),
+                  padding: EdgeInsets.fromLTRB(0, 10, 0, 25)
+                ),
+
+            ],),
+
+          if (user.teacher)
+            Column(children: <Widget>[
+              
+              Padding(child: Seperator(title: "Currently Teaching"), padding: EdgeInsets.fromLTRB(15, 0, 15, 0)),
+
+              Wrap(spacing: 10, runSpacing: 0, alignment: WrapAlignment.center,  children: <Widget>[
+                Chip(label: Text("Physics"), backgroundColor: Theme.of(context).primaryColor,),
+                Chip(label: Text("Combined Mathematics"), backgroundColor: Theme.of(context).primaryColor,),
+                Chip(label: Text("Chemistry"), backgroundColor: Theme.of(context).primaryColor,),
+              ],),
+
+              Padding(child: Seperator(title: "Hosted Classes"), padding: EdgeInsets.fromLTRB(15, 0, 15, 0)),
+
+              Padding(
+                child: Column(children: List.generate(1, (index) {
+                  return ClassItem(subject: "Combined Mathematics", grade: "Grade 12", hostName: "Maths Nigga");
+                }),), 
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0)
+              ),
+              
+            ],),  
 
           Padding(child: Seperator(title: "About " + User.getSanitizedName(user)), padding: EdgeInsets.fromLTRB(15, 0, 15, 0)),
+
+          ProfileDetailItem(icon: Icons.school, prop: "Studying at ", val: "Pinnawala Central College",),
+          ProfileDetailItem(icon: Icons.home, prop: "Lives in ", val: "Kegalle",),
+
         ],
       ),),
     );

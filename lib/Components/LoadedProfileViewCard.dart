@@ -1,6 +1,9 @@
 import 'package:elearnapp/Core/User.dart';
+import 'package:elearnapp/Screens/Represents/ClassView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_breadcrumb/flutter_breadcrumb.dart';
+
+import 'ClassViewActionItem.dart';
 
 class LoadedProfileViewCard extends StatefulWidget {
   LoadedProfileViewCard({Key key, this.user}) : super(key: key);
@@ -12,6 +15,14 @@ class LoadedProfileViewCard extends StatefulWidget {
 }
 
 class _LoadedProfileViewCardState extends State<LoadedProfileViewCard> {
+
+  List<ClassAction> actions = [
+    ClassAction(Icons.question_answer, "Message", 1, () {}),
+    ClassAction(Icons.call, "Call", 0, () {}),
+    ClassAction(Icons.block, "Block", 0, () {}),
+    ClassAction(Icons.report, "Report", 0, () {})
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Card(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), clipBehavior: Clip.antiAlias, 
@@ -36,34 +47,45 @@ class _LoadedProfileViewCardState extends State<LoadedProfileViewCard> {
           ),
         ),
 
-        Positioned(width: MediaQuery.of(context).size.width - 20,child: Padding(child: Row(children: <Widget>[
+        Column(children: <Widget>[
 
-          CircleAvatar(child: Text("C", style: TextStyle(color: Colors.white, fontSize: 20),), radius: 25, backgroundColor: Theme.of(context).primaryColor),
-          
-          VerticalDivider(color: Colors.transparent, width: 12),
+          Padding(child: Row(children: <Widget>[
 
-          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-            Text(User.getSanitizedName(widget.user), style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
-            Divider(color: Colors.transparent, height: 3),
-            Text("Science (Mathematics)", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey[300])),
-            Divider(color: Colors.transparent, height: 1),
-            BreadCrumb(items: [
-              BreadCrumbItem(content: 
-                Text("Student", style: TextStyle(fontSize: 16, color: Colors.grey)),
-              ),
-              BreadCrumbItem(content: 
-                Text("Grade 12", style: TextStyle(fontSize: 16, color: Colors.grey)),
-              ),
-              ], divider: Padding(padding: EdgeInsets.fromLTRB(2, 0, 2, 0), child: Text(" · ", style: TextStyle(fontSize: 18, color : Colors.grey)),)
-            )
-          ],),),
+            CircleAvatar(child: Text("C", style: TextStyle(color: Colors.white, fontSize: 20),), radius: 25, backgroundColor: Theme.of(context).primaryColor),
+            
+            VerticalDivider(color: Colors.transparent, width: 12),
 
-          IconButton(icon: Icon(Icons.more_vert), color: Colors.white, onPressed: () {
+            Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+              Text(User.getSanitizedName(widget.user), style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
+              Divider(color: Colors.transparent, height: 3),
+              Text("Science (Mathematics)", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey[300])),
+              Divider(color: Colors.transparent, height: 1),
+              BreadCrumb(items: [
+                BreadCrumbItem(content: 
+                  Text((widget.user.teacher) ? "Teacher" : "Student", style: TextStyle(fontSize: 16, color: Colors.grey)),
+                ),
+                BreadCrumbItem(content: 
+                  Text("Grade 13", style: TextStyle(fontSize: 16, color: Colors.grey)),
+                ),
+                ], divider: Padding(padding: EdgeInsets.fromLTRB(2, 0, 2, 0), child: Text(" · ", style: TextStyle(fontSize: 18, color : Colors.grey)),)
+              )
+            ],),),
 
-          },)
+            IconButton(icon: Icon(Icons.more_vert), color: Colors.white, onPressed: () {
 
+            },)
 
-        ],), padding: EdgeInsets.fromLTRB(15, 15, 15, 15),), bottom:0)
+          ],), padding: EdgeInsets.fromLTRB(15, 100, 15, 15),),
+
+          Padding(
+            child: GridView.count(shrinkWrap: true, crossAxisCount: 4, children: List.generate(actions.length, (index) {
+              return ActionItem(actions: actions, index: index, size: 4);
+            })),
+            padding: EdgeInsets.fromLTRB(5, 5, 5, 7)
+          ),
+
+        ],)
+
       ],),
     );
   }
