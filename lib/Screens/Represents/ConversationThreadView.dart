@@ -32,13 +32,13 @@ enum MessageStatus
 
 class _ConversationThreadViewState extends State<ConversationThreadView> {
 
-  List<Message> messages = Faker().lorem.sentences(25).map((s) => Message(type: MessageItemType.Message, content: s, messageStatus: (random.boolean()) ? MessageStatus.Incoming : MessageStatus.Sent)).toList();
+  List<Message> messages = Faker().lorem.sentences(55).map((s) => Message(type: MessageItemType.Message, content: s, messageStatus: (random.boolean()) ? MessageStatus.Incoming : MessageStatus.Sent)).toList();
 
   @override
   void initState() {
     setState(() {
       messages.add(Message(type: MessageItemType.Start));
-      var indices = random.numbers(25, 3);
+      var indices = random.numbers(55, 4);
       indices.forEach((f) {
         messages.insert(f, Message(type: MessageItemType.DateTime));
       });
