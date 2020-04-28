@@ -16,12 +16,59 @@ class Register2ScreenState extends State<Register2Screen> {
 
   Gender _accType = Gender.Male;
   List<String> subjects = ["Physics (A/L)", "Mathematics (A/L)", "Combined Maths (A/L)", "Chemistry (A/L)", "Information Technology (A/L)", "Biology (A/L)"];
+  List<String> filteredSubjects = [];
   List<int> selectedSubjects = [];
+
+  final TextEditingController subjectFilterInput = new TextEditingController();
+
+  @override
+  void initState() { 
+    super.initState();
+    resetSubjectFilter();
+  }
+
+  void resetSubjectFilter()
+  {
+    setState(() {
+      if (subjects.length > 5)
+      {
+        filteredSubjects = subjects.sublist(0, 5);
+      } else {
+        filteredSubjects = subjects;
+      }
+    });
+  } 
+
+  void filterSubjects()
+  {
+    print(subjectFilterInput.text);
+
+    if (subjectFilterInput.text.trim() == "" || subjectFilterInput.text == null)
+    {
+      resetSubjectFilter();
+    } else {
+      setState(() {  
+        filteredSubjects = subjects.where((f) {
+          if (f.toLowerCase().contains(subjectFilterInput.text.toLowerCase()))
+            return true;
+          
+          return false;
+        }).toList();
+
+        if (filteredSubjects.length == 0)
+          resetSubjectFilter();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold
     (
+      floatingActionButton: FloatingActionButton(child: Icon(Icons.done), onPressed: ()
+      {
+
+      },),
       body: Container(color: (Theme.of(context).backgroundColor), child: Center(child: 
         ListView(shrinkWrap: true, children: <Widget>[
           Padding(child: Column(children: <Widget>[
@@ -79,34 +126,45 @@ class Register2ScreenState extends State<Register2Screen> {
               crossFadeState: (selectedSubjects.length > 0) ? CrossFadeState.showFirst : CrossFadeState.showSecond, duration: Duration(milliseconds: 250),
             ),
 
-            Divider(height: 15),
+            Divider(height: 35  ),
 
-            TextFormField(decoration: InputDecoration(hintText: "Search for subjects..."),),
+            Container(child: TextFormField(decoration: InputDecoration(hintText: "Search for subjects...", border: InputBorder.none,), controller: subjectFilterInput, onChanged: (s) {
+              filterSubjects();
+            },), decoration: BoxDecoration(color:Colors.grey[200], borderRadius: BorderRadius.circular(50)), padding: EdgeInsets.fromLTRB(20, 0, 20, 0),),
 
             Divider(height: 10, color: Colors.transparent),
 
             Align(child:
-            Wrap(spacing: 10, crossAxisAlignment: WrapCrossAlignment.center, children: List.generate(subjects.length, (index) {
-              return RawMaterialButton(child: Chip(label: Text(subjects[index], style: TextStyle(color: (selectedSubjects.contains(index))? Colors.white : Colors.black)), backgroundColor: (selectedSubjects.contains(index)) ? Theme.of(context).primaryColor : Colors.grey[300],), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)), onPressed: () {
+            Wrap(spacing: 10, crossAxisAlignment: WrapCrossAlignment.center, children: List.generate(filteredSubjects.length, (index) {
+              var subjectIndex = subjects.indexOf(filteredSubjects[index]);
+              
+              return RawMaterialButton(child: Chip(label: Text(subjects[subjectIndex], style: TextStyle(color: (selectedSubjects.contains(subjectIndex))? Colors.white : Colors.black)), backgroundColor: (selectedSubjects.contains(subjectIndex)) ? Theme.of(context).primaryColor : Colors.grey[300],), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)), onPressed: () {
+                
 
-                if (!selectedSubjects.contains(index))
+                if (!selectedSubjects.contains(subjectIndex))
                 {
                   setState(() {
-                    print("Adding " + subjects[index]);
-                    selectedSubjects.add(index);
+                    print("Adding " + subjects[subjectIndex]);
+                    selectedSubjects.add(subjectIndex);
                   });
                 }
                 else 
                 {
                   setState(() {
-                    print("Removing " + subjects[index]);
-                    selectedSubjects.remove(index);
+                    print("Removing " + subjects[subjectIndex]);
+                    selectedSubjects.remove(subjectIndex);
                   });
                 }
 
               }, );
 
             })), alignment: Alignment.centerLeft),
+
+            Divider(height: 10, color: Colors.transparent),
+
+            Text("Note: Search for the subjects in the textbox above to find all.", style: TextStyle(color: Colors.grey)),
+
+            Divider(height: 30, color: Colors.transparent),
 
           ],), padding: EdgeInsets.fromLTRB(30, 0, 30, 0),)
         ],)
