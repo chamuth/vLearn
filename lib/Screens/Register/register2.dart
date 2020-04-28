@@ -99,7 +99,15 @@ class Register2ScreenState extends State<Register2Screen> {
               SizedBox(height: 45, child: Stack(children: <Widget>[
 
                 ListView(children: List.generate(selectedSubjects.length, (i) {
-                  return Padding(child: Chip(label: Text(subjects[selectedSubjects[i]], style: TextStyle(color: Colors.white)), backgroundColor: Theme.of(context).primaryColor), padding: EdgeInsets.fromLTRB(0, 0, 5, 0));
+                  return Padding(child: RawMaterialButton(child: Chip(label: Row(children: <Widget>[
+                    Icon(Icons.close, color: Colors.white, size: 20),
+                    Padding(child: Text(subjects[selectedSubjects[i]], style: TextStyle(color: Colors.white)), padding: EdgeInsets.fromLTRB(8, 0, 0, 0)),
+                  ],)
+                  ,backgroundColor: Theme.of(context).primaryColor), onPressed: () {
+                    setState(() {
+                      selectedSubjects.removeAt(i);
+                    });
+                  },), padding: EdgeInsets.fromLTRB(0, 0, 5, 0));
                 }), scrollDirection: Axis.horizontal,),
 
                 IgnorePointer(
