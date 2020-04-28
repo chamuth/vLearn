@@ -13,6 +13,7 @@ import './Screens/login.dart';
 import 'Core/ThemeNotifier.dart';
 import 'Screens/Register/register.dart';
 import 'Questionaires/MCQ.dart';
+import 'Screens/Register/register3.dart';
 import 'Screens/Represents/ClassView.dart';
 import 'Screens/Represents/ConversationThreadView.dart';
 import 'Screens/Represents/ProfileView.dart';
@@ -61,7 +62,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'vLearn',
       theme: Themes.themeNotifier.getTheme(),
-      home: Register2Screen(),
+      home: Register3Screen(),
       
       routes: <String, WidgetBuilder>{
         '/login' : (BuildContext context) => LoginScreen(),

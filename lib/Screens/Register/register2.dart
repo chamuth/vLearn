@@ -1,3 +1,6 @@
+/*
+  This part is for teachers registration
+*/
 
 import 'package:elearnapp/Themes/themes.dart';
 import 'package:flutter/material.dart';
