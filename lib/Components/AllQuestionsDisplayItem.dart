@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:touchable_opacity/touchable_opacity.dart';
 
 class AllQuestionsDisplayItem extends StatefulWidget {
   AllQuestionsDisplayItem({Key key, this.index, this.answered, this.onTap}) : super(key: key);

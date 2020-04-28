@@ -12,7 +12,8 @@ eLearnApp for companies, institutions to use to collaborate with teachers, stude
 * Leaderboards/Results for questionnaires presented visually. 
 * Notify users on their results, new questionnaires, messages and etc. 
 * A Progressive web app as well as a mobile app for Android and iOS.  
-* A System fully customizable for the client profile  
+* Voice and Video chat solutions
+* Event planning and announcement notifications
 
 ## TODO List
 
@@ -47,5 +48,5 @@ eLearnApp for companies, institutions to use to collaborate with teachers, stude
 
 ### DASHBOARD 
 
-[ ] Noticeboard Functionality
-    [ ] Noticeboard Card in dashboard shows all the posts today (in badges) and other noticeboard posts upto 5.
+[X] Noticeboard Functionality
+    [X] Noticeboard Card in dashboard shows all the posts today (in badges) and other noticeboard posts upto 5.

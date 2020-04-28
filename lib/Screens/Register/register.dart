@@ -103,7 +103,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
          title: Text("Create an Account", style: TextStyle(fontWeight: FontWeight.bold, color: (Themes.darkMode) ?  Colors.white : Theme.of(context).primaryColor)),
          centerTitle: true,
        ),
-       body: Stack(children: <Widget>[
+       body: Container(color: Theme.of(context).backgroundColor, child: Stack(children: <Widget>[
         Center(child:
           ListView(shrinkWrap: true, children: <Widget>[
             Padding(child: Column(children: <Widget>[
@@ -325,7 +325,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ],)),
           ), opacity: (registering) ? 0.95 : 0, duration: Duration(milliseconds: 500))
 
-       ],)
+       ],),)
     );
   }
 }

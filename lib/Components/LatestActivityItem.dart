@@ -1,5 +1,4 @@
 import 'package:elearnapp/Core/User.dart';
-import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 
 enum ActionTypes 

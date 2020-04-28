@@ -1,7 +1,11 @@
 import 'package:elearnapp/Components/MainAppBar.dart';
 import 'package:elearnapp/Components/Seperator.dart';
+import 'package:elearnapp/Core/User.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
+import 'package:touchable_opacity/touchable_opacity.dart';
+import 'package:timeago/timeago.dart' as timeago;
+
 
 class ConversationThreadView extends StatefulWidget {
   ConversationThreadView({Key key}) : super(key: key);
@@ -33,6 +37,7 @@ enum MessageStatus
 class _ConversationThreadViewState extends State<ConversationThreadView> {
 
   List<Message> messages = Faker().lorem.sentences(55).map((s) => Message(type: MessageItemType.Message, content: s, messageStatus: (random.boolean()) ? MessageStatus.Incoming : MessageStatus.Sent)).toList();
+  User person = User.fromName("Chamuth", "Chamandana");
 
   @override
   void initState() {
@@ -51,22 +56,22 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,
-        title: Row(mainAxisAlignment: MainAxisAlignment.start,children: <Widget>[
+        title: RawMaterialButton(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: <Widget>[
           CircleAvatar(child: Text("C")),
 
           VerticalDivider(color: Colors.transparent, width: 12),
 
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-            Text("Chamuth Chamandana", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            Divider(height:2, color: Colors.transparent),
-            Text("last seen at 01:28", style: TextStyle(fontSize: 14, color: Colors.grey)),
+            Text(User.getSanitizedName(person), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Divider(height: 2, color: Colors.transparent),
+            Text("last seen " + timeago.format(User.getLastSeen(person)), style: TextStyle(fontSize: 14, color: Colors.grey)),
           ],),
 
-        ],),
+        ],), onPressed: () { Navigator.of(context).pushNamed("/class"); },),
         leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () { }),
         actions: <Widget>[
           Padding(child: IconButton(tooltip: "Chat Information", icon: Icon(Icons.info_outline), onPressed: (){
-
+            Navigator.of(context).maybePop();
           },), padding: EdgeInsets.fromLTRB(0, 0, 5, 0)),
         ],
         backgroundColor: Theme.of(context).backgroundColor,
@@ -163,6 +168,7 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
           )
         ))
       ],),),
+  
     );
   }
 }

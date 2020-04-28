@@ -1,4 +1,5 @@
 import 'package:elearnapp/Questionaires/MCQ.dart';
+import 'package:elearnapp/Screens/Register/register2.dart';
 import 'package:elearnapp/Screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
   {
     Preferences.initialize().then((a)
     {
-      Preferences.prefs.setBool("darkMode", true);
+      Preferences.prefs.setBool("darkMode", false);
       
       if (!Preferences.prefs.getBool("darkMode") ?? true) 
       {
@@ -60,15 +61,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'vLearn',
       theme: Themes.themeNotifier.getTheme(),
-      home: ConversationThreadView(),
+      home: Register2Screen(),
       
       routes: <String, WidgetBuilder>{
         '/login' : (BuildContext context) => LoginScreen(),
         '/dashboard' : (BuildContext context) => StartScreen(),
         '/register' : (BuildContext context) => RegisterScreen(),
         '/test' : (BuildContext context) => MCQScreen(),
+        '/class' : (BuildContext context) => ClassView(),
       },
+
       debugShowCheckedModeBanner: false,
+
     );
   }
 }

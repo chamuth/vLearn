@@ -31,6 +31,11 @@ class User
     return me;
   }
 
+  static DateTime getLastSeen(User user)
+  {
+    return DateTime.now().subtract(new Duration(minutes: 35));
+  }
+
   static String getSanitizedName(User user)
   {
     return user.firstName + " " + user.lastName;
