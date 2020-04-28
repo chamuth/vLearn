@@ -30,9 +30,9 @@ class Register2ScreenState extends State<Register2Screen> {
   void resetSubjectFilter()
   {
     setState(() {
-      if (subjects.length > 5)
+      if (subjects.length > 6)
       {
-        filteredSubjects = subjects.sublist(0, 5);
+        filteredSubjects = subjects.sublist(0, 6);
       } else {
         filteredSubjects = subjects;
       }
@@ -65,7 +65,7 @@ class Register2ScreenState extends State<Register2Screen> {
   Widget build(BuildContext context) {
     return Scaffold
     (
-      floatingActionButton: FloatingActionButton(child: Icon(Icons.done), onPressed: ()
+      floatingActionButton: FloatingActionButton(tooltip: "Save Subjects", child: Icon(Icons.done), onPressed: ()
       {
 
       },),
@@ -135,10 +135,18 @@ class Register2ScreenState extends State<Register2Screen> {
             Divider(height: 10, color: Colors.transparent),
 
             Align(child:
-            Wrap(spacing: 10, crossAxisAlignment: WrapCrossAlignment.center, children: List.generate(filteredSubjects.length, (index) {
+            Wrap(spacing: 10, runAlignment: WrapAlignment.center, runSpacing: 0, alignment: WrapAlignment.center, crossAxisAlignment: WrapCrossAlignment.center, children: List.generate(filteredSubjects.length, (index) {
               var subjectIndex = subjects.indexOf(filteredSubjects[index]);
               
-              return RawMaterialButton(child: Chip(label: Text(subjects[subjectIndex], style: TextStyle(color: (selectedSubjects.contains(subjectIndex))? Colors.white : Colors.black)), backgroundColor: (selectedSubjects.contains(subjectIndex)) ? Theme.of(context).primaryColor : Colors.grey[300],), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)), onPressed: () {
+              return RawMaterialButton(child: Chip(
+                label: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                  if (selectedSubjects.contains(subjectIndex))
+                    Icon(Icons.done, color: Colors.white),
+                  if (selectedSubjects.contains(subjectIndex))
+                    VerticalDivider(width:5, color: Colors.transparent),
+                  Text(subjects[subjectIndex], style: TextStyle(color: (selectedSubjects.contains(subjectIndex))? Colors.white : Colors.black)), 
+                ],), backgroundColor: (selectedSubjects.contains(subjectIndex)) ? Theme.of(context).primaryColor : Colors.grey[300],),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)), onPressed: () {
                 
 
                 if (!selectedSubjects.contains(subjectIndex))
@@ -158,11 +166,11 @@ class Register2ScreenState extends State<Register2Screen> {
 
               }, );
 
-            })), alignment: Alignment.centerLeft),
+            })), alignment: Alignment.center),
 
             Divider(height: 10, color: Colors.transparent),
 
-            Text("Note: Search for the subjects in the textbox above to find all.", style: TextStyle(color: Colors.grey)),
+            Text("Note: Search for the subjects in the textbox above to find any subject. Tap to add them to your list.", style: TextStyle(color: Colors.grey)),
 
             Divider(height: 30, color: Colors.transparent),
 
