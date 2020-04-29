@@ -141,7 +141,7 @@ class Register2ScreenState extends State<Register2Screen> {
 
             Container(child: TextFormField(decoration: InputDecoration(hintText: "Search for subjects...", border: InputBorder.none,), controller: subjectFilterInput, onChanged: (s) {
               filterSubjects();
-            },), decoration: BoxDecoration(color:Colors.grey[200], borderRadius: BorderRadius.circular(50)), padding: EdgeInsets.fromLTRB(20, 0, 20, 0),),
+            },), decoration: BoxDecoration(color:(Themes.darkMode) ? Colors.grey[700] : Colors.grey[200], borderRadius: BorderRadius.circular(50)), padding: EdgeInsets.fromLTRB(20, 0, 20, 0),),
 
             Divider(height: 10, color: Colors.transparent),
 
@@ -156,7 +156,7 @@ class Register2ScreenState extends State<Register2Screen> {
                   if (selectedSubjects.contains(subjectIndex))
                     VerticalDivider(width:5, color: Colors.transparent),
                   Text(subjects[subjectIndex], style: TextStyle(color: (selectedSubjects.contains(subjectIndex))? Colors.white : Colors.black)), 
-                ],), backgroundColor: (selectedSubjects.contains(subjectIndex)) ? Theme.of(context).primaryColor : Colors.grey[300],),
+                ],), backgroundColor: (selectedSubjects.contains(subjectIndex)) ? Theme.of(context).primaryColor : (Themes.darkMode) ? Colors.grey[100] : Colors.grey[300],),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)), onPressed: () {
                 
 

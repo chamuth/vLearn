@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
   {
     Preferences.initialize().then((a)
     {
-      Preferences.prefs.setBool("darkMode", false);
+      Preferences.prefs.setBool("darkMode", true);
       
       if (!Preferences.prefs.getBool("darkMode") ?? true) 
       {
@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'vLearn',
       theme: Themes.themeNotifier.getTheme(),
-      home: Register3Screen(),
+      home: Register2Screen(),
       
       routes: <String, WidgetBuilder>{
         '/login' : (BuildContext context) => LoginScreen(),
