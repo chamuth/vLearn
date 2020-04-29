@@ -45,7 +45,7 @@ class _Register3ScreenState extends State<Register3Screen> {
 
         Padding(child: Column(children: <Widget>[
 
-          Icon(Icons.calendar_today, size: 60, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor),
+          Icon(Icons.verified_user, size: 60, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor),
           Divider(color: Colors.transparent, height: 15),
           Text(
             "Hey Chamuth!", 
@@ -110,13 +110,28 @@ class _Register3ScreenState extends State<Register3Screen> {
 
           Divider(color: Colors.transparent, height: 45),
 
-          Text("You're good to go!", style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold, fontSize: 17)),
-          Divider(color: Colors.transparent, height: 7),
-          
-          OutlineButton
-          (
-            child: Text("Get Started", style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 17)), 
-            borderSide: BorderSide(color: Theme.of(context).primaryColor), onPressed: () { },
+          AnimatedCrossFade(
+            secondChild: Column(children: <Widget>[
+              Text("You're good to go!", style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold, fontSize: 17)),
+              Divider(color: Colors.transparent, height: 7),
+              
+              OutlineButton
+              (
+                child: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                  Icon(Icons.done, color: Theme.of(context).primaryColor, size: 20),
+                  VerticalDivider(width: 5),
+                  Text("Get Started", style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 17)), 
+                ],),
+                borderSide: BorderSide(color: Theme.of(context).primaryColor), onPressed: () { },
+              )
+            ],),
+            firstChild: Column(children: <Widget>[
+              // Icon(Icons.block, color: Colors.red, size: 30,),
+              // Divider(color: Colors.transparent, height: 10),
+              // Text("Please provide the requested information", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 17)),
+            ]),
+            duration: Duration(milliseconds: 250),
+            crossFadeState: (selectedGrade != null && selectedDate != null) ? CrossFadeState.showSecond :  CrossFadeState.showFirst,
           )
 
         ],), padding: EdgeInsets.fromLTRB(35, 0, 35, 0),)

@@ -75,7 +75,7 @@ class Register2ScreenState extends State<Register2Screen> {
       body: Container(color: (Theme.of(context).backgroundColor), child: Center(child: 
         ListView(shrinkWrap: true, children: <Widget>[
           Padding(child: Column(children: <Widget>[
-            Icon(Icons.account_circle, size: 60, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor),
+            Icon(Icons.verified_user, size: 60, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor),
             Divider(color: Colors.transparent, height: 10),
             Text(
               "Hey Chamuth!", 
