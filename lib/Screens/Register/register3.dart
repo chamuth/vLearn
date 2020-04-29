@@ -23,7 +23,7 @@ class _Register3ScreenState extends State<Register3Screen> {
             textAlign: TextAlign.center, 
             style: TextStyle(fontSize: 25, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor)
           ),
-          Divider(color: Colors.transparent, height: 5),
+          Divider(color: Colors.transparent, height: 8),
           Text(
             "We need some more information about you to get started", 
             textAlign: TextAlign.center, 
@@ -32,9 +32,9 @@ class _Register3ScreenState extends State<Register3Screen> {
 
           Divider(color: Colors.transparent, height: 20),
           
-          TextFormField(decoration: InputDecoration(hintText: "Grade", ),)
+          
 
-        ],), padding: EdgeInsets.fromLTRB(30, 0, 30, 0),)
+        ],), padding: EdgeInsets.fromLTRB(45, 0, 45, 0),)
 
       ],)),)
     );

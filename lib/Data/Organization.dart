@@ -14,18 +14,22 @@ class Organization
 
   static Future<bool> loadCurrentOrganizationDetails() async
   {
-    var results = await Firestore.instance.collection("organizations").document(currentOrganizationId).get();
+    //TODO: must be fixed 
 
-    if (results.exists)
-    {
-      me.name = results.data["name"];
-      me.slug = results.data["slug"];
-      
-      return true;
+    // var results = await Firestore.instance.collection("organizations").document(currentOrganizationId).get();
 
-    } else {
+    // if (results.exists)
+    // {
+    //   me.name = results.data["name"];
+    //   me.slug = results.data["slug"];
       
-      return false;
-    }
+    //   return true;
+
+    // } else {
+      
+    //   return false;
+    // }
+
+    return true;
   }
 }
