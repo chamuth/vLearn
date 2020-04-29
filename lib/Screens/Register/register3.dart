@@ -9,6 +9,35 @@ class Register3Screen extends StatefulWidget {
 }
 
 class _Register3ScreenState extends State<Register3Screen> {
+
+  DateTime selectedDate;
+
+  void selectBirthday(BuildContext context) async
+  {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: (selectedDate ?? DateTime.now()),
+      firstDate: DateTime(1900,1),
+      lastDate: DateTime.now()
+    );
+
+    if (picked != null && picked != selectedDate)
+    {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
+
+  String processBirthdayToString()
+  {
+    var date = selectedDate ?? DateTime.now();
+    return date.day.toString() + "/" + date.month.toString() + "/" + date.year.toString();
+  }
+
+  String selectedGrade;
+  List<String> grades = ["Grade 1", "Grade 2", "Grade 3"];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,11 +59,67 @@ class _Register3ScreenState extends State<Register3Screen> {
             style: TextStyle(fontSize: 20, color: Colors.grey)
           ),
 
-          Divider(color: Colors.transparent, height: 20),
+          Divider(color: Colors.transparent, height: 40),
           
-          
+          RawMaterialButton(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), child: Padding(child: 
+            Row(children: <Widget>[
+            Icon(Icons.date_range),
+            VerticalDivider(),
 
-        ],), padding: EdgeInsets.fromLTRB(45, 0, 45, 0),)
+            Expanded(child: AnimatedCrossFade(firstChild: 
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                Text("What is your birthday?", style: TextStyle(fontWeight: FontWeight.bold)),
+                Text("Tap to select a date", style: TextStyle(color: Colors.grey)),
+              ],),
+              secondChild:  
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                  Text("My Birthday: " + processBirthdayToString(), style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text("Tap to change your birthday", style: TextStyle(color: Colors.grey)),
+                ],),
+              duration: Duration(milliseconds: 500),
+              crossFadeState: (selectedDate == null) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+            ),),
+
+            AnimatedCrossFade(
+              firstChild: Icon(Icons.close, color: Colors.red),
+              secondChild: Icon(Icons.done, color: Colors.green),
+              duration: Duration(milliseconds: 500),
+              crossFadeState: (selectedDate == null) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+            ),
+            
+          ],), padding:  EdgeInsets.fromLTRB(10, 10, 10, 10),), onPressed: () {
+            selectBirthday(context);
+          },),
+
+          Divider(color: Colors.transparent, height: 20),
+
+          Padding(child: Row(children: <Widget>[
+            Icon(Icons.grade),
+            VerticalDivider(),
+
+            Expanded(child: 
+              Column(children: <Widget>[
+                Align(child: Text("What is your grade?", style: TextStyle(fontWeight: FontWeight.bold)), alignment:Alignment.centerLeft), 
+                DropdownButton(isExpanded: true, isDense: true, icon: (selectedGrade == null) ? Icon(Icons.close, color: Colors.red) : Icon(Icons.done, color: Colors.green), items: grades.map((value) {
+                  return new DropdownMenuItem(child: Text(value), value: value);
+                }).toList(), onChanged: (str) { selectedGrade = str; }, value: selectedGrade, hint: Text("Select your grade")),
+              ],)
+            ),
+          ],), padding: EdgeInsets.fromLTRB(10, 0, 10, 0)),
+
+
+          Divider(color: Colors.transparent, height: 45),
+
+          Text("You're good to go!", style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold, fontSize: 17)),
+          Divider(color: Colors.transparent, height: 7),
+          
+          OutlineButton
+          (
+            child: Text("Get Started", style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 17)), 
+            borderSide: BorderSide(color: Theme.of(context).primaryColor), onPressed: () { },
+          )
+
+        ],), padding: EdgeInsets.fromLTRB(35, 0, 35, 0),)
 
       ],)),)
     );
