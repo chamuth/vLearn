@@ -33,6 +33,7 @@ dependencies:
   unicode: 0.2.3
   shimmer: 1.1.1
   cached_network_image: 2.1.0+1
+  scroll_snap_list: 0.4.0
 
 flutter:
   uses-material-design: true

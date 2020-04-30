@@ -58,7 +58,7 @@ class _StartScreenState extends State<StartScreen> {
           });
         },
       ),
-      appBar: MainAppBar.get(context, "Dashboard"),
+      appBar: MainAppBar.get(context, tabNames[selectedIndex]),
       body: AnimatedOpacity(opacity: pageOpacity, duration: Duration(milliseconds:150), child: Container(child: tabs[selectedIndex], color: (Themes.darkMode) ? Colors.grey[850] : Colors.white)),
     
     );
