@@ -101,7 +101,7 @@ class TimetableTabState extends State<TimetableTab> {
 
                         var selected = random.boolean();
 
-                        return SizedBox(height: (selected ? 60 : 40), child: Row(children: <Widget>[
+                        return SizedBox(height: (selected ? 65 : 40), child: Row(children: <Widget>[
                           
                           SizedBox(
                             width:60,  
@@ -121,11 +121,15 @@ class TimetableTabState extends State<TimetableTab> {
                                 
                                 SizedBox(width: 8, child: Container(color: Colors.blue)),
 
-                                Expanded(child: Container(child: Padding(child: Column(children: <Widget>[
+                                Expanded(child: Container(child: Padding(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
                                   
-                                  Text("")
+                                  Text("Physics Livestream", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue[400], fontSize: 16)),
+                                  Divider(color: Colors.transparent, height: 2),
+                                  Text("Hosted by " + Faker().person.name()),
+                                  Divider(color: Colors.transparent, height: 1),
+                                  Text("1:00 pm - 2:00pm", style: TextStyle(fontSize: 13, color: Colors.grey)),
 
-                                ],), padding: EdgeInsets.fromLTRB(10, 10, 10, 10),),),),      
+                                ],), padding: EdgeInsets.fromLTRB(10, 8, 10, 8),),),),      
                                 
                               ]
                             ,)), padding: EdgeInsets.fromLTRB(0, 0, 0, 2),),)
