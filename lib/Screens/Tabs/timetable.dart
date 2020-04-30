@@ -123,9 +123,9 @@ class TimetableTabState extends State<TimetableTab> {
 
                                 Expanded(child: Container(child: Padding(child: Column(children: <Widget>[
                                   
-                                  Text("SHIIT")
+                                  Text("")
 
-                                ],), padding: EdgeInsets.fromLTRB(10, 10, 10, 10),)),),      
+                                ],), padding: EdgeInsets.fromLTRB(10, 10, 10, 10),),),),      
                                 
                               ]
                             ,)), padding: EdgeInsets.fromLTRB(0, 0, 0, 2),),)
