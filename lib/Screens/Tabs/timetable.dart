@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:elearnapp/Components/TimetableItem.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
@@ -26,6 +27,8 @@ class TimetableTabState extends State<TimetableTab> {
     ViewMode("Day View", Icons.filter_list),
     ViewMode("Week View", Icons.table_chart),
   ];
+
+  List<String> days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Satuday", "Sunday"];
 
   @override
   void initState() { 
@@ -79,14 +82,14 @@ class TimetableTabState extends State<TimetableTab> {
           AnimatedCrossFade
           (
             crossFadeState: (selectedViewMode == viewModes[0]) ? CrossFadeState.showFirst : CrossFadeState.showSecond, 
-            firstChild: ListView.builder(itemBuilder: (context, i) 
+            firstChild: ListView.builder(itemBuilder: (context, index) 
             {
               return SizedBox(
                 child: Padding(padding: EdgeInsets.fromLTRB(20 , 10, 20, 10), child: Container(color: Colors.transparent, 
                   child: Column(children: <Widget>[
                     
                     Row(children: <Widget>[
-                      Text("Monday", style : TextStyle(fontSize: 20, color: Colors.grey, fontWeight: FontWeight.bold)),
+                      Text(days[index], style : TextStyle(fontSize: 20, color: Colors.grey, fontWeight: FontWeight.bold)),
                       VerticalDivider(color: Colors.transparent, width: 10,),
                       Expanded(child: Divider(thickness: 1.5,))
                     ],),
@@ -101,40 +104,7 @@ class TimetableTabState extends State<TimetableTab> {
 
                         var selected = random.boolean();
 
-                        return SizedBox(height: (selected ? 65 : 40), child: Row(children: <Widget>[
-                          
-                          SizedBox(
-                            width:60,  
-                            child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[ 
-                              Expanded(child: Align(child: Text(" " + (dt.hour).toString().padLeft(2, "0") + ":" + dt.minute.toString().padLeft(2, "0"), 
-                                textAlign: TextAlign.start,
-                                style: TextStyle(color: (selected) ? Colors.blue : Colors.grey, fontWeight : FontWeight.bold)
-                              ), alignment: Alignment.centerLeft,),),
-                            ]),
-                          ),
-
-                          if (!selected)
-                            Expanded(child: Container(color: Colors.grey[900])),
-                          if (selected)
-                            Expanded(child: Padding(child: Container(
-                              child: Row(children: <Widget>[
-                                
-                                SizedBox(width: 8, child: Container(color: Colors.blue)),
-
-                                Expanded(child: Container(child: Padding(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                                  
-                                  Text("Physics Livestream", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue[400], fontSize: 16)),
-                                  Divider(color: Colors.transparent, height: 2),
-                                  Text("Hosted by " + Faker().person.name()),
-                                  Divider(color: Colors.transparent, height: 1),
-                                  Text("1:00 pm - 2:00pm", style: TextStyle(fontSize: 13, color: Colors.grey)),
-
-                                ],), padding: EdgeInsets.fromLTRB(10, 8, 10, 8),),),),      
-                                
-                              ]
-                            ,)), padding: EdgeInsets.fromLTRB(0, 0, 0, 2),),)
-
-                        ],));
+                        return TimetableItem(themeColor: Colors.green, eventAvailable: selected, timeframe: dt,);
 
                       }, itemCount: 24)
                     )
