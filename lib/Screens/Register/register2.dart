@@ -119,7 +119,10 @@ class Register2ScreenState extends State<Register2Screen> {
                       gradient: LinearGradient(
                         begin: FractionalOffset.centerLeft,
                         end: FractionalOffset.centerRight,
-                        colors: [
+                        colors: (Themes.darkMode) ? [
+                          Theme.of(context).backgroundColor.withOpacity(0.0),
+                          Theme.of(context).backgroundColor.withOpacity(1.0),
+                        ] : [
                           Theme.of(context).cardColor.withOpacity(0.0),
                           Theme.of(context).cardColor.withOpacity(1.0),
                         ],

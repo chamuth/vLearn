@@ -12,6 +12,7 @@ import './Tabs/dashboard.dart';
 import './Tabs/folder.dart';
 import './Tabs/notifications.dart';
 import './Tabs/settings.dart';
+import 'Tabs/timetable.dart';
 
 class StartScreen extends StatefulWidget {
   StartScreen({Key key}) : super(key: key);
@@ -22,7 +23,9 @@ class StartScreen extends StatefulWidget {
 
 class _StartScreenState extends State<StartScreen> {
 
-  List<Widget> tabs  = <Widget>[DashboardTab(), FolderTab(), ChatTab(), NotificationsTab(), SettingsTab()]; 
+  List<Widget> tabs  = <Widget>[DashboardTab(), FolderTab(), ChatTab(), TimetableTab(), SettingsTab()]; 
+  List<String> tabNames = ["Dashboard", "Shared Folder", "Chats", "Timetable", "Settings"];
+  List<IconData> tabIcons = [Icons.dashboard, Icons.folder_shared, Icons.chat, Icons.table_chart, Icons.settings];
   int selectedIndex = 0;
   double pageOpacity = 1;
 
@@ -32,13 +35,9 @@ class _StartScreenState extends State<StartScreen> {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
-        items:  <BottomNavigationBarItem>[
-          BottomNavigationBarItem(title: Text("Dashboard"), icon: Icon(Icons.dashboard, size: 25)),
-          BottomNavigationBarItem(title: Text("Shared Folder"), icon: Icon(Icons.folder_shared, size: 25)),
-          BottomNavigationBarItem(title: Text("Chats"), icon: Icon(Icons.chat, size: 25)),
-          BottomNavigationBarItem(title: Text("Notifications"), icon: Icon(Icons.notifications, size: 25)),
-          BottomNavigationBarItem(title: Text("Settings"), icon: Icon(Icons.settings, size: 25)),
-        ],
+        items:  List.generate(tabs.length, (i){
+          return BottomNavigationBarItem(title: Text(tabNames[i]), icon: Icon(tabIcons[i], size: 25));
+        }),
         elevation: 1,
         currentIndex: selectedIndex,
         selectedItemColor: Theme.of(context).primaryColor,
