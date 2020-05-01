@@ -8,6 +8,7 @@ import 'package:faker/faker.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ChatTab extends StatefulWidget {
   ChatTab({Key key}) : super(key: key);
@@ -19,6 +20,7 @@ class ChatTab extends StatefulWidget {
 class ChatTabState extends State<ChatTab> {
   
   List<Thread> myChats = [];
+  bool threadsReady = false;
 
   void loadChats() async
   {
@@ -73,6 +75,7 @@ class ChatTabState extends State<ChatTab> {
 
     setState(() {
       myChats = threads;
+      threadsReady = true;
     });
   }
 
@@ -86,23 +89,50 @@ class ChatTabState extends State<ChatTab> {
   @override
   Widget build(BuildContext context) {
 
-    return ListView.builder(itemCount: myChats.length, itemBuilder: (context, index) {
-      return RawMaterialButton(
-        child: ConversationItem(
-          conversationTitle: myChats[index].title,
-          lastMessage: myChats[index].lastMessage, 
-          unreadMessages: 0,
-        ), onPressed: () { 
+    return AnimatedCrossFade(
+      firstChild: ListView.builder(shrinkWrap: true, itemCount: myChats.length, itemBuilder: (context, index) {
+        return RawMaterialButton(
+          child: ConversationItem(
+            conversationTitle: myChats[index].title,
+            lastMessage: myChats[index].lastMessage, 
+            unreadMessages: 0,
+          ), onPressed: () { 
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ConversationThreadView(thread: myChats[index]),
-            )
-          );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ConversationThreadView(thread: myChats[index]),
+              )
+            );
 
-        }
-      );
-    });
+          }
+        );
+      }),
+      secondChild: ListView.builder(shrinkWrap: true, itemBuilder: (ctx, index) {
+        var rand = RandomGenerator();
+
+        return Padding(child: Row(children: <Widget>[
+
+          Padding(
+            child: Shimmer.fromColors(child: CircleAvatar(), baseColor: Theme.of(context).cardColor,highlightColor: Colors.grey[500],), 
+            padding: EdgeInsets.fromLTRB(0, 0, 15, 0)
+          ),
+
+          Expanded(
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+
+              SizedBox(child: Shimmer.fromColors(child: Card(), baseColor: Theme.of(context).cardColor,highlightColor: Colors.grey[500]),
+              width: MediaQuery.of(context).size.width * random.decimal(scale: 0.5, min: 0.2), height: 20),
+              SizedBox(child: Shimmer.fromColors(child: Card(), baseColor: Theme.of(context).cardColor,highlightColor: Colors.grey[500]), 
+              width: MediaQuery.of(context).size.width * random.decimal(scale: 0.8, min: 0.3), height: 18),
+
+            ],)
+          )
+          
+        ],), padding: EdgeInsets.fromLTRB(15, 10, 15, 10),);
+      }, itemCount: 10,),
+      duration: Duration(milliseconds: 300), crossFadeState: (threadsReady) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+    );
+
   }
 }
