@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:elearnapp/Core/Chats.dart';
 import 'package:flutter/material.dart';
 
 class ConversationItem extends StatefulWidget {
@@ -6,7 +7,7 @@ class ConversationItem extends StatefulWidget {
 
   int unreadMessages = 2;
   String conversationTitle = "Mr. John Doe";
-  String lastMessage = "Hey there...";
+  Message lastMessage;
 
   @override
   _ConversationItemState createState() => _ConversationItemState();
@@ -21,7 +22,11 @@ class _ConversationItemState extends State<ConversationItem> {
          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
           Text(widget.conversationTitle, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
           Divider(height: 2, color: Colors.transparent),
-          Text((widget.lastMessage.length > 35) ? widget.lastMessage.substring(0, 35) + "..." : widget.lastMessage, style: TextStyle(color: Colors.grey[400], fontSize:15))
+          Row(children: <Widget>[
+            Text(widget.lastMessage.senderName + ": "),
+
+            Expanded(child: Text((widget.lastMessage.content.length > 30) ? widget.lastMessage.content.substring(0, 30) + "..." : widget.lastMessage.content, style: TextStyle(color: Colors.grey[400], fontSize:15)))
+          ],)
          ],)),
 
         if (widget.unreadMessages > 0)

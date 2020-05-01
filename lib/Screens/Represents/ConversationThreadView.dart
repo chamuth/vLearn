@@ -14,14 +14,14 @@ class ConversationThreadView extends StatefulWidget {
   _ConversationThreadViewState createState() => _ConversationThreadViewState();
 }
 
-class Message 
+class LocalMessage 
 {
   String content;
   MessageStatus messageStatus;
   MessageItemType type;
   DateTime sent;
 
-  Message({this.content, this.messageStatus, this.type, this.sent});
+  LocalMessage({this.content, this.messageStatus, this.type, this.sent});
 }
 
 enum MessageItemType
@@ -36,16 +36,16 @@ enum MessageStatus
 
 class _ConversationThreadViewState extends State<ConversationThreadView> {
 
-  List<Message> messages = Faker().lorem.sentences(55).map((s) => Message(type: MessageItemType.Message, content: s, messageStatus: (random.boolean()) ? MessageStatus.Incoming : MessageStatus.Sent)).toList();
+  List<LocalMessage> messages = Faker().lorem.sentences(55).map((s) => LocalMessage(type: MessageItemType.Message, content: s, messageStatus: (random.boolean()) ? MessageStatus.Incoming : MessageStatus.Sent)).toList();
   User person = User.fromName("Chamuth", "Chamandana");
 
   @override
   void initState() {
     setState(() {
-      messages.add(Message(type: MessageItemType.Start));
+      messages.add(LocalMessage(type: MessageItemType.Start));
       var indices = random.numbers(55, 4);
       indices.forEach((f) {
-        messages.insert(f, Message(type: MessageItemType.DateTime));
+        messages.insert(f, LocalMessage(type: MessageItemType.DateTime));
       });
     });
     super.initState();

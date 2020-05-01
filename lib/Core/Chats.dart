@@ -8,9 +8,21 @@ class Thread
   String title;
   String chatIconURL;
   List<User> participants;
+  Message lastMessage;
 
   Thread(this.title, this.participants);
   Thread.empty();
+}
+
+class Message 
+{
+  String content;
+  String messageType;
+  String messageId;
+  String sender;
+  String senderName;
+
+  Message(this.sender, this.senderName, this.content, this.messageType);
 }
 
 class Chats
