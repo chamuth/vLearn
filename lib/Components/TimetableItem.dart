@@ -14,9 +14,12 @@ class TimetableItem extends StatefulWidget {
 }
 
 class _TimetableItemState extends State<TimetableItem> {
+
+  bool expanded = false;
+
   @override
   Widget build(BuildContext context) {
-    return SizedBox(height: (widget.eventAvailable ? 65 : 40), child: Row(children: <Widget>[
+    return AnimatedCrossFade(firstChild: SizedBox(height: (widget.eventAvailable ? 65 : 40), child: Row(children: <Widget>[
       SizedBox(
         width:60,  
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[ 
@@ -30,7 +33,7 @@ class _TimetableItemState extends State<TimetableItem> {
       if (!widget.eventAvailable)
         Expanded(child: Container(color: Colors.grey[900])),
       if (widget.eventAvailable)
-        Expanded(child: Padding(child: Container(
+        Expanded(child: RawMaterialButton(child: Padding(child: Container(
           child: Row(children: <Widget>[
             
             SizedBox(width: 8, child: Container(color: widget.themeColor)),
@@ -47,8 +50,53 @@ class _TimetableItemState extends State<TimetableItem> {
             ],), padding: EdgeInsets.fromLTRB(10, 8, 10, 8),),),),      
             
           ]
-        ,)), padding: EdgeInsets.fromLTRB(0, 0, 0, 2),),)
+        ,)), padding: EdgeInsets.fromLTRB(0, 0, 0, 2),), onPressed: () { setState(() {
+          expanded = true;
+        }); },),)
 
-    ],));
+    ],)),
+    duration: Duration(milliseconds: 350),
+    secondChild: SizedBox(height: 100, child: Container(color: widget.themeColor, child: Padding(child: Container(child: Row(children: <Widget>[
+      
+      Expanded(
+        child: RawMaterialButton(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), 
+          child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.max, children: <Widget>[
+            Icon(Icons.open_in_new,),
+            Divider(color: Colors.transparent, height: 8),
+            Text("Open Class")
+          ],),
+          onPressed: () { },
+        )
+      ),
+
+      Expanded(
+        child: RawMaterialButton(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), 
+          child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.max, children: <Widget>[
+            Icon(Icons.question_answer,),
+            Divider(color: Colors.transparent, height: 8),
+            Text("Message Teacher")
+          ],),
+          onPressed: () { },
+        )
+      ),
+
+      Expanded(
+        child: RawMaterialButton(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), 
+          child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.max, children: <Widget>[
+            Icon(Icons.folder_shared,),
+            Divider(color: Colors.transparent, height: 8),
+            Text("Shared Folder")
+          ],),
+          onPressed: () { },
+        )
+      ),
+
+    ],)), padding: EdgeInsets.fromLTRB(10, 5, 10, 5),)
+    ,)),
+    crossFadeState: (!expanded) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+    );
   }
 }

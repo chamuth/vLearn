@@ -104,7 +104,7 @@ class TimetableTabState extends State<TimetableTab> {
 
                         var selected = random.boolean();
 
-                        return TimetableItem(themeColor: Colors.green, eventAvailable: selected, timeframe: dt,);
+                        return TimetableItem(themeColor: Colors.blue, eventAvailable: selected, timeframe: dt,);
 
                       }, itemCount: 24)
                     )
