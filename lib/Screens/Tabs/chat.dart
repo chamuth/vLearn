@@ -131,7 +131,7 @@ class ChatTabState extends State<ChatTab> {
           
         ],), padding: EdgeInsets.fromLTRB(15, 10, 15, 10),);
       }, itemCount: 10,),
-      duration: Duration(milliseconds: 300), crossFadeState: (threadsReady) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+      duration: Duration(milliseconds: 350), crossFadeState: (threadsReady) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
     );
 
   }
