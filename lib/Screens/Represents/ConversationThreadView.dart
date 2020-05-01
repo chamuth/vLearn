@@ -1,5 +1,6 @@
 import 'package:elearnapp/Components/MainAppBar.dart';
 import 'package:elearnapp/Components/Seperator.dart';
+import 'package:elearnapp/Core/Chats.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,9 @@ import 'package:timeago/timeago.dart' as timeago;
 
 
 class ConversationThreadView extends StatefulWidget {
-  ConversationThreadView({Key key}) : super(key: key);
+  ConversationThreadView({Key key, this.thread}) : super(key: key);
+
+  Thread thread;
 
   @override
   _ConversationThreadViewState createState() => _ConversationThreadViewState();
@@ -36,8 +39,14 @@ enum MessageStatus
 
 class _ConversationThreadViewState extends State<ConversationThreadView> {
 
-  List<LocalMessage> messages = Faker().lorem.sentences(55).map((s) => LocalMessage(type: MessageItemType.Message, content: s, messageStatus: (random.boolean()) ? MessageStatus.Incoming : MessageStatus.Sent)).toList();
+  // List<LocalMessage> messages = Faker().lorem.sentences(55).map((s) => LocalMessage(type: MessageItemType.Message, content: s, messageStatus: (random.boolean()) ? MessageStatus.Incoming : MessageStatus.Sent)).toList();
+  List<LocalMessage> messages = [];
   User person = User.fromName("Chamuth", "Chamandana");
+
+  void renderMessages()
+  {
+    
+  }
 
   @override
   void initState() {

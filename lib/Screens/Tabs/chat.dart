@@ -95,10 +95,12 @@ class ChatTabState extends State<ChatTab> {
         ), onPressed: () { 
 
           Navigator.push(
-            context, MaterialPageRoute(builder: (context) => ConversationThreadView(), 
-            settings: RouteSettings(arguments: myChats[index]))
+            context,
+            MaterialPageRoute(
+              builder: (context) => ConversationThreadView(thread: myChats[index]),
+            )
           );
-          
+
         }
       );
     });
