@@ -50,9 +50,17 @@ class _TimetableItemState extends State<TimetableItem> {
             ],), padding: EdgeInsets.fromLTRB(10, 8, 10, 8),),),),      
             
           ]
-        ,)), padding: EdgeInsets.fromLTRB(0, 0, 0, 2),), onPressed: () { setState(() {
-          expanded = true;
-        }); },),)
+        ,)), padding: EdgeInsets.fromLTRB(0, 0, 0, 2),), onPressed: () { 
+          setState(() {
+            expanded = true;
+          });
+
+          Future.delayed(Duration(seconds: 3), () {
+            setState(() {
+              expanded = false;
+            });
+          });
+        },),)
 
     ],)),
     duration: Duration(milliseconds: 350),
