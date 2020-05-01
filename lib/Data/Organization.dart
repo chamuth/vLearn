@@ -16,19 +16,19 @@ class Organization
   {
     //TODO: must be fixed 
 
-    // var results = await Firestore.instance.collection("organizations").document(currentOrganizationId).get();
+    var results = await Firestore.instance.collection("organizations").document(currentOrganizationId).get();
 
-    // if (results.exists)
-    // {
-    //   me.name = results.data["name"];
-    //   me.slug = results.data["slug"];
+    if (results.exists)
+    {
+      me.name = results.data["name"];
+      me.slug = results.data["slug"];
       
-    //   return true;
+      return true;
 
-    // } else {
+    } else {
       
-    //   return false;
-    // }
+      return false;
+    }
 
     return true;
   }

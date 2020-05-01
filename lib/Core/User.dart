@@ -50,7 +50,7 @@ class User
     return user;
   }
 
-  static Future getUserData(uid) async
+  static Future<DocumentSnapshot> getUserData(uid) async
   {
     var result = await Firestore.instance.collection("users").document(uid).get();
     return result;

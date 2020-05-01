@@ -17,7 +17,7 @@ class _ConversationItemState extends State<ConversationItem> {
   Widget build(BuildContext context) {
     return Container(
        child: Row(children: <Widget>[
-         Padding(child: CircleAvatar(child: Text("J"), backgroundColor: Theme.of(context).primaryColor, foregroundColor: Colors.white,), padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
+         Padding(child: CircleAvatar(child: Text(widget.conversationTitle.substring(0,1)), backgroundColor: Theme.of(context).primaryColor, foregroundColor: Colors.white,), padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
           Text(widget.conversationTitle, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
           Divider(height: 2, color: Colors.transparent),
