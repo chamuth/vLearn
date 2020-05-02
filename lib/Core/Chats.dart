@@ -61,7 +61,8 @@ class Chats
       "created" : DateTime.now().toString(),
       "messageId" : randomString(10),
       "messageType" : message.messageType,
-      "sender" : message.sender
+      "sender" : message.sender,
+      "senderName" : User.getSanitizedName(User.me)
     });
   }
 }

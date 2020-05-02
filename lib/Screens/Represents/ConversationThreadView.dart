@@ -26,8 +26,10 @@ class LocalMessage
   MessageStatus messageStatus;
   MessageItemType type;
   DateTime sent;
+  String senderName;
+  String sender;
 
-  LocalMessage({this.content, this.messageStatus, this.type, this.sent});
+  LocalMessage({this.content, this.messageStatus, this.type, this.sent, this.senderName, this.sender,});
 }
 
 enum MessageItemType
@@ -70,7 +72,9 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
           });
 
         } else {
-          group = false;
+          setState(() {
+            group = false;
+          });
 
           for(var i = 0; i < dat.snapshot.value["participants"].length; i++)
           {
@@ -101,7 +105,11 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
         }
       } else {
         setState(() {
+          if (dat.snapshot.value["participants"].length > 2)
+            group = true;
+
           chatTitle = dat.snapshot.value["title"];
+          peopleIds = dat.snapshot.value["participants"];
         });
       }
 
@@ -127,7 +135,9 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
         content: message["content"], 
         messageStatus: (message["sender"] == User.me.uid) ? MessageStatus.Sent : MessageStatus.Incoming, 
         type: MessageItemType.Message,
-        sent: DateTime.parse(message["created"])
+        sent: DateTime.parse(message["created"]),
+        senderName: message["senderName"],
+        sender: message["sender"]
       );
 
       list.add(local);
@@ -200,12 +210,17 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
           ],),
 
         ],), onPressed: () { 
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ProfileView(uid: person.uid)
-            )
-          );
+          if (!group)
+          {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProfileView(uid: person.uid)
+              )
+            );
+          } else {
+            
+          }
         },),
         leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () { Navigator.maybePop(context); }),
         actions: <Widget>[
@@ -235,15 +250,24 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
                 child: Stack(children: <Widget>[
                   
                   Padding(
-                    child: Text(messages[i].content, style: TextStyle(fontSize: 17,), textAlign: TextAlign.start), 
-                  padding: EdgeInsets.fromLTRB(10, 8, (messages[i].messageStatus == MessageStatus.Incoming) ? 50 : 70, 8)),
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                      if (group && messages[i].sender != User.me.uid)
+                        Opacity(child: Text(messages[i].senderName, style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold), textAlign: TextAlign.start), opacity:0.65),
 
-                  Positioned(bottom: 8, right: 8, child: Opacity(child: Row(children: <Widget>[
-                    Text(messages[i].sent.hour.toString().padLeft(2, "0") + ":" + messages[i].sent.minute.toString().padLeft(2, "0")),
+                      Text(messages[i].content, style: TextStyle(fontSize: 17,), textAlign: TextAlign.start), 
+                    ],),
+                    padding:
+                      (group) ?
+                     EdgeInsets.fromLTRB(9, 5, (messages[i].messageStatus == MessageStatus.Incoming) ? 50 : 70, 6) : 
+                     EdgeInsets.fromLTRB(10, 8, (messages[i].messageStatus == MessageStatus.Incoming) ? 50 : 70, 8)
+                  ),
+
+                  Positioned(bottom: 5, right: 8, child: Opacity(child: Row(children: <Widget>[
+                    Text(messages[i].sent.hour.toString().padLeft(2, "0") + ":" + messages[i].sent.minute.toString().padLeft(2, "0"), style: TextStyle(fontSize: 13)),
                     if (messages[i].messageStatus != MessageStatus.Incoming)
                       VerticalDivider(color: Colors.transparent, width:5),
                     if (messages[i].messageStatus != MessageStatus.Incoming)
-                      Icon((messages[i].messageStatus == MessageStatus.Sending) ? Icons.timer : Icons.done, size: 15),
+                      Icon((messages[i].messageStatus == MessageStatus.Sending) ? Icons.timer : Icons.done, size: 14),
                   ]), opacity: 0.65)),
                   
                 ],)
