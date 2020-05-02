@@ -117,9 +117,6 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
       _messages = dat.snapshot.value["thread"];
       
       renderMessages();
-
-      print(_messages);
-
     });
   }
 
@@ -141,9 +138,27 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
       );
 
       list.add(local);
+
+      if (i > 0)
+      {
+        if (_messages[i - 1] != null)
+        {
+          var date1 = DateTime.parse(message["created"]);
+          var date2 = DateTime.parse(_messages[i - 1]["created"]);
+          var difference = date1.difference(date2);
+          print(difference.inDays);
+          if (difference.inHours > 24)
+          {
+            list.add(LocalMessage(type: MessageItemType.DateTime, sent: DateTime.parse(message["created"])));
+          }
+        }
+      }
+
+
     }
 
     // add the chat start identifier
+    list.add(LocalMessage(type: MessageItemType.DateTime, sent: DateTime.parse(_messages[0]["created"])));
     list.add(LocalMessage(type: MessageItemType.Start));
 
     setState(() {
@@ -219,7 +234,7 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
               )
             );
           } else {
-            
+
           }
         },),
         leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () { Navigator.maybePop(context); }),
@@ -277,10 +292,19 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
           }
           else if (messages[i].type == MessageItemType.Start)
           {
-            return Padding(child: Seperator(title: "The chat starts here!"), padding: EdgeInsets.fromLTRB(10, 10, 10, 5));
+            return Padding(padding: EdgeInsets.fromLTRB(10, 10, 10, 0));
           } else if (messages[i].type == MessageItemType.DateTime)
           {
-            return Padding(child: Seperator(title: "April 14"), padding: EdgeInsets.fromLTRB(10, 10, 10, 5));
+            print(messages[i].sent.difference(DateTime.now()));
+            
+            return Padding(
+              child: Seperator(title: 
+                (DateTime.now().difference(messages[i].sent).inHours < 24) 
+                  ? "Today" 
+                  : messages[i].sent.day.toString() + "/" + messages[i].sent.month.toString() + "/" + messages[i].sent.year.toString()
+              ), 
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 5)
+            );
           }
           return Padding(padding: EdgeInsets.fromLTRB(10, 10, 10, 5));
         }, itemCount: messages.length),
