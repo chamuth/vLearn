@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:random_string/random_string.dart';
 
 import 'User.dart';
 
@@ -24,6 +27,7 @@ class Message
   String senderName;
 
   Message(this.sender, this.senderName, this.content, this.messageType);
+  Message.empty();
 }
 
 class Chats
@@ -45,5 +49,19 @@ class Chats
   static DatabaseReference loadChat(String threadId)
   {
     return FirebaseDatabase.instance.reference().child("threads").child(threadId);
+  }
+
+  static void sendMessage(String threadId, Message message) async
+  {
+    // calculate message count
+    var thread = await FirebaseDatabase.instance.reference().child("threads").child(threadId).child("thread").once();
+    
+    FirebaseDatabase.instance.reference().child("threads").child(threadId).child("thread").child(thread.value.length.toString()).set({
+      "content" : message.content,
+      "created" : DateTime.now().toString(),
+      "messageId" : randomString(10),
+      "messageType" : message.messageType,
+      "sender" : message.sender
+    });
   }
 }

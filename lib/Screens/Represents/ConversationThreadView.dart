@@ -3,6 +3,7 @@ import 'package:elearnapp/Components/Seperator.dart';
 import 'package:elearnapp/Core/Chats.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:faker/faker.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -129,6 +130,24 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
     super.initState();
   }
 
+  final TextEditingController messageTextController = new TextEditingController();
+
+  void sendMessage() async
+  {
+    var msg = Message.empty();
+    msg.content = messageTextController.text;
+    msg.messageType = "text";
+    msg.sender = User.me.uid;
+
+    Chats.sendMessage(widget.threadId, msg);
+
+    // reset the text
+    messageTextController.text = "";
+
+    // add the message temporarily before sending
+    messages.reversed.toList().add(LocalMessage(content: messageTextController.text, messageStatus: MessageStatus.Sent, sent: DateTime.now(), type: MessageItemType.Message));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -232,6 +251,7 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
                         errorBorder: InputBorder.none,
                         disabledBorder: InputBorder.none,
                       ),
+                      controller: messageTextController,
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
                     
@@ -240,7 +260,9 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
                 ),
 
                 IconButton(icon: Icon(Icons.attach_file), tooltip: "Attach a file", onPressed: () {},),
-                IconButton(icon: Icon(Icons.send), tooltip: "Send message", onPressed: () {},)
+                IconButton(icon: Icon(Icons.send), tooltip: "Send message", onPressed: () {
+                  sendMessage();
+                },)
               ],), 
             ),
             padding: EdgeInsets.fromLTRB(12,12,12,12)
