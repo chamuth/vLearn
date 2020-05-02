@@ -44,6 +44,8 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
   List _messages = [];
   User person = User.fromName("Chamuth", "Chamandana");
   String chatTitle = "Loading...";
+  DateTime lastSeen = DateTime.now();
+  bool lastSeenListenerSet = false;
 
   void loadMessages() async
   {
@@ -51,7 +53,6 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
 
     ref.onValue.listen((dat) {
       
-
       if (dat.snapshot.value["title"] == null)
       {
         for(var i = 0; i <dat.snapshot.value["participants"].length; i++)
@@ -66,6 +67,17 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
                 chatTitle = User.getSanitizedName(user);
               });
             });
+
+            if (lastSeenListenerSet == false)
+            {
+              User.getLastOnline(p).onValue.listen((onlineVal) {
+                setState(() {
+                  lastSeen = DateTime.parse(onlineVal.snapshot.value["last_online"] ?? DateTime.now());
+                });
+              });
+
+              lastSeenListenerSet = true;
+            }
           }
         }
       } else {
@@ -95,7 +107,8 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
       LocalMessage local = LocalMessage(
         content: message["content"], 
         messageStatus: (message["sender"] == User.me.uid) ? MessageStatus.Sent : MessageStatus.Incoming, 
-        type: MessageItemType.Message
+        type: MessageItemType.Message,
+        sent: DateTime.parse(message["created"])
       );
 
       list.add(local);
@@ -109,6 +122,9 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
   @override
   void initState() {
     loadMessages();
+
+    // set My last seen time 
+    User.setLastOnline(User.me.uid, DateTime.now());
 
     super.initState();
   }
@@ -126,11 +142,11 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
             Text(chatTitle, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             Divider(height: 2, color: Colors.transparent),
-            Text("last seen " + timeago.format(User.getLastSeen(person)), style: TextStyle(fontSize: 14, color: Colors.grey)),
+            Text("last seen " + timeago.format(lastSeen), style: TextStyle(fontSize: 14, color: Colors.grey)),
           ],),
 
         ],), onPressed: () { Navigator.of(context).pushNamed("/class"); },),
-        leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () { }),
+        leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () { Navigator.maybePop(context); }),
         actions: <Widget>[
           Padding(child: IconButton(tooltip: "Chat Information", icon: Icon(Icons.info_outline), onPressed: (){
             Navigator.of(context).maybePop();
@@ -144,8 +160,6 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
         // Conversation items list
         ListView.builder(shrinkWrap: false, reverse: true,scrollDirection: Axis.vertical, itemBuilder: (context, i)
         {
-          print(messages[i].content);
-
           if (messages[i].type == MessageItemType.Message)
           {
             return Padding(child: 
@@ -161,10 +175,10 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
                   
                   Padding(
                     child: Text(messages[i].content, style: TextStyle(fontSize: 17,), textAlign: TextAlign.start), 
-                  padding: EdgeInsets.fromLTRB(10, 8, 58, 8)),
+                  padding: EdgeInsets.fromLTRB(10, 8, (messages[i].messageStatus == MessageStatus.Incoming) ? 50 : 70, 8)),
 
                   Positioned(bottom: 8, right: 8, child: Opacity(child: Row(children: <Widget>[
-                    Text("11:52"),
+                    Text(messages[i].sent.hour.toString().padLeft(2, "0") + ":" + messages[i].sent.minute.toString().padLeft(2, "0")),
                     if (messages[i].messageStatus != MessageStatus.Incoming)
                       VerticalDivider(color: Colors.transparent, width:5),
                     if (messages[i].messageStatus != MessageStatus.Incoming)

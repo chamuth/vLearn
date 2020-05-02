@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elearnapp/Data/Organization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class User
 {
@@ -31,9 +32,16 @@ class User
     return me;
   }
 
-  static DateTime getLastSeen(User user)
+  static DatabaseReference getLastOnline(String uid)
   {
-    return DateTime.now().subtract(new Duration(minutes: 35));
+    return FirebaseDatabase.instance.reference().child("activity").child(uid);
+  }
+
+  static void setLastOnline(String uid, DateTime time)
+  {
+    FirebaseDatabase.instance.reference().child("activity").child(uid).set({ 
+      "last_online" : time.toString()
+    });
   }
 
   static String getSanitizedName(User user)

@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:badges/badges.dart';
 import 'package:elearnapp/Components/MainAppBar.dart';
+import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Themes/themes.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
@@ -28,6 +30,15 @@ class _StartScreenState extends State<StartScreen> {
   List<IconData> tabIcons = [Icons.dashboard, Icons.folder_shared, Icons.chat, Icons.table_chart, Icons.settings];
   int selectedIndex = 0;
   double pageOpacity = 1;
+
+  @override
+  void initState() 
+  {
+    // Count for user activity
+    User.setLastOnline(User.me.uid, DateTime.now());
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
