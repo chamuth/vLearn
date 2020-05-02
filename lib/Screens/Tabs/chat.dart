@@ -60,7 +60,7 @@ class ChatTabState extends State<ChatTab> {
         }
       }
 
-      thread.group = (thread.participants.length > 2);
+      thread.group = (snap.value["participants"].length > 2);
 
       // set the conversation title
       if (thread.participants.length == 1)

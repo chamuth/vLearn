@@ -17,6 +17,8 @@ class ConversationItem extends StatefulWidget {
 class _ConversationItemState extends State<ConversationItem> {
   @override
   Widget build(BuildContext context) {
+    print(widget.group);
+    
     return Container(
        child: Row(children: <Widget>[
          Padding(child: CircleAvatar(child: 
