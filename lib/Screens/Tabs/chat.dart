@@ -109,7 +109,7 @@ class ChatTabState extends State<ChatTab> {
           }
         );
       }),
-      secondChild: ListView.builder(shrinkWrap: true, itemBuilder: (ctx, index) {
+      secondChild: IgnorePointer(child: ListView.builder(shrinkWrap: true, itemBuilder: (ctx, index) {
         var rand = RandomGenerator();
 
         return Padding(child: Row(children: <Widget>[
@@ -131,7 +131,7 @@ class ChatTabState extends State<ChatTab> {
           )
           
         ],), padding: EdgeInsets.fromLTRB(15, 10, 15, 10),);
-      }, itemCount: 10,),
+      }, itemCount: 15,), ignoring: true,),
       duration: Duration(milliseconds: 350), crossFadeState: (threadsReady) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
     );
 

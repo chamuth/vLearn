@@ -85,17 +85,20 @@ class User
     var classes = result.data["classes"];
     var org = getMyOrg();
 
-    for (var i = 0; i < classes.length; i ++)
-    {        
-      var classResult = await org.collection("classes").document(classes[i]).get();
-      var host = await getUserData(classResult["host"]);
+    if (classes != null)
+    {
+      for (var i = 0; i < classes.length; i ++)
+      {        
+        var classResult = await org.collection("classes").document(classes[i]).get();
+        var host = await getUserData(classResult["host"]);
 
-      returnClasses.add({
-        "id" : classes[i],
-        "host": host["first_name"] + " " + host["last_name"], 
-        "subject" : classResult["subject"],
-        "grade" : classResult["grade"]
-      });
+        returnClasses.add({
+          "id" : classes[i],
+          "host": host["first_name"] + " " + host["last_name"], 
+          "subject" : classResult["subject"],
+          "grade" : classResult["grade"]
+        });
+      }
     }
 
     return returnClasses;
@@ -114,19 +117,22 @@ class User
 
     var count = 0;
 
-    for (var i = 0; i < classes.length; i++)
+    if (classes != null)
     {
-      var query = await org.collection("assignments").where("class", isEqualTo: classes[i]).where("duedate", isGreaterThan: Timestamp.now()).getDocuments();
-      
-      // check if already submitted or not
-      for (var j = 0; j < query.documents.length; j ++)
+      for (var i = 0; i < classes.length; i++)
       {
-         var mySub = await submissions.where("assignment", isEqualTo: query.documents[j].documentID).where("user", isEqualTo: me.uid).getDocuments();
+        var query = await org.collection("assignments").where("class", isEqualTo: classes[i]).where("duedate", isGreaterThan: Timestamp.now()).getDocuments();
+        
+        // check if already submitted or not
+        for (var j = 0; j < query.documents.length; j ++)
+        {
+          var mySub = await submissions.where("assignment", isEqualTo: query.documents[j].documentID).where("user", isEqualTo: me.uid).getDocuments();
 
-         if (mySub.documents.length == 0)
-         {
-           count++;
-         }
+          if (mySub.documents.length == 0)
+          {
+            count++;
+          }
+        }
       }
     }
 
