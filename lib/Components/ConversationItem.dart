@@ -3,11 +3,12 @@ import 'package:elearnapp/Core/Chats.dart';
 import 'package:flutter/material.dart';
 
 class ConversationItem extends StatefulWidget {
-  ConversationItem({Key key, this.conversationTitle, this.lastMessage, this.unreadMessages}) : super(key: key);
+  ConversationItem({Key key, this.conversationTitle, this.lastMessage, this.unreadMessages, this.group}) : super(key: key);
 
   int unreadMessages = 2;
   String conversationTitle = "Mr. John Doe";
   Message lastMessage;
+  bool group = false;
 
   @override
   _ConversationItemState createState() => _ConversationItemState();
@@ -18,7 +19,9 @@ class _ConversationItemState extends State<ConversationItem> {
   Widget build(BuildContext context) {
     return Container(
        child: Row(children: <Widget>[
-         Padding(child: CircleAvatar(child: Text(widget.conversationTitle.substring(0,1)), backgroundColor: Theme.of(context).primaryColor, foregroundColor: Colors.white,), padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
+         Padding(child: CircleAvatar(child: 
+          (widget.group) ? Icon(Icons.group, size: 20) : Text(widget.conversationTitle.substring(0,1)
+         ), backgroundColor: Theme.of(context).primaryColor, foregroundColor: Colors.white,), padding: EdgeInsets.fromLTRB(0, 0, 15, 0)),
          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
           Text(widget.conversationTitle, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
           Divider(height: 2, color: Colors.transparent),

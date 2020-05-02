@@ -146,15 +146,13 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
           var date1 = DateTime.parse(message["created"]);
           var date2 = DateTime.parse(_messages[i - 1]["created"]);
           var difference = date1.difference(date2);
-          print(difference.inDays);
+
           if (difference.inHours > 24)
           {
             list.add(LocalMessage(type: MessageItemType.DateTime, sent: DateTime.parse(message["created"])));
           }
         }
       }
-
-
     }
 
     // add the chat start identifier
@@ -209,9 +207,9 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
         titleSpacing: 0,
         title: RawMaterialButton(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: <Widget>[
           if (group)
-            CircleAvatar(child: Icon(Icons.group, size: 20)),
+            CircleAvatar(child: Icon(Icons.group, size: 20), backgroundColor: Theme.of(context).primaryColor, foregroundColor: Colors.white,),
           if (!group)
-            CircleAvatar(child: Text((person.firstName != null) ? person.firstName.substring(0,1) : "")),
+            CircleAvatar(child: Text((person.firstName != null) ? person.firstName.substring(0,1) : ""), backgroundColor: Theme.of(context).primaryColor, foregroundColor: Colors.white,),
 
           VerticalDivider(color: Colors.transparent, width: 12),
 
@@ -288,15 +286,17 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
                 ],)
               )
             ), 
-            padding: EdgeInsets.fromLTRB(15, (i == messages.length - 1) ? 15 : 3, 15, (i == 0) ? 85 : 3));
+            padding: EdgeInsets.fromLTRB(15, 
+            (messages[i].sender == messages[i + 1].sender) ?
+              2 : 
+              ((i == messages.length - 1) ? 15 : 7) 
+            , 15, (i == 0) ? 85 : 3));
           }
           else if (messages[i].type == MessageItemType.Start)
           {
             return Padding(padding: EdgeInsets.fromLTRB(10, 10, 10, 0));
           } else if (messages[i].type == MessageItemType.DateTime)
-          {
-            print(messages[i].sent.difference(DateTime.now()));
-            
+          {            
             return Padding(
               child: Seperator(title: 
                 (DateTime.now().difference(messages[i].sent).inHours < 24) 

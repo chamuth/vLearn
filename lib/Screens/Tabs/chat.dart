@@ -55,11 +55,13 @@ class ChatTabState extends State<ChatTab> {
         }
       }
 
+      thread.group = (thread.participants.length > 2);
+
       // set the conversation title
       if (thread.participants.length == 1)
         thread.title = User.getSanitizedName(thread.participants[0]);
       else 
-        thread.title = "Group Chat";
+        thread.title = snap.value["title"] ?? "Group Chat";
 
       thread.threadId = snap.key;
       
@@ -103,6 +105,7 @@ class ChatTabState extends State<ChatTab> {
             conversationTitle: myChats[index].title,
             lastMessage: myChats[index].lastMessage, 
             unreadMessages: 0,
+            group: myChats[index].group
           ), onPressed: () { 
 
             Navigator.push(

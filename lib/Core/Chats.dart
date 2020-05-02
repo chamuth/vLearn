@@ -13,6 +13,7 @@ class Thread
   String chatIconURL;
   List<User> participants;
   Message lastMessage;
+  bool group;
 
   Thread(this.title, this.participants);
   Thread.empty();
