@@ -35,7 +35,7 @@ enum MessageItemType
 
 enum MessageStatus
 {
-  Sent, Received, Seen, Incoming
+  Sending, Sent, Received, Seen, Incoming
 }
 
 class _ConversationThreadViewState extends State<ConversationThreadView> {
@@ -134,18 +134,26 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
 
   void sendMessage() async
   {
-    var msg = Message.empty();
-    msg.content = messageTextController.text;
-    msg.messageType = "text";
-    msg.sender = User.me.uid;
+    if (messageTextController.text != "")
+    {
+      var msg = Message.empty();
+      msg.content = messageTextController.text;
+      msg.messageType = "text";
+      msg.sender = User.me.uid;
 
-    Chats.sendMessage(widget.threadId, msg);
+      // add the message temporarily before sending
+      var rev = messages.reversed.toList();
+      rev.add(LocalMessage(content: messageTextController.text, messageStatus: MessageStatus.Sending, sent: DateTime.now(), type: MessageItemType.Message));
 
-    // reset the text
-    messageTextController.text = "";
+      // reset the text
+      messageTextController.text = "";
+      
+      setState(() {
+        messages = rev.reversed.toList();      
+      });
 
-    // add the message temporarily before sending
-    messages.reversed.toList().add(LocalMessage(content: messageTextController.text, messageStatus: MessageStatus.Sent, sent: DateTime.now(), type: MessageItemType.Message));
+      Chats.sendMessage(widget.threadId, msg);
+    }
   }
 
   @override
@@ -201,7 +209,7 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
                     if (messages[i].messageStatus != MessageStatus.Incoming)
                       VerticalDivider(color: Colors.transparent, width:5),
                     if (messages[i].messageStatus != MessageStatus.Incoming)
-                      Icon(Icons.done_all, size: 15),
+                      Icon((messages[i].messageStatus == MessageStatus.Sending) ? Icons.timer : Icons.done, size: 15),
                   ]), opacity: 0.65)),
                   
                 ],)
