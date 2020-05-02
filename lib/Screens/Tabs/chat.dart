@@ -39,18 +39,23 @@ class ChatTabState extends State<ChatTab> {
       thread.participants = [];
       
       // get participant information
-      for (var j = 0; j < snap.value["participants"].length; j++)
+      if (snap.value["participants"].length == 2)
       {
-        var participantId = snap.value["participants"][j];
-        
-        if (participantId != User.me.uid)
+        for (var j = 0; j < snap.value["participants"].length; j++)
         {
-          // If the user is not myself
-          try {
-            var participant = await User.getUser(participantId);
-            thread.participants.add(participant);
-          } catch (e) {
-            print(participantId);
+          var participantId = snap.value["participants"][j];
+          
+          if (participantId != User.me.uid)
+          {
+            // If the user is not myself
+            try {
+              var participant = await User.getUser(participantId);
+              thread.participants.add(participant);
+
+              break;
+            } catch (e) {
+              print(participantId);
+            }
           }
         }
       }
@@ -72,9 +77,7 @@ class ChatTabState extends State<ChatTab> {
         senderName = "You";
       else 
       {
-        senderName = thread.participants.where((u) {
-          return (u.uid == last["sender"]);
-        }).first.firstName;
+        senderName = last["senderName"];
       }
       thread.lastMessage = Message(last["sender"], senderName, last["content"], last["messageType"]);
 

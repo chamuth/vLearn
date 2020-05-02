@@ -75,7 +75,7 @@ class _LoadedProfileViewCardState extends State<LoadedProfileViewCard> {
 
             },)
 
-          ],), padding: EdgeInsets.fromLTRB(15, 100, 15, 15),),
+          ],), padding: EdgeInsets.fromLTRB(15, 100, 0, 15),),
 
           Padding(
             child: GridView.count(shrinkWrap: true, crossAxisCount: 4, children: List.generate(actions.length, (index) {

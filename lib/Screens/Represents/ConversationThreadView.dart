@@ -54,63 +54,69 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
   DateTime lastSeen = DateTime.now();
   bool lastSeenListenerSet = false;
 
+  bool firstTime = true;
+
   void loadMessages() async
   {
     var ref = Chats.loadChat(widget.threadId);
 
     ref.onValue.listen((dat) {
       
-      if (dat.snapshot.value["title"] == null)
+      if (firstTime)
       {
-        if (dat.snapshot.value["participants"].length > 2)
+        firstTime = false;
+        if (dat.snapshot.value["title"] == null)
         {
-          // group chat naming
-          setState(() {
-            group = true; 
-            chatTitle = "Group Chat";
-            peopleIds = dat.snapshot.value["participants"];
-          });
-
-        } else {
-          setState(() {
-            group = false;
-          });
-
-          for(var i = 0; i < dat.snapshot.value["participants"].length; i++)
+          if (dat.snapshot.value["participants"].length > 2)
           {
-            var p = dat.snapshot.value["participants"][i];
+            // group chat naming
+            setState(() {
+              group = true; 
+              chatTitle = "Group Chat";
+              peopleIds = dat.snapshot.value["participants"];
+            });
 
-            if (p != User.me.uid)
+          } else {
+            setState(() {
+              group = false;
+            });
+
+            for(var i = 0; i < dat.snapshot.value["participants"].length; i++)
             {
-              User.getUser(p).then((user) 
-              {
-                setState(() {
-                  person = user;
-                  chatTitle = User.getSanitizedName(user);
-                });
-              });
+              var p = dat.snapshot.value["participants"][i];
 
-              if (lastSeenListenerSet == false)
+              if (p != User.me.uid)
               {
-                User.getLastOnline(p).onValue.listen((onlineVal) {
+                User.getUser(p).then((user) 
+                {
                   setState(() {
-                    lastSeen = DateTime.parse(onlineVal.snapshot.value["last_online"] ?? DateTime.now());
+                    person = user;
+                    chatTitle = User.getSanitizedName(user);
                   });
                 });
 
-                lastSeenListenerSet = true;
+                if (lastSeenListenerSet == false)
+                {
+                  User.getLastOnline(p).onValue.listen((onlineVal) {
+                    setState(() {
+                      lastSeen = DateTime.parse(onlineVal.snapshot.value["last_online"] ?? DateTime.now());
+                    });
+                  });
+
+                  lastSeenListenerSet = true;
+                }
               }
             }
           }
-        }
-      } else {
-        setState(() {
-          if (dat.snapshot.value["participants"].length > 2)
-            group = true;
+        } else {
+          setState(() {
+            if (dat.snapshot.value["participants"].length > 2)
+              group = true;
 
-          chatTitle = dat.snapshot.value["title"];
-          peopleIds = dat.snapshot.value["participants"];
-        });
+            chatTitle = dat.snapshot.value["title"];
+            peopleIds = dat.snapshot.value["participants"];
+          });
+        }
       }
 
       // get the messages
@@ -187,14 +193,17 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
 
       // add the message temporarily before sending
       var rev = messages.reversed.toList();
-      rev.add(LocalMessage(content: messageTextController.text, messageStatus: MessageStatus.Sending, sent: DateTime.now(), type: MessageItemType.Message));
+      rev.add(LocalMessage(content: messageTextController.text, messageStatus: MessageStatus.Sending, sender: User.me.uid, sent: DateTime.now(), type: MessageItemType.Message));
 
       // reset the text
       messageTextController.text = "";
       
-      setState(() {
-        messages = rev.reversed.toList();      
-      });
+      if (mounted)
+      {
+        setState(() {
+          messages = rev.reversed.toList();  
+        });
+      }
 
       Chats.sendMessage(widget.threadId, msg);
     }
@@ -264,10 +273,10 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
                   
                   Padding(
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                      if (group && messages[i].sender != User.me.uid)
-                        Opacity(child: Text(messages[i].senderName, style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold), textAlign: TextAlign.start), opacity:0.65),
+                      if (group && messages[i].sender != User.me.uid && messages[i].senderName != null)
+                        Opacity(child: Text(messages[i].senderName ?? "", style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold), textAlign: TextAlign.start), opacity:0.65),
 
-                      Text(messages[i].content, style: TextStyle(fontSize: 17,), textAlign: TextAlign.start), 
+                      Text(messages[i].content ?? "", style: TextStyle(fontSize: 17,), textAlign: TextAlign.start), 
                     ],),
                     padding:
                       (group) ?
