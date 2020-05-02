@@ -19,34 +19,31 @@ eLearnApp for companies, institutions to use to collaborate with teachers, stude
 
 ### AUTHENTICATION
 
-[X] LOGIN PAGE
-    [X] Page Design
-    [X] Logging in using email
-    [ ] Logging in using Facebook
-    [ ] Logging in using Google
-    [ ] Logging in using Twitter
-[X] REGISTER PAGE
-    [X] Registering using emails
+- [X] Login Page Design
+- [X] Logging in using Email
+- [ ] Logging in using Facebook
+- [ ] Logging in using Google
+- [ ] Logging in using Twitter
+- [X] Register Page Design
+- [X] Registering using emails
 
-### DASHBOARD
-[ ] Dashboard Tab Design
-    [ ] Shared Folder
-    [ ] Chats
-    [ ] Notifications
-    [ ] Settings
+### DASHBOARD DESIGN
+- [X] Dashboard Tab Design
+- [X] Shared Folder
+- [X] Chats
+- [ ] Notifications
+- [ ] Settings
 
 ### USER INTERACTIONS
-[X] Q&A Screen
-    [X] MCQ Questions
-    [X] Writing Questions
-    [X] Submit screen
-    [ ] Anticheat options
-
-[ ] Settings Screen
-    [ ] Logging out
-
+- [X] Q&A Screen
+- [X] MCQ Questions
+- [X] Writing Questions
+- [X] Submit screen
+- [ ] Anticheat options
+- [X] Settings Screen
+- [X] Logging out
 
 ### DASHBOARD 
 
-[X] Noticeboard Functionality
-    [X] Noticeboard Card in dashboard shows all the posts today (in badges) and other noticeboard posts upto 5.
+- [X] Noticeboard Functionality
+- [X] Noticeboard Card in dashboard shows all the posts today (in badges) and other noticeboard posts upto 5.
