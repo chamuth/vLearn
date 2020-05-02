@@ -288,8 +288,7 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
             ), 
             padding: EdgeInsets.fromLTRB(15, 
             (messages[i].sender == messages[i + 1].sender) ?
-              2 : 
-              ((i == messages.length - 1) ? 15 : 7) 
+              2 : 7 
             , 15, (i == 0) ? 85 : 3));
           }
           else if (messages[i].type == MessageItemType.Start)
