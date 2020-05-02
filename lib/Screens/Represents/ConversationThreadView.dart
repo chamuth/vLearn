@@ -215,7 +215,7 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
                 ],)
               )
             ), 
-            padding: EdgeInsets.fromLTRB(15, 3, 15, (i == 0) ? 85 : 3));
+            padding: EdgeInsets.fromLTRB(15, (i == messages.length - 1) ? 15 : 3, 15, (i == 0) ? 85 : 3));
           }
           else if (messages[i].type == MessageItemType.Start)
           {
