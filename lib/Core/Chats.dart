@@ -5,6 +5,7 @@ import 'User.dart';
 
 class Thread
 {
+  String threadId;
   String title;
   String chatIconURL;
   List<User> participants;
@@ -39,5 +40,10 @@ class Chats
     }).toList();
     
     return threads;
+  }
+
+  static DatabaseReference loadChat(String threadId)
+  {
+    return FirebaseDatabase.instance.reference().child("threads").child(threadId);
   }
 }

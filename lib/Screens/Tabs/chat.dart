@@ -56,6 +56,7 @@ class ChatTabState extends State<ChatTab> {
       if (thread.participants.length == 1)
         thread.title = User.getSanitizedName(thread.participants[0]);
 
+      thread.threadId = snap.key;
       
       var last = (snap.value["thread"] as List).last;
       var senderName = "";
@@ -101,7 +102,7 @@ class ChatTabState extends State<ChatTab> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ConversationThreadView(thread: myChats[index]),
+                builder: (context) => ConversationThreadView(threadId: myChats[index].threadId),
               )
             );
 

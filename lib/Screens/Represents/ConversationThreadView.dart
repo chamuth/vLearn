@@ -9,9 +9,9 @@ import 'package:timeago/timeago.dart' as timeago;
 
 
 class ConversationThreadView extends StatefulWidget {
-  ConversationThreadView({Key key, this.thread}) : super(key: key);
+  ConversationThreadView({Key key, this.threadId}) : super(key: key);
 
-  Thread thread;
+  String threadId;
 
   @override
   _ConversationThreadViewState createState() => _ConversationThreadViewState();
@@ -41,22 +41,75 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
 
   // List<LocalMessage> messages = Faker().lorem.sentences(55).map((s) => LocalMessage(type: MessageItemType.Message, content: s, messageStatus: (random.boolean()) ? MessageStatus.Incoming : MessageStatus.Sent)).toList();
   List<LocalMessage> messages = [];
+  List _messages = [];
   User person = User.fromName("Chamuth", "Chamandana");
+  String chatTitle = "Loading...";
+
+  void loadMessages() async
+  {
+    var ref = Chats.loadChat(widget.threadId);
+
+    ref.onValue.listen((dat) {
+      
+
+      if (dat.snapshot.value["title"] == null)
+      {
+        for(var i = 0; i <dat.snapshot.value["participants"].length; i++)
+        {
+          var p = dat.snapshot.value["participants"][i];
+
+          if (p != User.me.uid)
+          {
+            User.getUser(p).then((user) 
+            {
+              setState(() {
+                chatTitle = User.getSanitizedName(user);
+              });
+            });
+          }
+        }
+      } else {
+        setState(() {
+          chatTitle = dat.snapshot.value["title"];
+        });
+      }
+
+      // get the messages
+      _messages = dat.snapshot.value["thread"];
+      
+      renderMessages();
+
+      print(_messages);
+
+    });
+  }
 
   void renderMessages()
   {
-    
+    List<LocalMessage> list = [];
+
+    for(var i = _messages.length - 1; i >= 0; i--)
+    {
+      var message = _messages[i];
+
+      LocalMessage local = LocalMessage(
+        content: message["content"], 
+        messageStatus: (message["sender"] == User.me.uid) ? MessageStatus.Sent : MessageStatus.Incoming, 
+        type: MessageItemType.Message
+      );
+
+      list.add(local);
+    }
+
+    setState(() {
+      messages = list;
+    });
   }
 
   @override
   void initState() {
-    setState(() {
-      messages.add(LocalMessage(type: MessageItemType.Start));
-      var indices = random.numbers(55, 4);
-      indices.forEach((f) {
-        messages.insert(f, LocalMessage(type: MessageItemType.DateTime));
-      });
-    });
+    loadMessages();
+
     super.initState();
   }
 
@@ -71,7 +124,7 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
           VerticalDivider(color: Colors.transparent, width: 12),
 
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-            Text(User.getSanitizedName(person), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Text(chatTitle, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             Divider(height: 2, color: Colors.transparent),
             Text("last seen " + timeago.format(User.getLastSeen(person)), style: TextStyle(fontSize: 14, color: Colors.grey)),
           ],),
@@ -91,6 +144,8 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
         // Conversation items list
         ListView.builder(shrinkWrap: false, reverse: true,scrollDirection: Axis.vertical, itemBuilder: (context, i)
         {
+          print(messages[i].content);
+
           if (messages[i].type == MessageItemType.Message)
           {
             return Padding(child: 
@@ -119,7 +174,7 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
                 ],)
               )
             ), 
-            padding: EdgeInsets.fromLTRB(15, (messages[i+1].messageStatus != messages[i].messageStatus) ? 8: 3, 15, (i == 0) ? 85 : 3));
+            padding: EdgeInsets.fromLTRB(15, 3, 15, (i == 0) ? 85 : 3));
           }
           else if (messages[i].type == MessageItemType.Start)
           {
@@ -128,6 +183,7 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
           {
             return Padding(child: Seperator(title: "April 14"), padding: EdgeInsets.fromLTRB(10, 10, 10, 5));
           }
+          return Padding(padding: EdgeInsets.fromLTRB(10, 10, 10, 5));
         }, itemCount: messages.length),
 
         // Text Fader
