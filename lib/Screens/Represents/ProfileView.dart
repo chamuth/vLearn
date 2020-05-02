@@ -9,8 +9,8 @@ import 'package:flutter_breadcrumb/flutter_breadcrumb.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ProfileView extends StatefulWidget {
-  ProfileView({Key key}) : super(key: key);
-
+  ProfileView({Key key, this.uid}) : super(key: key);
+  String uid;
   @override
   _ProfileViewState createState() => _ProfileViewState();
 }
@@ -18,21 +18,20 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
 
   bool profileLoaded = false;
-  User user = User.fromName("Chamuth", "Chamandana");
+  User user = User.fromName("", "");
   
   @override
   void initState() {
+    User.getUser(widget.uid).then((val) {
+      setState(() {
+        user = val;
+      });
 
-    setState(() {
-      user.teacher = true;
-    });
-    
-    Future.delayed(Duration(seconds: 4), (){
       setState(() {
         profileLoaded = true;
       });
     });
-
+    
     super.initState();
   }
 

@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:badges/badges.dart';
+import 'package:elearnapp/Core/User.dart';
+import 'package:elearnapp/Screens/Represents/ProfileView.dart';
 import 'package:elearnapp/Themes/themes.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +15,14 @@ class MainAppBar
         leading: Padding(
           padding: EdgeInsets.all(11),
           child: (!poppable) ? new RawMaterialButton(
-            onPressed: () { log("Profile clicked"); },
+            onPressed: () { 
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfileView(uid: User.me.uid)
+                )
+              );
+            },
             child: CircleAvatar(
               child: Icon(Icons.person_outline, color: Colors.white, size: 20),
               backgroundColor: (Themes.darkMode) ? Colors.grey[700] : Theme.of(context).primaryColor,

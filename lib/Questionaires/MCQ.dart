@@ -42,13 +42,11 @@ class _MCQScreenState extends State<MCQScreen> {
 
   List<Question> questions = 
   [
-    Question(question: "ඇම්පියරය අර්ඨ දක්වන්න", answers: []),
-
-    Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
-      "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
+    Question(question: "A source program is the program written in which level language?", answers: [
+      "English", "Symbolic", "High-Level", "Machine"
     ]),
-    Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
-      "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
+    Question(question: "Which of the following operating systems do you choose to implement a client server network?", answers: [
+      "MS DOS", "Windows 98", "Windows 10", "Windows 2000"
     ]),
     Question(question: "තාප සන්නායකතාවයේ ඒකකය වන්නේ?", answers: [
       "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"

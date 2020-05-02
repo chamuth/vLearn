@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import 'ProfileView.dart';
+
 
 class ConversationThreadView extends StatefulWidget {
   ConversationThreadView({Key key, this.threadId}) : super(key: key);
@@ -43,6 +45,8 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
   // List<LocalMessage> messages = Faker().lorem.sentences(55).map((s) => LocalMessage(type: MessageItemType.Message, content: s, messageStatus: (random.boolean()) ? MessageStatus.Incoming : MessageStatus.Sent)).toList();
   List<LocalMessage> messages = [];
   List _messages = [];
+  bool group = false;
+  List peopleIds = [];
   User person = User.fromName("Chamuth", "Chamandana");
   String chatTitle = "Loading...";
   DateTime lastSeen = DateTime.now();
@@ -56,28 +60,42 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
       
       if (dat.snapshot.value["title"] == null)
       {
-        for(var i = 0; i <dat.snapshot.value["participants"].length; i++)
+        if (dat.snapshot.value["participants"].length > 2)
         {
-          var p = dat.snapshot.value["participants"][i];
+          // group chat naming
+          setState(() {
+            group = true; 
+            chatTitle = "Group Chat";
+            peopleIds = dat.snapshot.value["participants"];
+          });
 
-          if (p != User.me.uid)
+        } else {
+          group = false;
+
+          for(var i = 0; i < dat.snapshot.value["participants"].length; i++)
           {
-            User.getUser(p).then((user) 
-            {
-              setState(() {
-                chatTitle = User.getSanitizedName(user);
-              });
-            });
+            var p = dat.snapshot.value["participants"][i];
 
-            if (lastSeenListenerSet == false)
+            if (p != User.me.uid)
             {
-              User.getLastOnline(p).onValue.listen((onlineVal) {
+              User.getUser(p).then((user) 
+              {
                 setState(() {
-                  lastSeen = DateTime.parse(onlineVal.snapshot.value["last_online"] ?? DateTime.now());
+                  person = user;
+                  chatTitle = User.getSanitizedName(user);
                 });
               });
 
-              lastSeenListenerSet = true;
+              if (lastSeenListenerSet == false)
+              {
+                User.getLastOnline(p).onValue.listen((onlineVal) {
+                  setState(() {
+                    lastSeen = DateTime.parse(onlineVal.snapshot.value["last_online"] ?? DateTime.now());
+                  });
+                });
+
+                lastSeenListenerSet = true;
+              }
             }
           }
         }
@@ -114,6 +132,9 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
 
       list.add(local);
     }
+
+    // add the chat start identifier
+    list.add(LocalMessage(type: MessageItemType.Start));
 
     setState(() {
       messages = list;
@@ -162,17 +183,30 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
       appBar: AppBar(
         titleSpacing: 0,
         title: RawMaterialButton(child: Row(mainAxisAlignment: MainAxisAlignment.start,children: <Widget>[
-          CircleAvatar(child: Text("C")),
+          if (group)
+            CircleAvatar(child: Icon(Icons.group, size: 20)),
+          if (!group)
+            CircleAvatar(child: Text((person.firstName != null) ? person.firstName.substring(0,1) : "")),
 
           VerticalDivider(color: Colors.transparent, width: 12),
 
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
             Text(chatTitle, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             Divider(height: 2, color: Colors.transparent),
-            Text("last seen " + timeago.format(lastSeen), style: TextStyle(fontSize: 14, color: Colors.grey)),
+            if (!group)
+              Text(((lastSeen.second < 60) ? "online" : "last seen " + timeago.format(lastSeen)), style: TextStyle(fontSize: 14, color: Colors.grey)),
+            if (group)
+              Text(peopleIds.length.toString() + " members", style: TextStyle(fontSize: 14, color: Colors.grey)),
           ],),
 
-        ],), onPressed: () { Navigator.of(context).pushNamed("/class"); },),
+        ],), onPressed: () { 
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProfileView(uid: person.uid)
+            )
+          );
+        },),
         leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () { Navigator.maybePop(context); }),
         actions: <Widget>[
           Padding(child: IconButton(tooltip: "Chat Information", icon: Icon(Icons.info_outline), onPressed: (){

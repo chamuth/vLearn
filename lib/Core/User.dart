@@ -52,15 +52,19 @@ class User
   static Future<User> getUser(uid) async 
   {
     var data = await getUserData(uid);
-    var user = User.fromName(data["first_name"], data["last_name"]);
 
-    // set user information
-    user.email = data["email"];
-    user.uid = uid;
-    user.phone = data["phone"];
-    user.teacher = data["teacher"];
+    if (data != null)
+    {
+      var user = User.fromName(data["first_name"], data["last_name"]);
 
-    return user;
+      // set user information
+      user.email = data["email"];
+      user.uid = uid;
+      user.phone = data["phone"];
+      user.teacher = data["teacher"];
+
+      return user;
+    }
   }
 
   static Future<DocumentSnapshot> getUserData(uid) async

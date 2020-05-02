@@ -46,15 +46,20 @@ class ChatTabState extends State<ChatTab> {
         if (participantId != User.me.uid)
         {
           // If the user is not myself
-          var participant = await User.getUser(participantId);
-          thread.participants.add(participant);
-
+          try {
+            var participant = await User.getUser(participantId);
+            thread.participants.add(participant);
+          } catch (e) {
+            print(participantId);
+          }
         }
       }
 
       // set the conversation title
       if (thread.participants.length == 1)
         thread.title = User.getSanitizedName(thread.participants[0]);
+      else 
+        thread.title = "Group Chat";
 
       thread.threadId = snap.key;
       
@@ -73,11 +78,12 @@ class ChatTabState extends State<ChatTab> {
 
       threads.add(thread);
     }
-
-    setState(() {
-      myChats = threads;
-      threadsReady = true;
-    });
+    if (this.mounted){
+      setState(() {
+        myChats = threads;
+        threadsReady = true;
+      });
+    }
   }
 
   @override
