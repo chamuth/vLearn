@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shimmer/shimmer.dart';
 
+import 'Class/Questionaires.dart';
+
 class ClassAction
 {
   IconData actionIcon = Icons.add;
@@ -23,7 +25,9 @@ class ClassAction
 }
 
 class ClassView extends StatefulWidget {
-  ClassView({Key key}) : super(key: key);
+  ClassView({Key key, this.classId}) : super(key: key);
+
+  String classId;
 
   @override
   _ClassViewState createState() => _ClassViewState();
@@ -49,14 +53,19 @@ class _ClassViewState extends State<ClassView> {
             CupertinoPageRoute(builder: (context) => AssignmentsScreen(classData: data)),
           );
         }),
-        ClassAction(Icons.query_builder, "Questionaires", 2, () => { }),
+        ClassAction(Icons.query_builder, "Questionaires", 2, () {
+          Navigator.push(
+            context,
+            CupertinoPageRoute(builder: (context) => QuestionairesScreen(classData: data)),
+          );
+        }),
         ClassAction(Icons.folder_shared, "Class Folder", 0, () => { }),
         ClassAction(Icons.question_answer, "Discussion", 12, () => { }),
         ClassAction(Icons.videocam, "Conference", 0, () => { }),
         ClassAction(Icons.more_horiz, "More", 0, () => { }),
       ];
     });
-    var classID = ModalRoute.of(context).settings.arguments;
+    var classID = widget.classId;
     var temp = await ClassData.getClass(classID);
     var tempHost = await User.getUser(temp.host);
 
@@ -76,6 +85,13 @@ class _ClassViewState extends State<ClassView> {
   }
 
   @override
+  void initState() {
+    loadClass();
+  
+    super.initState();
+  }
+
+  @override
   void dispose() {
     
     super.dispose();
@@ -83,9 +99,7 @@ class _ClassViewState extends State<ClassView> {
 
   @override
   Widget build(BuildContext context) {
-    loadClass();
-  
-    return Scaffold(
+      return Scaffold(
       appBar: MainAppBar.get(context, (data.subject == "") ? "Loading..." : data.subject + " - " + data.grade, poppable: true),
       body: Container(child: 
         ListView(children: <Widget>[

@@ -1,39 +1,43 @@
 import 'package:elearnapp/Components/AssignmentCard.dart';
 import 'package:elearnapp/Components/MainAppBar.dart';
-import 'package:elearnapp/Components/Seperator.dart';
 import 'package:elearnapp/Core/Assignment.dart';
 import 'package:elearnapp/Core/Classes.dart';
-import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_breadcrumb/flutter_breadcrumb.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shimmer/shimmer.dart';
 
-class AssignmentsScreen extends StatefulWidget {
-  AssignmentsScreen({Key key, this.classData}) : super(key: key);
+class QuestionairesScreen extends StatefulWidget {
+  QuestionairesScreen({Key key, this.classData}) : super(key: key);
 
   ClassData classData;
 
   @override
-  _AssignmentsScreenState createState() => _AssignmentsScreenState();
+  _QuestionairesScreenState createState() => _QuestionairesScreenState();
 }
 
-class _AssignmentsScreenState extends State<AssignmentsScreen> {
+class _QuestionairesScreenState extends State<QuestionairesScreen> {
 
   List<Assignment> assignments = [];
   List<Assignment> submittedAssignments = [];
   bool loaded = false;
 
-  @override
-  void initState() 
+  void loadQuests() async
   {
-    Assignment.getAssignments(widget.classData.id).then((list)
+    var quests = await Assignment.getQuestionnaires(widget.classData.id);
+
+    if (mounted)
     {
       setState(() {
-        assignments = list;
+        assignments = quests;
         loaded = true;
       });
-    });
+    }
+  }
+
+  @override
+  void initState() {
+    loadQuests();
 
     super.initState();
   }
@@ -41,7 +45,7 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MainAppBar.get(context, "Assignments", poppable: true),
+      appBar: MainAppBar.get(context, "Questionnaire", poppable: true),
       body: Container(child: Column(children: <Widget>[
 
         // Breadcrumbs
@@ -49,23 +53,24 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
           BreadCrumb(items: <BreadCrumbItem>[
             
             BreadCrumbItem(content: Text(widget.classData.subject + " (" + widget.classData.grade + ")", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey))),
-            BreadCrumbItem(content: Text("Assignments", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey)))
+            BreadCrumbItem(content: Text("Questionnaire", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey)))
 
           ], divider: Icon(Icons.keyboard_arrow_right, size: 15, color: Colors.grey),)  
         ], padding: EdgeInsets.fromLTRB(20, 5, 0, 10),), height: 32),
 
         Expanded(child: 
           ListView(children: <Widget>[
-            
-            Padding(child: Row(children: <Widget>[
-              Icon(Icons.timer, size: 18),
-              VerticalDivider(color: Colors.transparent, width: 10),
-              Text("ONGOING ASSIGNMENTS", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[200])),
-              VerticalDivider(color: Colors.transparent, width: 5),
-              Expanded(child: Divider()),
-              VerticalDivider(color: Colors.transparent, width: 5),
-              RotatedBox(quarterTurns: 1, child: Icon(Icons.chevron_right, color: Colors.grey[600], size: 20)),
-            ],), padding: EdgeInsets.fromLTRB(20, 5, 20, 8)),
+
+            if (loaded && assignments.length > 0)
+              Padding(child: Row(children: <Widget>[
+                Icon(Icons.list, size: 18),
+                VerticalDivider(color: Colors.transparent, width: 10),
+                Text("ONGOING QUESTIONNAIRES", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[200])),
+                VerticalDivider(color: Colors.transparent, width: 5),
+                Expanded(child: Divider()),
+                VerticalDivider(color: Colors.transparent, width: 5),
+                RotatedBox(quarterTurns: 1, child: Icon(Icons.chevron_right, color: Colors.grey[600], size: 20)),
+              ],), padding: EdgeInsets.fromLTRB(20, 5, 20, 8)),
 
             AnimatedCrossFade(
               firstChild: Column(children: List.generate(assignments.length, (index) {
@@ -97,7 +102,7 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
                   Divider(color: Colors.transparent, height: 10),
                   Text("Not to worry", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 17)),
                   Divider(color: Colors.transparent, height: 3),
-                  Text("you don't have any assignments to complete", style: TextStyle(color: Colors.grey, fontSize: 15))
+                  Text("you don't have any questionnaires to complete", style: TextStyle(color: Colors.grey, fontSize: 15))
                 ],), alignment: Alignment.center,),padding: EdgeInsets.fromLTRB(0, 50, 0, 15),
               ), duration: Duration(milliseconds: 300), crossFadeState: (assignments.length > 0) ? CrossFadeState.showFirst : CrossFadeState.showSecond),
 
@@ -105,28 +110,19 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
               Padding(child: Row(children: <Widget>[
                 Icon(Icons.done, size: 18),
                 VerticalDivider(color: Colors.transparent, width: 10),
-                Text("SUBMITTED ASSIGNMENTS", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[200])),
+                Text("SUBMITTED QUESTIONNAIRES", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[200])),
                 VerticalDivider(color: Colors.transparent, width: 5),
                 Expanded(child: Divider()),
                 VerticalDivider(color: Colors.transparent, width: 5),
                 RotatedBox(quarterTurns: 1, child: Icon(Icons.chevron_right, color: Colors.grey[600], size: 20)),
-              ],), padding: EdgeInsets.fromLTRB(20, 15, 20, 8)),
+              ],), padding: EdgeInsets.fromLTRB(20, 5, 20, 8)),
 
-            Column(children: List.generate(submittedAssignments.length, (index) 
-            {
-              return IgnorePointer(child: Opacity(child: AssignmentCard(
-                dueDate: submittedAssignments[index].duedate, 
-                title: submittedAssignments[index].title, 
-                subtitle: submittedAssignments[index].subtitle, 
-                assignmentDuration: submittedAssignments[index].duration,
-              ), opacity:0.5), ignoring: true);
-            })),
-
-          ],)
+          ])
         )
 
-      ],)
-      ,),
+
+       ])
+      )
     );
   }
 }

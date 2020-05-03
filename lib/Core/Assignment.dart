@@ -24,4 +24,19 @@ class Assignment
       return Assignment(f.data["title"], f.data["subtitle"], (f.data["duedate"] as Timestamp).toDate(), Duration(minutes: f.data["duration"]));
     }).toList();
   }
+
+  static Future<List<Assignment>> getQuestionnaires(String classId) async
+  {
+    var results = await Firestore.instance.collection("organizations")
+      .document(Organization.currentOrganizationId)
+      .collection("classes")
+      .document(classId)
+      .collection("quests")
+      .getDocuments();
+
+    return results.documents.map((f) 
+    {
+      return Assignment(f.data["title"], f.data["subtitle"], (f.data["duedate"] as Timestamp).toDate(), Duration(minutes: f.data["duration"]));
+    }).toList();
+  }
 }
