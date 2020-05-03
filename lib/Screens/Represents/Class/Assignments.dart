@@ -2,6 +2,7 @@ import 'package:elearnapp/Components/AssignmentCard.dart';
 import 'package:elearnapp/Components/MainAppBar.dart';
 import 'package:elearnapp/Components/Seperator.dart';
 import 'package:elearnapp/Core/Classes.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_breadcrumb/flutter_breadcrumb.dart';
 
@@ -44,10 +45,12 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
 
             Column(children: List.generate(2, (index) 
             {
-              return AssignmentCard();
+              return AssignmentCard(dueDate: DateTime.now().add(Duration(hours: (index + 1) * 36 * 2)),);
             })),
 
             Padding(child: Row(children: <Widget>[
+              Icon(Icons.done, size: 18),
+              VerticalDivider(color: Colors.transparent, width: 10),
               Text("SUBMITTED ASSIGNMENTS", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[200])),
               VerticalDivider(color: Colors.transparent, width: 5),
               Expanded(child: Divider()),
@@ -57,7 +60,7 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
 
             Column(children: List.generate(5, (index) 
             {
-              return IgnorePointer(child: Opacity(child: AssignmentCard(), opacity:0.5), ignoring: true);
+              return IgnorePointer(child: Opacity(child: AssignmentCard(dueDate: DateTime.now().add(Duration(hours: 400)),), opacity:0.5), ignoring: true);
             })),
 
           ],)

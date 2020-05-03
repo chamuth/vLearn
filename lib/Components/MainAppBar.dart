@@ -43,6 +43,7 @@ class MainAppBar
         actions: <Widget>[
           if (!poppable)
             IconButton(icon: Icon(Icons.search), onPressed: () { log("search button clicked"); }, tooltip: "Search entire space", color: (Themes.darkMode) ? Colors.white : Colors.grey[800],),
+          
           Padding(
             padding: EdgeInsets.fromLTRB(0, 0, 5, 0), 
             child: Badge(
@@ -56,6 +57,7 @@ class MainAppBar
               )
             )
           ),
+          
         ],
         centerTitle: true,
         backgroundColor: Theme.of(context).backgroundColor,

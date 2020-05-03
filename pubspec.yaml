@@ -37,6 +37,7 @@ dependencies:
   scroll_snap_list: 0.4.0
   random_string: 2.0.1
   soundpool: 1.0.1
+  intl: 0.16.1
 
 flutter:
   uses-material-design: true
