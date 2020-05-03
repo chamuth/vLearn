@@ -53,7 +53,7 @@ class _AssignmentCardState extends State<AssignmentCard> {
 
 
 
-      ],), padding: EdgeInsets.fromLTRB(10, 10, 15, 7),), clipBehavior: Clip.antiAlias,), onPressed: () { },), 
+      ],), padding: EdgeInsets.fromLTRB(10, 10, 15, 5),), clipBehavior: Clip.antiAlias,), onPressed: () { },), 
       padding: EdgeInsets.fromLTRB(15, 3, 15, 3)
     );
   }

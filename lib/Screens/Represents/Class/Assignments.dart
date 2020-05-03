@@ -1,5 +1,6 @@
 import 'package:elearnapp/Components/AssignmentCard.dart';
 import 'package:elearnapp/Components/MainAppBar.dart';
+import 'package:elearnapp/Components/Seperator.dart';
 import 'package:elearnapp/Core/Classes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_breadcrumb/flutter_breadcrumb.dart';
@@ -32,12 +33,28 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
 
         Expanded(child: 
           ListView(children: <Widget>[
+            
+            Padding(child: Row(children: <Widget>[
+              Text("ONGOING ASSIGNMENTS", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[200])),
+              VerticalDivider(color: Colors.transparent, width: 5),
+              Expanded(child: Divider()),
+              VerticalDivider(color: Colors.transparent, width: 5),
+              RotatedBox(quarterTurns: 1, child: Icon(Icons.chevron_right, color: Colors.grey[600], size: 20)),
+            ],), padding: EdgeInsets.fromLTRB(20, 5, 20, 8)),
 
             Column(children: List.generate(2, (index) 
             {
               return AssignmentCard();
-            }))
+            })),
 
+            Padding(child: Row(children: <Widget>[
+              Text("ONGOING ASSIGNMENTS", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[200])),
+              VerticalDivider(color: Colors.transparent, width: 5),
+              Expanded(child: Divider()),
+              VerticalDivider(color: Colors.transparent, width: 5),
+              RotatedBox(quarterTurns: 1, child: Icon(Icons.chevron_right, color: Colors.grey[600], size: 20)),
+            ],), padding: EdgeInsets.fromLTRB(20, 5, 20, 8)),
+            
           ],)
         )
 
