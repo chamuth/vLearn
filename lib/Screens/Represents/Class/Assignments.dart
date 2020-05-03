@@ -31,8 +31,16 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
     {
       setState(() {
         assignments = list;
-        loaded = true;
       });
+        
+      Future.delayed(Duration(milliseconds: 250), () 
+      {
+        if (mounted)
+          setState(() {
+            loaded = true;
+          });
+      });
+      
     });
 
     super.initState();

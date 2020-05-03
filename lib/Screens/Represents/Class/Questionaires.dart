@@ -30,9 +30,17 @@ class _QuestionairesScreenState extends State<QuestionairesScreen> {
     {
       setState(() {
         assignments = quests;
-        loaded = true;
       });
     }
+    
+    Future.delayed(Duration(milliseconds: 250), () 
+    {
+      if (mounted)
+        setState(() {
+          loaded = true;
+        });
+    });
+    
   }
 
   @override

@@ -47,20 +47,20 @@ class _ClassViewState extends State<ClassView> {
   {
     setState(() {
       actions = [
-        ClassAction(Icons.assignment, "Assignments", 2, () { 
+        ClassAction(Icons.assignment, "Assignments", 0, () { 
           Navigator.push(
             context,
             CupertinoPageRoute(builder: (context) => AssignmentsScreen(classData: data)),
           );
         }),
-        ClassAction(Icons.query_builder, "Questionaires", 2, () {
+        ClassAction(Icons.query_builder, "Questionaires", 0, () {
           Navigator.push(
             context,
             CupertinoPageRoute(builder: (context) => QuestionairesScreen(classData: data)),
           );
         }),
         ClassAction(Icons.folder_shared, "Class Folder", 0, () => { }),
-        ClassAction(Icons.question_answer, "Discussion", 12, () => { }),
+        ClassAction(Icons.question_answer, "Discussion", 0, () => { }),
         ClassAction(Icons.videocam, "Conference", 0, () => { }),
         ClassAction(Icons.more_horiz, "More", 0, () => { }),
       ];
