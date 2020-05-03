@@ -6,6 +6,7 @@ import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Screens/Represents/ConversationThreadView.dart';
 import 'package:faker/faker.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
@@ -113,7 +114,7 @@ class ChatTabState extends State<ChatTab> {
 
             Navigator.push(
               context,
-              MaterialPageRoute(
+              CupertinoPageRoute(
                 builder: (context) => ConversationThreadView(threadId: myChats[index].threadId),
               )
             );

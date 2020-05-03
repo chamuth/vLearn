@@ -4,6 +4,7 @@ import 'package:badges/badges.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Screens/Represents/ProfileView.dart';
 import 'package:elearnapp/Themes/themes.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MainAppBar
@@ -18,7 +19,7 @@ class MainAppBar
             onPressed: () { 
               Navigator.push(
                 context,
-                MaterialPageRoute(
+                CupertinoPageRoute(
                   builder: (context) => ProfileView(uid: User.me.uid)
                 )
               );
@@ -33,7 +34,7 @@ class MainAppBar
             fillColor: Colors.white,
           ) : new IconButton(
             onPressed: () { Navigator.of(context).maybePop(); },
-            icon: Icon(Icons.arrow_back),
+            icon: Icon(Icons.arrow_back, color: (Themes.darkMode) ? Colors.white : Colors.grey[900]),
           ),
         ),
 

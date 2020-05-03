@@ -6,6 +6,7 @@ import 'package:elearnapp/Components/Seperator.dart';
 import 'package:elearnapp/Core/Classes.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Data/Organization.dart';
+import 'package:elearnapp/Screens/Represents/Class/Assignments.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
@@ -35,17 +36,25 @@ class _ClassViewState extends State<ClassView> {
   int activitySize = -1;
   String backdropImageURL = "";
 
-  List<ClassAction> actions = [
-    ClassAction(Icons.assignment, "Assignments", 2, () => { }),
-    ClassAction(Icons.query_builder, "Questionaires", 2, () => { }),
-    ClassAction(Icons.folder_shared, "Class Folder", 0, () => { }),
-    ClassAction(Icons.question_answer, "Discussion", 12, () => { }),
-    ClassAction(Icons.videocam, "Conference", 0, () => { }),
-    ClassAction(Icons.more_horiz, "More", 0, () => { }),
-  ];
+  List<ClassAction> actions;
 
   void loadClass() async
   {
+    setState(() {
+      actions = [
+        ClassAction(Icons.assignment, "Assignments", 2, () { 
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AssignmentsScreen(classData: data)),
+          );
+        }),
+        ClassAction(Icons.query_builder, "Questionaires", 2, () => { }),
+        ClassAction(Icons.folder_shared, "Class Folder", 0, () => { }),
+        ClassAction(Icons.question_answer, "Discussion", 12, () => { }),
+        ClassAction(Icons.videocam, "Conference", 0, () => { }),
+        ClassAction(Icons.more_horiz, "More", 0, () => { }),
+      ];
+    });
     var classID = ModalRoute.of(context).settings.arguments;
     var temp = await ClassData.getClass(classID);
     var tempHost = await User.getUser(temp.host);

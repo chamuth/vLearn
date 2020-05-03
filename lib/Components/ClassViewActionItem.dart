@@ -33,6 +33,7 @@ class ActionItemState extends State<ActionItem> {
         Text(widget.actions[widget.index].actionName, style: TextStyle(color: (Themes.darkMode) ? Colors.grey[300] : Theme.of(context).primaryColor, fontWeight: FontWeight.bold, fontSize:(widget.size == 3) ? 16 : 14))
       ],))),
       onPressed: () { widget.actions[widget.index].onTap(); },
+
     ), padding: EdgeInsets.all(4));
   }
 }

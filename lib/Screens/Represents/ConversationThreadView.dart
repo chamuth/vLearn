@@ -4,6 +4,7 @@ import 'package:elearnapp/Core/Chats.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:faker/faker.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -236,7 +237,7 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
           {
             Navigator.push(
               context,
-              MaterialPageRoute(
+              CupertinoPageRoute(
                 builder: (context) => ProfileView(uid: person.uid)
               )
             );
