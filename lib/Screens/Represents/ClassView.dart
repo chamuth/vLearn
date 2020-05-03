@@ -7,11 +7,13 @@ import 'package:elearnapp/Core/Classes.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Data/Organization.dart';
 import 'package:elearnapp/Screens/Represents/Class/Assignments.dart';
+import 'package:elearnapp/Screens/Tabs/folder.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../start.dart';
 import 'Class/Questionaires.dart';
 
 class ClassAction
@@ -59,7 +61,12 @@ class _ClassViewState extends State<ClassView> {
             CupertinoPageRoute(builder: (context) => QuestionairesScreen(classData: data)),
           );
         }),
-        ClassAction(Icons.folder_shared, "Class Folder", 0, () => { }),
+        ClassAction(Icons.folder_shared, "Class Folder", 0, () {
+          Navigator.pushReplacement(
+            context, 
+            CupertinoPageRoute(builder: (context) => StartScreen(startupIndex: 1,))
+          );
+        }),
         ClassAction(Icons.question_answer, "Discussion", 0, () => { }),
         ClassAction(Icons.videocam, "Conference", 0, () => { }),
         ClassAction(Icons.more_horiz, "More", 0, () => { }),

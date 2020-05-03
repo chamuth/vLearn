@@ -38,12 +38,13 @@ class FolderTabState extends State<FolderTab> {
   Future<FolderData> getItems() async
   {
     var folder = new FolderData();
+    print("get Items called");
 
     switch(currentFolder)
     {
       case "/": 
         // get all classes
-        var classes = await User.getMyClasses();
+        var classes = await User.getMyClasses(withHost: false);
 
         for (var i = 0; i < classes.length; i ++)
         {
@@ -75,12 +76,10 @@ class FolderTabState extends State<FolderTab> {
   }
 
   void _onRefresh() async{
-    
     _refreshController.refreshCompleted();
   }
 
   void _onLoading() async{
-    
     _refreshController.loadComplete();
   }
 

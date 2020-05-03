@@ -78,7 +78,7 @@ class User
     return Firestore.instance.collection("organizations").document(Organization.currentOrganizationId);
   }
 
-  static Future getMyClasses() async
+  static Future getMyClasses({bool withHost = true}) async
   {
     if (me.uid == null)
       await retrieveUserData();
@@ -94,14 +94,22 @@ class User
       for (var i = 0; i < classes.length; i ++)
       {        
         var classResult = await org.collection("classes").document(classes[i]).get();
-        var host = await getUserData(classResult["host"]);
-
-        returnClasses.add({
-          "id" : classes[i],
-          "host": host["first_name"] + " " + host["last_name"], 
-          "subject" : classResult["subject"],
-          "grade" : classResult["grade"]
-        });
+        if (withHost)
+        {
+          var host = await getUserData(classResult["host"]);
+          returnClasses.add({
+            "id" : classes[i],
+            "host": host["first_name"] + " " + host["last_name"], 
+            "subject" : classResult["subject"],
+            "grade" : classResult["grade"]
+          });
+        } else {
+          returnClasses.add({
+            "id" : classes[i],
+            "subject" : classResult["subject"],
+            "grade" : classResult["grade"]
+          });
+        }
       }
     }
 

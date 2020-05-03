@@ -17,7 +17,9 @@ import './Tabs/settings.dart';
 import 'Tabs/timetable.dart';
 
 class StartScreen extends StatefulWidget {
-  StartScreen({Key key}) : super(key: key);
+  StartScreen({Key key, this.startupIndex = 0}) : super(key: key);
+
+  int startupIndex = 0;
 
   @override
   _StartScreenState createState() => _StartScreenState();
@@ -36,6 +38,10 @@ class _StartScreenState extends State<StartScreen> {
   {
     // Count for user activity
     User.setLastOnline(User.me.uid, DateTime.now());
+    
+    setState(() {
+      selectedIndex = widget.startupIndex;
+    });
 
     super.initState();
   }
