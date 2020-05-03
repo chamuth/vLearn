@@ -9,6 +9,7 @@ import 'package:elearnapp/Data/Organization.dart';
 import 'package:elearnapp/Screens/Represents/Class/Assignments.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ClassAction
@@ -45,7 +46,7 @@ class _ClassViewState extends State<ClassView> {
         ClassAction(Icons.assignment, "Assignments", 2, () { 
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AssignmentsScreen(classData: data)),
+            CupertinoPageRoute(builder: (context) => AssignmentsScreen(classData: data)),
           );
         }),
         ClassAction(Icons.query_builder, "Questionaires", 2, () => { }),
