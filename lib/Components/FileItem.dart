@@ -1,7 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:elearnapp/Core/Preferences.dart';
 import 'package:elearnapp/Themes/themes.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:photo_view/photo_view.dart';
 
 enum FileItemType 
 {
@@ -50,10 +54,18 @@ class _FileItemState extends State<FileItem> {
       // get download link for thumbnail
       var temp = await FirebaseStorage.instance.ref().child(widget.filename).getDownloadURL();      
 
-      setState(() {
-        thumbnailDownloadUrl = temp;
-      });
+      if (mounted)
+        setState(() {
+          thumbnailDownloadUrl = temp;
+        });
     }
+  }
+
+  String ellipsis(String long)
+  {
+    if (long.length > 25)
+      return long.substring(0, 25) + "...";
+    else return long;
   }
 
   @override
@@ -100,7 +112,7 @@ class _FileItemState extends State<FileItem> {
             if (widget.type == FileItemType.classItem)
               Expanded(child: 
                 Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
-                  Text(widget.title, overflow: TextOverflow.fade, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor)),
+                  Text(ellipsis(widget.title), overflow: TextOverflow.fade, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor)),
                   Divider(color: Colors.transparent, height: 3),
                   Text(widget.subtitle, style: TextStyle(color: Colors.grey)),
                 ],)
@@ -109,22 +121,43 @@ class _FileItemState extends State<FileItem> {
               if (widget.type == FileItemType.folderItem)
                 Expanded(child: 
                   Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
-                    Text(widget.subtitle, style: TextStyle(color: Colors.grey)),
+                    Text(ellipsis(widget.subtitle), style: TextStyle(color: Colors.grey)),
                     Divider(color: Colors.transparent, height: 2),
                     Text(widget.title, overflow: TextOverflow.fade, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor)),
                   ],)
                 ),
               if (widget.type == FileItemType.imageItem)
                 Expanded(child: 
+                  Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[                    
+                    Text(ellipsis(widget.title), overflow: TextOverflow.fade, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor)),
+                  ],)
+                ),
+              if (widget.type == FileItemType.fileItem)
+                Expanded(child: 
                   Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
-                    
-                    
-                    Text(widget.title, overflow: TextOverflow.fade, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor)),
+                    Text(ellipsis(widget.title), overflow: TextOverflow.fade, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor)),
                   ],)
                 ),
           ],)
         )
       ],)
-    ), onPressed: () { widget.onPressed(); });
+    ), onPressed: () { 
+      if (widget.type == FileItemType.imageItem)
+      {
+        Navigator.push(
+          context,
+          CupertinoPageRoute(builder: (context) => Container(child: 
+            CachedNetworkImage(
+              imageUrl: thumbnailDownloadUrl,
+              imageBuilder: (context, imageProvider) => PhotoView(imageProvider: imageProvider),
+              placeholder: (context, url) => CircularProgressIndicator(),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+            ),
+          )),
+        );
+      } else {
+        widget.onPressed(); 
+      }
+    });
   }
 }

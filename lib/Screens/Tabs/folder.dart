@@ -1,5 +1,6 @@
 import 'package:elearnapp/Components/FileItem.dart';
 import 'package:elearnapp/Core/API.dart';
+import 'package:elearnapp/Core/Preferences.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Data/Organization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -138,6 +139,13 @@ class FolderTabState extends State<FolderTab> {
 
       return false;
     }
+  }
+
+  @override
+  void initState() {
+    Preferences.temporaryColorSwitching = false;
+    
+    super.initState();
   }
 
   @override
