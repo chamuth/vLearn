@@ -1,4 +1,5 @@
 import 'package:elearnapp/Components/FileItem.dart';
+import 'package:elearnapp/Core/API.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Data/Organization.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -62,7 +63,29 @@ class FolderTabState extends State<FolderTab> {
         break;
 
       default:
-        
+        var splits = currentFolder.split('/');
+        var classId = splits[1];
+        var path = splits.getRange(2, splits.length).join("/");
+
+        var files = await API.getFiles(Organization.currentOrganizationId, classId, path);
+
+        for (var i = 0; i < files.length; i ++)
+        {
+          var file = new FileData();
+          file.title = files[i].filename;
+          file.subtitle = "Image";
+
+          if (files[i].folder)
+            file.type = FileItemType.folderItem;
+          else 
+            file.type = FileItemType.fileItem;
+          
+          file.thumbnail = "";
+          // file.to = "/" + files[i]["id"] + "/";
+          // file.id = classes[i]["id"];
+
+          folder.files.add(file);
+        }
     }
 
     return folder;
@@ -129,8 +152,9 @@ class FolderTabState extends State<FolderTab> {
                 crossAxisCount: 2,
                 padding: EdgeInsets.all(5),
                 children: List.generate(snapshot.data.files.length, (index) {
-                  return FileItem(title: snapshot.data.files[index].title, subtitle: snapshot.data.files[index].subtitle, onPressed: () { 
+                  return FileItem(title: snapshot.data.files[index].title, type: snapshot.data.files[index].type,  subtitle: snapshot.data.files[index].subtitle, onPressed: () { 
                     setState(() {
+                      history.add(currentFolder);
                       currentFolder = snapshot.data.files[index].to;
                       readableFolder = "My Classes" + (snapshot.data.files[index].to).toString().replaceAll(snapshot.data.files[index].id, snapshot.data.files[index].title + " (" + snapshot.data.files[index].subtitle + ")");
                     });
