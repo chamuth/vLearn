@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearnapp/Core/Preferences.dart';
 import 'package:elearnapp/Themes/themes.dart';
+import 'package:filesize/filesize.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +20,9 @@ class FileItem extends StatefulWidget {
   String filename;
   String subtitle;
   String thumbnailUri;
+  int size;
 
-  FileItem({Key key, this.type = FileItemType.classItem, this.filename, this.thumbnailUri, this.title = "Class", this.subtitle = "Grade 12", this.onPressed}) : super(key: key); 
+  FileItem({Key key, this.size, this.type = FileItemType.classItem, this.filename, this.thumbnailUri, this.title = "Class", this.subtitle = "Grade 12", this.onPressed}) : super(key: key); 
 
   @override
   _FileItemState createState() => _FileItemState();
@@ -107,7 +109,7 @@ class _FileItemState extends State<FileItem> {
           )
         ),
           
-        Padding(padding: EdgeInsets.fromLTRB(12, 10, 12, 10), child: 
+        Padding(padding: EdgeInsets.fromLTRB(10, 5, 10, 8), child: 
           Row(children: <Widget>[
             if (widget.type == FileItemType.classItem)
               Expanded(child: 
@@ -123,19 +125,23 @@ class _FileItemState extends State<FileItem> {
                   Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
                     Text(ellipsis(widget.subtitle), style: TextStyle(color: Colors.grey)),
                     Divider(color: Colors.transparent, height: 2),
-                    Text(widget.title, overflow: TextOverflow.fade, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor)),
+                    Text(ellipsis(widget.title), overflow: TextOverflow.fade, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor)),
                   ],)
                 ),
               if (widget.type == FileItemType.imageItem)
                 Expanded(child: 
                   Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[                    
                     Text(ellipsis(widget.title), overflow: TextOverflow.fade, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor)),
+                    Divider(color: Colors.transparent, height: 2),
+                    Text(ellipsis(filesize(widget.size)), style: TextStyle(color: Colors.grey)),
                   ],)
                 ),
               if (widget.type == FileItemType.fileItem)
                 Expanded(child: 
                   Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
                     Text(ellipsis(widget.title), overflow: TextOverflow.fade, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor)),
+                    Divider(color: Colors.transparent, height: 2),
+                    Text(ellipsis(filesize(widget.size)), style: TextStyle(color: Colors.grey)),
                   ],)
                 ),
           ],)

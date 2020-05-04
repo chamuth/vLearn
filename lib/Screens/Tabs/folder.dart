@@ -22,6 +22,7 @@ class FileData
   String to;
   String id;
   String filename;
+  int size;
 }
 
 class FolderTab extends StatefulWidget {
@@ -104,6 +105,8 @@ class FolderTabState extends State<FolderTab> {
 
             if (["image/jpeg", "image/png", "image/gif"].contains(files[i].meta["contentType"]))
               file.type = FileItemType.imageItem;
+
+            file.size = int.tryParse(files[i].meta["size"]);
           }
 
           print(files[i].fullPath);
@@ -189,7 +192,7 @@ class FolderTabState extends State<FolderTab> {
                 crossAxisCount: (currentFolder == "/") ? 2 : 2,
                 padding: EdgeInsets.all(5),
                 children: List.generate(snapshot.data.files.length, (index) {
-                  return FileItem(title: snapshot.data.files[index].title, filename: snapshot.data.files[index].filename, type: snapshot.data.files[index].type,  subtitle: snapshot.data.files[index].subtitle, onPressed: () { 
+                  return FileItem(title: snapshot.data.files[index].title, filename: snapshot.data.files[index].filename, type: snapshot.data.files[index].type,  subtitle: snapshot.data.files[index].subtitle, size: snapshot.data.files[index].size,  onPressed: () { 
                     setState(() {
                       history.add(currentFolder);
                       currentFolder = snapshot.data.files[index].to;
