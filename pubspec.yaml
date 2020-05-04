@@ -38,6 +38,7 @@ dependencies:
   random_string: 2.0.1
   soundpool: 1.0.1
   intl: 0.16.1
+  http: 0.12.1
 
 flutter:
   uses-material-design: true

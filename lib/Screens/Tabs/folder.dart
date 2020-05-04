@@ -35,10 +35,11 @@ class FolderTabState extends State<FolderTab> {
   String currentFolder = "/";
   String readableFolder = "My Classes/";
 
+  List<String> history = [];
+
   Future<FolderData> getItems() async
   {
     var folder = new FolderData();
-    print("get Items called");
 
     switch(currentFolder)
     {
@@ -61,15 +62,7 @@ class FolderTabState extends State<FolderTab> {
         break;
 
       default:
-      
-        StorageReference shared = FirebaseStorage.instance.ref().child("organizations").child(Organization.currentOrganizationId).child("shared");
-        var splits = currentFolder.split('/');
-
-        // go inside the folders
-        for (var i = 1; i < splits.length - 1; i++)
-        {
-          shared = shared.child(splits[i]);
-        }
+        
     }
 
     return folder;
@@ -83,12 +76,28 @@ class FolderTabState extends State<FolderTab> {
     _refreshController.loadComplete();
   }
 
+  Future<bool> _onWillPop() async
+  {
+    if (history.length == 0)
+      return true;
+    else 
+    {
+      // go back a stage
+      currentFolder = history.removeLast();
+      getItems();
+
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var splits = currentFolder.split('/');
     var readableSplits = readableFolder.split("/");
     
-    return SmartRefresher(
+    return new  WillPopScope(
+      onWillPop: _onWillPop,
+      child: SmartRefresher(
       enablePullDown: true,
       header: WaterDropHeader(),
       onRefresh: _onRefresh,
@@ -136,6 +145,6 @@ class FolderTabState extends State<FolderTab> {
         }, future: getItems(),)
 
       ]),
-    );
+    ));
   }
 }
