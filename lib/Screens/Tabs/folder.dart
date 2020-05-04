@@ -20,6 +20,7 @@ class FileData
   String thumbnail;
   String to;
   String id;
+  String filename;
 }
 
 class FolderTab extends StatefulWidget {
@@ -38,6 +39,19 @@ class FolderTabState extends State<FolderTab> {
 
   List<String> history = [];
 
+  Map<String, String> classIdNameMap = {  };
+
+  String convertIdsToNames(String org)
+  {
+    var returner = org;
+
+    classIdNameMap.forEach((key, value) {
+      returner = returner.replaceAll(key, value);
+    });
+
+    return returner;
+  }
+
   Future<FolderData> getItems() async
   {
     var folder = new FolderData();
@@ -50,6 +64,8 @@ class FolderTabState extends State<FolderTab> {
 
         for (var i = 0; i < classes.length; i ++)
         {
+          classIdNameMap[classes[i]["id"]] = classes[i]["subject"] + " (" + classes[i]["grade"] + ")";
+
           var file = new FileData();
           file.title = classes[i]["subject"];
           file.subtitle = classes[i]["grade"];
@@ -73,16 +89,24 @@ class FolderTabState extends State<FolderTab> {
         {
           var file = new FileData();
           file.title = files[i].filename;
-          file.subtitle = "Image";
 
           if (files[i].folder)
+          {
             file.type = FileItemType.folderItem;
+            file.subtitle = "Folder";
+            file.to = currentFolder + files[i].filename;
+          }
           else 
+          {
             file.type = FileItemType.fileItem;
+            file.filename = files[i].fullPath;
+
+            if (["image/jpeg", "image/png", "image/gif"].contains(files[i].meta["contentType"]))
+              file.type = FileItemType.imageItem;
+          }
           
           file.thumbnail = "";
-          // file.to = "/" + files[i]["id"] + "/";
-          // file.id = classes[i]["id"];
+          // file.id = classes[i]["id"];c
 
           folder.files.add(file);
         }
@@ -106,8 +130,9 @@ class FolderTabState extends State<FolderTab> {
     else 
     {
       // go back a stage
-      currentFolder = history.removeLast();
-      getItems();
+      setState(() {
+        currentFolder = history.removeLast();
+      });
 
       return false;
     }
@@ -134,7 +159,9 @@ class FolderTabState extends State<FolderTab> {
               Padding(child: 
                 BreadCrumb(
                   items: List.generate(splits.length - 1, (i) {
-                    return BreadCrumbItem(content: Text(readableSplits[i], style: TextStyle(fontSize: 16, color: (i == (splits.length - 2)) ? Colors.white : Colors.grey)));
+                    return BreadCrumbItem(content: 
+                      Text(readableSplits[i], style: TextStyle(fontSize: 16, color: (i == (splits.length - 2)) ? Colors.white : Colors.grey))
+                    );
                   }),
                   divider: Icon(Icons.chevron_right, color: Colors.grey[500], size: 14)
                 ), padding: EdgeInsets.fromLTRB(15, 10, 0, 0)
@@ -149,14 +176,14 @@ class FolderTabState extends State<FolderTab> {
           {
             return Expanded(child: 
               GridView.count(
-                crossAxisCount: 2,
+                crossAxisCount: (currentFolder == "/") ? 2 : 2,
                 padding: EdgeInsets.all(5),
                 children: List.generate(snapshot.data.files.length, (index) {
                   return FileItem(title: snapshot.data.files[index].title, type: snapshot.data.files[index].type,  subtitle: snapshot.data.files[index].subtitle, onPressed: () { 
                     setState(() {
                       history.add(currentFolder);
                       currentFolder = snapshot.data.files[index].to;
-                      readableFolder = "My Classes" + (snapshot.data.files[index].to).toString().replaceAll(snapshot.data.files[index].id, snapshot.data.files[index].title + " (" + snapshot.data.files[index].subtitle + ")");
+                      readableFolder = convertIdsToNames("My Classes" + snapshot.data.files[index].to);
                     });
                   },);
                 }),
