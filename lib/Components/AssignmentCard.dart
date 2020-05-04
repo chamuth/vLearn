@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AssignmentCard extends StatefulWidget {
-  AssignmentCard({Key key, this.title, this.subtitle, this.dueDate, this.assignmentDuration}) : super(key: key);
+  AssignmentCard({Key key, this.onTap, this.title, this.subtitle, this.dueDate, this.assignmentDuration}) : super(key: key);
 
   String title;
   String subtitle;
   DateTime dueDate;
   Duration assignmentDuration;
+  Function onTap;
 
   @override
   _AssignmentCardState createState() => _AssignmentCardState();
@@ -60,7 +61,9 @@ class _AssignmentCardState extends State<AssignmentCard> {
 
 
 
-      ],), padding: EdgeInsets.fromLTRB(10, 10, 15, 5),), clipBehavior: Clip.antiAlias,), onPressed: () { },), 
+      ],), padding: EdgeInsets.fromLTRB(10, 10, 15, 5),), clipBehavior: Clip.antiAlias,), onPressed: () {
+        widget.onTap();
+      },), 
       padding: EdgeInsets.fromLTRB(15, 3, 15, 3)
     );
   }

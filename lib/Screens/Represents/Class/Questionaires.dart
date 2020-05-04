@@ -2,6 +2,8 @@ import 'package:elearnapp/Components/AssignmentCard.dart';
 import 'package:elearnapp/Components/MainAppBar.dart';
 import 'package:elearnapp/Core/Assignment.dart';
 import 'package:elearnapp/Core/Classes.dart';
+import 'package:elearnapp/Questionaires/MCQ.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_breadcrumb/flutter_breadcrumb.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -87,6 +89,13 @@ class _QuestionairesScreenState extends State<QuestionairesScreen> {
                   title: assignments[index].title, 
                   subtitle: assignments[index].subtitle, 
                   assignmentDuration: assignments[index].duration,
+                  onTap: () 
+                  {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(builder: (context) => MCQScreen()),
+                    );
+                  }
                 );
               })), secondChild: (!loaded) ? Column(children: List.generate(10, (i) {
                 return  Padding(child: Card(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), child: Padding(padding: EdgeInsets.fromLTRB(10, 10, 15, 10), child: Row(children: <Widget>[

@@ -11,7 +11,10 @@ import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 
 class MCQScreen extends StatefulWidget {
-  MCQScreen({Key key}) : super(key: key);
+  MCQScreen({Key key, this.classId, this.assignmentId}) : super(key: key);
+
+  String classId;
+  String assignmentId;
 
   @override
   _MCQScreenState createState() => _MCQScreenState();
@@ -204,7 +207,8 @@ class _MCQScreenState extends State<MCQScreen> {
       Widget yesButton = FlatButton(
         child: Text("Yes"),
         onPressed:  () { 
-          Navigator.of(context).pushReplacementNamed('/dashboard');
+          int count = 0;
+          Navigator.of(context).popUntil((_) => count++ >= 2);
         },
       );
       Widget noButton = FlatButton(

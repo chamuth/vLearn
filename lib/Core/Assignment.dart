@@ -3,12 +3,13 @@ import 'package:elearnapp/Data/Organization.dart';
 
 class Assignment
 {
+  String id;
   String title;
   String subtitle;
   DateTime duedate;
   Duration duration;
 
-  Assignment(this.title, this.subtitle, this.duedate, this.duration);
+  Assignment(this.id, this.title, this.subtitle, this.duedate, this.duration);
 
   static Future<List<Assignment>> getAssignments(String classId) async
   {
@@ -21,7 +22,7 @@ class Assignment
     
     return results.documents.map((f) 
     {
-      return Assignment(f.data["title"], f.data["subtitle"], (f.data["duedate"] as Timestamp).toDate(), Duration(minutes: f.data["duration"]));
+      return Assignment(f.documentID, f.data["title"], f.data["subtitle"], (f.data["duedate"] as Timestamp).toDate(), Duration(minutes: f.data["duration"]));
     }).toList();
   }
 
@@ -36,7 +37,7 @@ class Assignment
 
     return results.documents.map((f) 
     {
-      return Assignment(f.data["title"], f.data["subtitle"], (f.data["duedate"] as Timestamp).toDate(), Duration(minutes: f.data["duration"]));
+      return Assignment(f.documentID, f.data["title"], f.data["subtitle"], (f.data["duedate"] as Timestamp).toDate(), Duration(minutes: f.data["duration"]));
     }).toList();
   }
 }
