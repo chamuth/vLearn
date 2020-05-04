@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearnapp/Themes/themes.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 enum FileItemType 
@@ -22,8 +24,10 @@ class FileItem extends StatefulWidget {
 
 class _FileItemState extends State<FileItem> {
 
+  String thumbnailDownloadUrl = "";
+
   IconData getIconForType(FileItemType type)
-  {
+  { 
     switch (type) 
     {
       case FileItemType.classItem:
@@ -39,17 +43,59 @@ class _FileItemState extends State<FileItem> {
     }
   }
 
+  void loadThumbnails() async
+  {
+    if (widget.type == FileItemType.imageItem)
+    {
+      // get download link for thumbnail
+      var temp = await FirebaseStorage.instance.ref().child(widget.filename).getDownloadURL();      
+
+      setState(() {
+        thumbnailDownloadUrl = temp;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    loadThumbnails();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return RawMaterialButton(child: Card(
       child: Column(children: <Widget>[
-        Expanded(flex:1, child: 
-          Padding(
-            child: Icon(getIconForType(widget.type), size:70, color:(Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor), 
-            padding: EdgeInsets.fromLTRB(0, 25, 0, 0)
+        if (widget.type != FileItemType.imageItem)
+          Expanded(flex:1, child: 
+            Padding(
+              child: Icon(getIconForType(widget.type), size:70, color:(Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor), 
+              padding: EdgeInsets.fromLTRB(0, 25, 0, 0)
+            )
+          ,),
+        if (widget.type == FileItemType.imageItem)
+          Expanded(
+            flex: 1, 
+            child: AnimatedCrossFade(crossFadeState: (thumbnailDownloadUrl == "") ? CrossFadeState.showFirst : CrossFadeState.showSecond, 
+            firstChild: Align(child: CircularProgressIndicator(), alignment: Alignment.center), 
+            secondChild: CachedNetworkImage(
+              imageUrl: thumbnailDownloadUrl,
+              imageBuilder: (context, imageProvider) => Container(
+
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: imageProvider
+                  )
+                )  
+              ),
+              placeholder: (context, url) => CircularProgressIndicator(),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+            ), duration: Duration(milliseconds: 300),
           )
-        ,),
-        Padding(padding: EdgeInsets.all(12), child: 
+        ),
+          
+        Padding(padding: EdgeInsets.fromLTRB(12, 10, 12, 10), child: 
           Row(children: <Widget>[
             if (widget.type == FileItemType.classItem)
               Expanded(child: 

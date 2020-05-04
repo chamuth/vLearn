@@ -104,6 +104,8 @@ class FolderTabState extends State<FolderTab> {
             if (["image/jpeg", "image/png", "image/gif"].contains(files[i].meta["contentType"]))
               file.type = FileItemType.imageItem;
           }
+
+          print(files[i].fullPath);
           
           file.thumbnail = "";
           // file.id = classes[i]["id"];c
@@ -179,7 +181,7 @@ class FolderTabState extends State<FolderTab> {
                 crossAxisCount: (currentFolder == "/") ? 2 : 2,
                 padding: EdgeInsets.all(5),
                 children: List.generate(snapshot.data.files.length, (index) {
-                  return FileItem(title: snapshot.data.files[index].title, type: snapshot.data.files[index].type,  subtitle: snapshot.data.files[index].subtitle, onPressed: () { 
+                  return FileItem(title: snapshot.data.files[index].title, filename: snapshot.data.files[index].filename, type: snapshot.data.files[index].type,  subtitle: snapshot.data.files[index].subtitle, onPressed: () { 
                     setState(() {
                       history.add(currentFolder);
                       currentFolder = snapshot.data.files[index].to;
