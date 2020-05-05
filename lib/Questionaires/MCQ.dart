@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:elearnapp/Core/Assignment.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:elearnapp/Components/AllQuestionsDisplay.dart';
 import 'package:elearnapp/Components/AllQuestionsDisplayItem.dart';
@@ -100,19 +102,28 @@ class _MCQScreenState extends State<MCQScreen> {
   }
 
   // StreamSubscription _homeButtonSubscription;
+  Timer timer;
 
   @override
   void initState() {
-    Timer.periodic(Duration(seconds: 1), (t) {
-      setState(() {
-        if (examDuration.inSeconds == 0)
-        {
-          showOverview = true;
-          t.cancel();
-        } else {
-          examDuration = Duration(seconds: examDuration.inSeconds - 1);
-        }
-      });
+    timer = Timer.periodic(Duration(seconds: 1), (t) {
+      if (mounted)
+      {
+        setState(() {
+          if (examDuration.inSeconds == 0)
+          {
+            showOverview = true;
+            t.cancel();
+          } else {
+            if (loaded)
+            {
+              examDuration = Duration(seconds: examDuration.inSeconds - 1);
+            }
+          }
+        });
+      } else {
+        timer.cancel();
+      }
     });
 
     questionsCount = questions.length;
@@ -124,8 +135,19 @@ class _MCQScreenState extends State<MCQScreen> {
     //   log("THIS MF GOING HOME!!");
     // });
 
+    // load all answers
+    Assignment.getQuestionnaireData(widget.classId, widget.assignmentId).then((a) 
+    {
+      if (mounted)
+        setState(() {
+          loaded = true;
+          questions = a;
+        });
+    });
+
     super.initState();
   }
+
 
   formatDuration(Duration d) => d.toString().split('.').first.padLeft(8, "0");
 
@@ -226,11 +248,13 @@ class _MCQScreenState extends State<MCQScreen> {
 
   @override
   void dispose() {
-    // _homeButtonSubscription?.cancel();
+    // stop the timer
+    timer.cancel();
 
     super.dispose();
   }
 
+  bool loaded = false;
   TextEditingController _answerController = new TextEditingController();
 
   @override
@@ -240,69 +264,75 @@ class _MCQScreenState extends State<MCQScreen> {
         body: Stack(children: <Widget>[
         
           // Main panel
-          IgnorePointer(ignoring: showOverview, child: 
-            AnimatedOpacity(child: 
-              Container(child: Center(child: ListView(shrinkWrap: true, children: <Widget>[
-                
-                Padding(padding:EdgeInsets.all(35), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+          if (questions.length > 0 && loaded)
+            IgnorePointer(ignoring: showOverview, child: 
+              AnimatedOpacity(child: 
+                Container(child: Center(child: ListView(shrinkWrap: true, children: <Widget>[
+                  
+                  Padding(padding:EdgeInsets.all(35), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
 
-                  AnimatedOpacity(child: Column(children: <Widget>[
+                    AnimatedOpacity(child: Column(children: <Widget>[
 
-                    Text("Question " + (currentQuestionIndex + 1).toString() + " / $questionsCount", style: TextStyle(fontSize:16, color: Colors.grey, fontWeight: FontWeight.bold),),
-                    Divider(height: 10),
-                    Divider(height: 5, color:Colors.transparent),
-                    Text(questions[currentQuestionIndex].question, style: TextStyle(fontSize:23, fontWeight: FontWeight.bold),),
+                      Text("Question " + (currentQuestionIndex + 1).toString() + " / $questionsCount", style: TextStyle(fontSize:16, color: Colors.grey, fontWeight: FontWeight.bold),),
+                      Divider(height: 10),
+                      Divider(height: 5, color:Colors.transparent),
+                      Text(questions[currentQuestionIndex].question, style: TextStyle(fontSize:23, fontWeight: FontWeight.bold),),
+                      Divider(height: 25, color:Colors.transparent),
+
+                      if (questions[currentQuestionIndex].answers.length > 0)
+                        for (var i = 0; i < questions[currentQuestionIndex].answers.length; i ++) 
+                          MCQAnswerItem(answer: questions[currentQuestionIndex].answers[i], selected: (i == currentSelection), onPressed: () { setState(() {
+                            currentSelection = i;
+                          });},),
+                      if (questions[currentQuestionIndex].answers.length == 0)
+                        TextFormField(maxLines: 10, controller: _answerController, 
+                          decoration: InputDecoration(
+                            hintText: "Write your answer here",
+                            contentPadding: EdgeInsets.fromLTRB(15,12,15,12),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        )
+
+                    ],), opacity: (changingQuestion) ? 0 : 1, duration: Duration(milliseconds: 200)),
+
                     Divider(height: 25, color:Colors.transparent),
 
-                    if (questions[currentQuestionIndex].answers.length > 0)
-                      for (var i = 0; i < questions[currentQuestionIndex].answers.length; i ++) 
-                        MCQAnswerItem(answer: questions[currentQuestionIndex].answers[i], selected: (i == currentSelection), onPressed: () { setState(() {
-                          currentSelection = i;
-                        });},),
-                    if (questions[currentQuestionIndex].answers.length == 0)
-                      TextFormField(maxLines: 10, controller: _answerController, 
-                        decoration: InputDecoration(
-                          hintText: "Write your answer here",
-                          contentPadding: EdgeInsets.fromLTRB(15,12,15,12),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      )
+                    Row(children: <Widget>[
+                      Expanded(child: RaisedButton(child: Row(children: <Widget>[
+                        Icon(Icons.arrow_back, size:15),
+                        VerticalDivider(width:10, color: Colors.transparent),
+                        Expanded(child: Text("Previous", textAlign: TextAlign.center,))
+                      ],), onPressed: (currentQuestionIndex == 0) ? null : () { previousQuestion(); },), flex: 1),
+                      VerticalDivider(width: 10),
+                      Expanded(child: RaisedButton(child: Row(children: <Widget>[
+                        Expanded(child: Text((questions.length == currentQuestionIndex + 1) ? "Overview" : "Next", textAlign: TextAlign.center,)),
+                        VerticalDivider(width:10, color: Colors.transparent),
+                        Icon(Icons.arrow_forward, size:15),
+                      ],), onPressed: () { nextQuestion(); },), flex: 1),
+                    ],),
 
-                  ],), opacity: (changingQuestion) ? 0 : 1, duration: Duration(milliseconds: 200)),
+                    Row(children: <Widget>[
+                      Expanded(child: RaisedButton(child: Row(children: <Widget>[
+                        Icon(Icons.question_answer, size:15),
+                        Expanded(child: Text("Questionaire Overview", textAlign: TextAlign.center,))
+                      ],), color:Theme.of(context).secondaryHeaderColor, onPressed: () { setState(() {
+                        showOverview = true;
+                      }); },), flex: 1),
+                    ],)
 
-                  Divider(height: 25, color:Colors.transparent),
+                  ],))
 
-                  Row(children: <Widget>[
-                    Expanded(child: RaisedButton(child: Row(children: <Widget>[
-                      Icon(Icons.arrow_back, size:15),
-                      VerticalDivider(width:10, color: Colors.transparent),
-                      Expanded(child: Text("Previous", textAlign: TextAlign.center,))
-                    ],), onPressed: (currentQuestionIndex == 0) ? null : () { previousQuestion(); },), flex: 1),
-                    VerticalDivider(width: 10),
-                    Expanded(child: RaisedButton(child: Row(children: <Widget>[
-                      Expanded(child: Text((questions.length == currentQuestionIndex + 1) ? "Overview" : "Next", textAlign: TextAlign.center,)),
-                      VerticalDivider(width:10, color: Colors.transparent),
-                      Icon(Icons.arrow_forward, size:15),
-                    ],), onPressed: () { nextQuestion(); },), flex: 1),
-                  ],),
-
-                  Row(children: <Widget>[
-                    Expanded(child: RaisedButton(child: Row(children: <Widget>[
-                      Icon(Icons.question_answer, size:15),
-                      Expanded(child: Text("Questionaire Overview", textAlign: TextAlign.center,))
-                    ],), color:Theme.of(context).secondaryHeaderColor, onPressed: () { setState(() {
-                      showOverview = true;
-                    }); },), flex: 1),
-                  ],)
-
-                ],))
-
-              ],),),),
-              opacity:showOverview ? 0 : 1, duration: Duration(milliseconds: 250),
+                ],),),),
+                opacity:showOverview ? 0 : 1, duration: Duration(milliseconds: 250),
+              ),
             ),
-          ),
+
+          if (! loaded)
+            Container(color:Theme.of(context).backgroundColor, child: Center(child: Column(mainAxisSize: MainAxisSize.min,children: <Widget>[
+              CircularProgressIndicator(),
+            ]))),
 
           // Overview panel
           IgnorePointer(ignoring: !showOverview, child:

@@ -41,7 +41,7 @@ class User
   {
     FirebaseDatabase.instance.reference().child("activity").child(uid).set({ 
       "last_online" : time.toString()
-    });
+    }).catchError((er) { });
   }
 
   static String getSanitizedName(User user)

@@ -42,9 +42,11 @@ class _LoginScreenState extends State<LoginScreen> {
       Scaffold.of(context).showSnackBar(SnackBar(content: Text("Successfully logged in!", style:TextStyle(color: Colors.white)), backgroundColor: Colors.green,));
 
       // get the user data and save it
-      User.retrieveUserData();
+      User.retrieveUserData().then((o) {
+        // load page after
+        Navigator.pushReplacementNamed(context, "/dashboard");
+      });
 
-      Navigator.pushReplacementNamed(context, "/dashboard");
       
     } catch (e) {
       var message = "";
