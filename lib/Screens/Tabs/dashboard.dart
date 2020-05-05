@@ -82,12 +82,12 @@ class DashboardTabState extends State<DashboardTab> {
                 ));
               } else {
                 return Container(child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: <Widget>[
-                  FaIcon(FontAwesomeIcons.frown, size: 50, color: Colors.grey[700]),
+                  FaIcon(FontAwesomeIcons.frown, size: 45, color: Colors.grey[700]),
                   Divider(color: Colors.transparent, height: 10),
                   Text("You haven't joined any classes", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[500], fontSize: 17)),
                   Divider(color: Colors.transparent, height: 5),
                   Text("Use an invitation link sent by your school to join a class.", style: TextStyle(color: Colors.grey[600], fontSize: 17), textAlign: TextAlign.center,),
-                ],), padding: EdgeInsets.fromLTRB(50, 15, 50, 15),);
+                ],), padding: EdgeInsets.fromLTRB(50, 10, 50, 15),);
               }
             } else {
               return Container(

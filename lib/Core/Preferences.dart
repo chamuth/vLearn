@@ -14,21 +14,26 @@ class Preferences
 
   static void setColors(themeNotifier)
   {
-    if (!Preferences.temporaryColorSwitching)
       if (!Preferences.prefs.getBool("darkMode") ?? true) 
       {
-        FlutterStatusbarcolor.setStatusBarColor(Colors.white);
-        FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
-        FlutterStatusbarcolor.setNavigationBarColor(Colors.white);
-        FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
+        if (!Preferences.temporaryColorSwitching)
+        {
+          FlutterStatusbarcolor.setStatusBarColor(Colors.white);
+          FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
+          FlutterStatusbarcolor.setNavigationBarColor(Colors.white);
+          FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
+        }
 
         themeNotifier.setTheme(Themes.light);
         Themes.darkMode = false;
       } else {
-        FlutterStatusbarcolor.setStatusBarColor(Colors.grey[850]);
-        FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
-        FlutterStatusbarcolor.setNavigationBarColor(Colors.grey[850]);
-        FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
+        if (!Preferences.temporaryColorSwitching)
+        {
+          FlutterStatusbarcolor.setStatusBarColor(Colors.grey[850]);
+          FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+          FlutterStatusbarcolor.setNavigationBarColor(Colors.grey[850]);
+          FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
+        }
 
         themeNotifier.setTheme(Themes.dark);
         Themes.darkMode = true;
