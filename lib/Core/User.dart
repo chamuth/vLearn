@@ -161,10 +161,20 @@ class User
     return (result.documents.length.toString());
   }
 
-  static Future loadNoticeboard() async
+  static Future loadNoticeboard({ bool all = false }) async
   {
     var org = getMyOrg();
-    var results  = await org.collection("noticeboard").where("created", isGreaterThan: Timestamp.fromDate(DateTime.now().subtract(new Duration(days: 30)))).orderBy("created", descending: true).getDocuments();
+    
+    QuerySnapshot results;
+    if (!all)
+      results = await org.collection("noticeboard")
+        .where("created", isGreaterThan: Timestamp.fromDate(DateTime.now().subtract(new Duration(days: 30)))) // get the notices from last 30 days
+        .orderBy("created", descending: true)
+        .getDocuments();
+    else 
+      results = await org.collection("noticeboard")
+        .orderBy("created", descending: true)
+        .getDocuments();
 
     return results.documents;
   }

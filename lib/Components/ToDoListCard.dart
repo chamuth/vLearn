@@ -34,7 +34,7 @@ class _ToDoListCardState extends State<ToDoListCard> {
               }, future: User.getMyTodoCount())
             ]),
 
-            Padding(child: Text("To Do List items", textAlign: TextAlign.left, style: TextStyle(fontSize:18, color: Colors.grey[500], fontWeight: FontWeight.bold)), padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+            Padding(child: Text("To Do List", textAlign: TextAlign.left, style: TextStyle(fontSize:18, color: Colors.grey[500], fontWeight: FontWeight.bold)), padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
 
             Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 0), child: Divider()),
 

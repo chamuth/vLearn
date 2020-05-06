@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elearnapp/Core/NoticeType.dart';
 import 'package:elearnapp/Core/User.dart';
+import 'package:elearnapp/Screens/Noticeboard/Noticeboard.dart';
 import 'package:elearnapp/Themes/themes.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 
@@ -60,7 +62,10 @@ class _NoticeboardCardState extends State<NoticeboardCard> {
             TouchableOpacity(child: Row(children: <Widget>[
               Expanded(flex:1, child: Text("OPEN NOTICEBOARD", style: TextStyle(fontSize:15, fontWeight: FontWeight.bold))),
               Icon(Icons.chevron_right)
-            ]), activeOpacity: 0.6, onTap: () { },),
+            ]), activeOpacity: 0.6, onTap: () { 
+              print("HELLO WORLD");
+              Navigator.push(context, CupertinoPageRoute(builder: (context) => NoticeboardScreen()));
+            },),
             padding: EdgeInsets.fromLTRB(0, 0, 10, 0)
             )
 
