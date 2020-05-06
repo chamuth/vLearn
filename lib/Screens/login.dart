@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:elearnapp/Core/PushNotifications.dart';
 import 'package:elearnapp/Core/Style.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Themes/themes.dart';
@@ -43,7 +44,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // get the user data and save it
       User.retrieveUserData().then((o) {
-        // load page after
         Navigator.pushReplacementNamed(context, "/dashboard");
       });
 

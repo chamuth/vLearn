@@ -46,16 +46,22 @@ class MainAppBar
           
           Padding(
             padding: EdgeInsets.fromLTRB(0, 0, 5, 0), 
-            child: Badge(
-              badgeContent: Text("3", style: TextStyle(color:  Colors.white)),
-              position: BadgePosition.topRight(top: 1, right: 1), 
-              badgeColor: Theme.of(context).primaryColor,
-              child: IconButton(
+            child: (false) ?
+              Badge(
+                badgeContent: Text("3", style: TextStyle(color:  Colors.white)),
+                position: BadgePosition.topRight(top: 1, right: 1), 
+                badgeColor: Theme.of(context).primaryColor,
+                child: IconButton(
+                  color: (Themes.darkMode) ? Colors.white : Colors.grey[800],
+                  icon: Icon(Icons.notifications), 
+                  onPressed: () { log("notifications button clicked"); }, tooltip: "Show notifications",
+                )
+              ) :
+              IconButton(
                 color: (Themes.darkMode) ? Colors.white : Colors.grey[800],
                 icon: Icon(Icons.notifications), 
                 onPressed: () { log("notifications button clicked"); }, tooltip: "Show notifications",
-              )
-            )
+              ) 
           ),
           
         ],

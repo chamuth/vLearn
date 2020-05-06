@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:elearnapp/Core/PushNotifications.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Data/Organization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import './../Core/PushNotifications.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key key}) : super(key: key);
@@ -21,6 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
     {
       if (val)
       {
+
         Future.delayed(const Duration(seconds: 1), () {
           FirebaseAuth.instance
               .currentUser()

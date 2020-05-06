@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:elearnapp/Core/PushNotifications.dart';
 import 'package:elearnapp/Data/Organization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -28,6 +29,9 @@ class User
     me.phone =  ds.data["phone"];
     me.teacher =  ds.data["teacher"];
     me.uid =  ds.data["uid"];
+    
+    // Initialize firebase messaging
+    PushNotificationsManager().init();
 
     return me;
   }
