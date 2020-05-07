@@ -14,6 +14,7 @@ class User
   bool teacher = false;
   String uid;
   bool profilePicture = false;
+  bool coverPicture = false;
 
   static User me = new User.empty();
 
@@ -32,6 +33,7 @@ class User
     me.teacher =  ds.data["teacher"];
     me.uid =  ds.data["uid"];
     me.profilePicture = ds.data["profilePicture"] ?? false;
+    me.coverPicture = ds.data["coverPicture"] ?? false;
     
     // Initialize firebase messaging
     PushNotificationsManager().init();
@@ -42,6 +44,12 @@ class User
   static Future<String> getProfilePicture(String uid) async
   {
     var val = await FirebaseStorage.instance.ref().child("organizations").child(Organization.currentOrganizationId).child("profiles").child(uid + ".jpg").getDownloadURL();
+    return val.toString();
+  }
+
+  static Future<String> getCoverPicture(String uid) async
+  {
+    var val = await FirebaseStorage.instance.ref().child("organizations").child(Organization.currentOrganizationId).child("covers").child(uid + ".jpg").getDownloadURL();
     return val.toString();
   }
 
@@ -76,8 +84,11 @@ class User
       user.phone = data["phone"];
       user.teacher = data["teacher"];
       user.profilePicture = data["profilePicture"] ?? false;
+      user.coverPicture = data["coverPicture"] ?? false;
 
       return user;
+    } else {
+      return null;
     }
   }
 

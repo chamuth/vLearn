@@ -25,16 +25,24 @@ class _LoadedProfileViewCardState extends State<LoadedProfileViewCard> {
   ];
 
   String profilePictureUrl = "";
+  String coverPictureUrl = "";
 
   @override
   void initState() {
 
-    User.getProfilePicture(widget.user.uid).then((val) {
-      print(val);
-      setState(() {
-        profilePictureUrl = val;
+    if (widget.user.profilePicture)
+      User.getProfilePicture(widget.user.uid).then((val) {
+        setState(() {
+          profilePictureUrl = val;
+        });
       });
-    });
+
+    if (widget.user.coverPicture)
+      User.getCoverPicture(widget.user.uid).then((val) {
+        setState(() {
+          coverPictureUrl = val;
+        });
+      });
 
     super.initState();
   }
@@ -43,10 +51,20 @@ class _LoadedProfileViewCardState extends State<LoadedProfileViewCard> {
   Widget build(BuildContext context) {
     return Card(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), clipBehavior: Clip.antiAlias, 
       child: Stack(children: <Widget>[
-        Container(
-          height: 175,
-          decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/IMG_20191002_150704.jpg"), fit: BoxFit.cover)),
-        ),
+
+        if (coverPictureUrl != null && coverPictureUrl != "")
+          CachedNetworkImage(imageBuilder : (context, provider) {
+            return Container(
+              height: 175,
+              decoration: BoxDecoration(image: DecorationImage(image: provider, fit: BoxFit.cover)),
+            );
+          }, imageUrl: coverPictureUrl,),
+
+        if (!widget.user.coverPicture)
+          Container(
+            height: 175,
+            decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/IMG_20191002_150704.jpg"), fit: BoxFit.cover)),
+          ),
 
         Container(
           height: 175,
