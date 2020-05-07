@@ -18,7 +18,7 @@ class User
 
   // get indexes for organization data
   List subjects = [];
-  int grade = 0;
+  int grade = -1;
 
   static User me = new User.empty();
   static String profilePictureUrl = "";
@@ -39,7 +39,7 @@ class User
     me.uid =  ds.data["uid"];
     me.profilePicture = ds.data["profilePicture"] ?? false;
     me.coverPicture = ds.data["coverPicture"] ?? false;
-    me.grade = ds.data["grade"] ?? 0;
+    me.grade = ds.data["grade"] ?? -1;
     me.subjects = ds.data["subjects"] ?? [];
 
     profilePictureUrl = await getProfilePicture(me.uid);
@@ -95,7 +95,7 @@ class User
       user.profilePicture = data["profilePicture"] ?? false;
       user.coverPicture = data["coverPicture"] ?? false;
       user.subjects = data["subjects"] ?? [];
-      user.grade = data["grade"] ?? 0;
+      user.grade = data["grade"] ?? -1;
 
       return user;
     } else {
@@ -114,10 +114,13 @@ class User
     return Firestore.instance.collection("organizations").document(Organization.currentOrganizationId);
   }
 
-  static Future getMyClasses({bool withHost = true}) async
+  static Future getMyClasses({bool withHost = true, String uid = ""}) async
   {
     if (me.uid == null)
       await retrieveUserData();
+
+    if (uid == "")
+      uid = me.uid;
 
     var result = await Firestore.instance.collection("users").document(me.uid).get();
     var returnClasses = [];

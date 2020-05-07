@@ -87,6 +87,7 @@ class Register2ScreenState extends State<Register2Screen> {
       Firestore.instance.collection("users").document(User.me.uid).updateData({
         "subjects" : selectedSubjects
       }).then((val) {
+        // send the user to the start screen
         Navigator.pushReplacement(
           context,
           CupertinoPageRoute(builder: (context) => StartScreen()),

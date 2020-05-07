@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearnapp/Core/User.dart';
+import 'package:elearnapp/Data/Organization.dart';
 import 'package:elearnapp/Screens/Represents/ClassView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_breadcrumb/flutter_breadcrumb.dart';
@@ -105,14 +106,14 @@ class _LoadedProfileViewCardState extends State<LoadedProfileViewCard> {
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
               Text(User.getSanitizedName(widget.user), style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
               Divider(color: Colors.transparent, height: 3),
-              Text("Science (Mathematics)", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey[300])),
+              Text("Junior Section", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey[300])),
               Divider(color: Colors.transparent, height: 1),
               BreadCrumb(items: [
                 BreadCrumbItem(content: 
                   Text((widget.user.teacher) ? "Teacher" : "Student", style: TextStyle(fontSize: 16, color: Colors.grey)),
                 ),
                 BreadCrumbItem(content: 
-                  Text("Grade 13", style: TextStyle(fontSize: 16, color: Colors.grey)),
+                  Text(Organization.me.grades[widget.user.grade], style: TextStyle(fontSize: 16, color: Colors.grey)),
                 ),
                 ], divider: Padding(padding: EdgeInsets.fromLTRB(2, 0, 2, 0), child: Text(" · ", style: TextStyle(fontSize: 18, color : Colors.grey)),)
               )

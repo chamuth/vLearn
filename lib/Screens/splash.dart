@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         CupertinoPageRoute(builder: (context) => Register2Screen()),
                       );
                     } 
-                    else if (!res.teacher && res.grade == "")
+                    else if (!res.teacher && res.grade == -1)
                     {
                       Navigator.push(
                         context,
