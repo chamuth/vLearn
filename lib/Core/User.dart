@@ -16,13 +16,17 @@ class User
   bool profilePicture = false;
   bool coverPicture = false;
 
+  // get indexes for organization data
+  List subjects = [];
+  int grade = 0;
+
   static User me = new User.empty();
   static String profilePictureUrl = "";
 
   User.empty();
   User.fromName(this.firstName, this.lastName);
 
-  static Future retrieveUserData() async
+  static Future<User> retrieveUserData() async
   {
     var user  = await FirebaseAuth.instance.currentUser();
     var ds = await Firestore.instance.collection("users").document(user.uid).get();
@@ -35,6 +39,8 @@ class User
     me.uid =  ds.data["uid"];
     me.profilePicture = ds.data["profilePicture"] ?? false;
     me.coverPicture = ds.data["coverPicture"] ?? false;
+    me.grade = ds.data["grade"] ?? 0;
+    me.subjects = ds.data["subjects"] ?? [];
 
     profilePictureUrl = await getProfilePicture(me.uid);
     
@@ -88,6 +94,8 @@ class User
       user.teacher = data["teacher"];
       user.profilePicture = data["profilePicture"] ?? false;
       user.coverPicture = data["coverPicture"] ?? false;
+      user.subjects = data["subjects"] ?? [];
+      user.grade = data["grade"] ?? 0;
 
       return user;
     } else {

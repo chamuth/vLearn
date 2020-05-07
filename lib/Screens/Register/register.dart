@@ -49,6 +49,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
           'uid' : uid,
           'organization' : Organization.currentOrganizationId,
           'classes' : [],
+          'profilePicture' : false,
+          'coverPicture' : false,
+          'threads' : [],
         }
       );
 

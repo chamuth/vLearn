@@ -4,6 +4,7 @@ import 'package:elearnapp/Components/MainAppBar.dart';
 import 'package:elearnapp/Components/ProfileDetailItem.dart';
 import 'package:elearnapp/Components/Seperator.dart';
 import 'package:elearnapp/Core/User.dart';
+import 'package:elearnapp/Data/Organization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_breadcrumb/flutter_breadcrumb.dart';
 import 'package:shimmer/shimmer.dart';
@@ -19,15 +20,20 @@ class _ProfileViewState extends State<ProfileView> {
 
   bool profileLoaded = false;
   User user = User.fromName("", "");
+
+  List<String> mySubjects = [];
   
   @override
   void initState() {
     User.getUser(widget.uid).then((val) {
-      setState(() {
-        user = val;
+
+      // get user subjects 
+      val.subjects.forEach((f) {
+        mySubjects.add(Organization.me.subjects[f].toString());
       });
 
       setState(() {
+        user = val;
         profileLoaded = true;
       });
     });
@@ -111,11 +117,9 @@ class _ProfileViewState extends State<ProfileView> {
               
               Padding(child: Seperator(title: "Currently Teaching"), padding: EdgeInsets.fromLTRB(15, 0, 15, 0)),
 
-              Wrap(spacing: 10, runSpacing: 0, alignment: WrapAlignment.center,  children: <Widget>[
-                Chip(label: Text("Physics"), backgroundColor: Theme.of(context).primaryColor,),
-                Chip(label: Text("Combined Mathematics"), backgroundColor: Theme.of(context).primaryColor,),
-                Chip(label: Text("Chemistry"), backgroundColor: Theme.of(context).primaryColor,),
-              ],),
+              Wrap(spacing: 10, runSpacing: 0, alignment: WrapAlignment.center,  children: mySubjects.map((f) {
+                return Chip(label: Text(f), backgroundColor: Theme.of(context).primaryColor,);
+              }).toList()),
 
               Padding(child: Seperator(title: "Hosted Classes"), padding: EdgeInsets.fromLTRB(15, 0, 15, 0)),
 

@@ -4,9 +4,12 @@ import 'package:elearnapp/Core/PushNotifications.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Data/Organization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import './../Core/PushNotifications.dart';
+import 'Register/register2.dart';
+import 'Register/register3.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key key}) : super(key: key);
@@ -34,7 +37,22 @@ class _SplashScreenState extends State<SplashScreen> {
                 else 
                 {
                   User.retrieveUserData().then((res) {
-                    Navigator.pushReplacementNamed(context, "/dashboard");
+                    if (res.teacher && res.subjects.length == 0)
+                    {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(builder: (context) => Register2Screen()),
+                      );
+                    } 
+                    else if (!res.teacher && res.grade == "")
+                    {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(builder: (context) => Register3Screen()),
+                      );  
+                    } else {
+                      Navigator.pushReplacementNamed(context, "/dashboard");
+                    }
                   });
                 }
               });    
