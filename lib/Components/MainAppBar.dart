@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:badges/badges.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Screens/Represents/ProfileView.dart';
 import 'package:elearnapp/Themes/themes.dart';
@@ -15,26 +16,35 @@ class MainAppBar
         elevation: 0,
         leading: Padding(
           padding: EdgeInsets.all(11),
-          child: (!poppable) ? new RawMaterialButton(
-            onPressed: () { 
-              Navigator.push(
-                context,
-                CupertinoPageRoute(
-                  builder: (context) => ProfileView(uid: User.me.uid)
-                )
-              );
-            },
-            child: CircleAvatar(
-              child: Icon(Icons.person_outline, color: Colors.white, size: 20),
-              backgroundColor: (Themes.darkMode) ? Colors.grey[700] : Theme.of(context).primaryColor,
-              foregroundColor: Colors.black,
-            ),
-            shape: new CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.white,
-          ) : new IconButton(
-            onPressed: () { Navigator.of(context).maybePop(); },
-            icon: Icon(Icons.arrow_back, color: (Themes.darkMode) ? Colors.white : Colors.grey[900]),
+          child: (!poppable) ? 
+
+            new RawMaterialButton(
+              onPressed: () { 
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => ProfileView(uid: User.me.uid)
+                  )
+                );
+              },
+              child: (!User.me.profilePicture) ? 
+                CircleAvatar(
+                  child: Icon(Icons.person_outline, color: Colors.white, size: 20),
+                  backgroundColor: (Themes.darkMode) ? Colors.grey[700] : Theme.of(context).primaryColor,
+                  foregroundColor: Colors.black,
+                ) : CachedNetworkImage(imageUrl: User.profilePictureUrl, imageBuilder: (context, provider) {
+                  return CircleAvatar(
+                    backgroundImage: provider,
+                    backgroundColor: Theme.of(context).primaryColor
+                  );
+                }),
+              shape: new CircleBorder(),
+              elevation: 2.0,
+              fillColor: Colors.white,
+            ) 
+            : new IconButton(
+              onPressed: () { Navigator.of(context).maybePop(); },
+              icon: Icon(Icons.arrow_back, color: (Themes.darkMode) ? Colors.white : Colors.grey[900]),
           ),
         ),
 

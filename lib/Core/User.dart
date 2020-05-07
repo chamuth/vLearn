@@ -17,6 +17,7 @@ class User
   bool coverPicture = false;
 
   static User me = new User.empty();
+  static String profilePictureUrl = "";
 
   User.empty();
   User.fromName(this.firstName, this.lastName);
@@ -34,6 +35,8 @@ class User
     me.uid =  ds.data["uid"];
     me.profilePicture = ds.data["profilePicture"] ?? false;
     me.coverPicture = ds.data["coverPicture"] ?? false;
+
+    profilePictureUrl = await getProfilePicture(me.uid);
     
     // Initialize firebase messaging
     PushNotificationsManager().init();
