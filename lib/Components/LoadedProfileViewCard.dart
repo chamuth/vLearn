@@ -19,7 +19,7 @@ class LoadedProfileViewCard extends StatefulWidget {
 class _LoadedProfileViewCardState extends State<LoadedProfileViewCard> {
 
   List<ClassAction> actions = [
-    ClassAction(Icons.question_answer, "Message", 1, () {}),
+    ClassAction(Icons.question_answer, "Message", 0, () {}),
     ClassAction(Icons.call, "Call", 0, () {}),
     ClassAction(Icons.block, "Block", 0, () {}),
     ClassAction(Icons.report, "Report", 0, () {})

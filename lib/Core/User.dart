@@ -42,7 +42,8 @@ class User
     me.grade = ds.data["grade"] ?? -1;
     me.subjects = ds.data["subjects"] ?? [];
 
-    profilePictureUrl = await getProfilePicture(me.uid);
+    if (me.profilePicture)
+      profilePictureUrl = await getProfilePicture(me.uid);
     
     // Initialize firebase messaging
     PushNotificationsManager().init();
