@@ -63,7 +63,6 @@ class _NoticeboardCardState extends State<NoticeboardCard> {
               Expanded(flex:1, child: Text("OPEN NOTICEBOARD", style: TextStyle(fontSize:15, fontWeight: FontWeight.bold))),
               Icon(Icons.chevron_right)
             ]), activeOpacity: 0.6, onTap: () { 
-              print("HELLO WORLD");
               Navigator.push(context, CupertinoPageRoute(builder: (context) => NoticeboardScreen()));
             },),
             padding: EdgeInsets.fromLTRB(0, 0, 10, 0)

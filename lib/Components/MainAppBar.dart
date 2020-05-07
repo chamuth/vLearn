@@ -4,6 +4,7 @@ import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Screens/Represents/ProfileView.dart';
+import 'package:elearnapp/Screens/Tabs/notifications.dart';
 import 'package:elearnapp/Themes/themes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -64,13 +65,31 @@ class MainAppBar
                 child: IconButton(
                   color: (Themes.darkMode) ? Colors.white : Colors.grey[800],
                   icon: Icon(Icons.notifications), 
-                  onPressed: () { log("notifications button clicked"); }, tooltip: "Show notifications",
+                  onPressed: () { 
+
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => NotificationsTab()
+                      )
+                    );
+
+                  }, tooltip: "Show notifications",
                 )
               ) :
               IconButton(
                 color: (Themes.darkMode) ? Colors.white : Colors.grey[800],
                 icon: Icon(Icons.notifications), 
-                onPressed: () { log("notifications button clicked"); }, tooltip: "Show notifications",
+                onPressed: () { 
+
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => NotificationsTab()
+                    )
+                  );
+                  
+                }, tooltip: "Show notifications",
               ) 
           ),
           

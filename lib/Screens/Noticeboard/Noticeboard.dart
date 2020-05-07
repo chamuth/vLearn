@@ -85,15 +85,17 @@ class _NoticeboardScreenState extends State<NoticeboardScreen> {
               )), padding: EdgeInsets.fromLTRB(10, 2, 10, 2),);
             })),
             duration: Duration(milliseconds: 250),
-            crossFadeState: (false) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+            crossFadeState: (newNotices.length > 0) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
           ),
 
-          Padding(child: Seperator(title: "Archived Notices",), padding:EdgeInsets.fromLTRB(15, 0, 15, 0)),
+          if (oldNotices.length > 0)
+            Padding(child: Seperator(title: "Archived Notices",), padding:EdgeInsets.fromLTRB(15, 0, 15, 0)),
 
-          Column(mainAxisSize: MainAxisSize.max, children: List.generate(oldNotices.length, (i) 
-          {
-            return Opacity(child: NoticeboardItemCard(notice: oldNotices[i]), opacity: 0.5);
-          })),
+          if (oldNotices.length > 0)
+            Column(mainAxisSize: MainAxisSize.max, children: List.generate(oldNotices.length, (i) 
+            {
+              return Opacity(child: NoticeboardItemCard(notice: oldNotices[i]), opacity: 0.5);
+            })),
 
         ],)
       ],)

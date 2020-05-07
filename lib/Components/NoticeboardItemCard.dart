@@ -80,7 +80,7 @@ class _NoticeboardItemCardState extends State<NoticeboardItemCard> {
 
           Divider(color: Colors.transparent, height: 2),
           Row(children: <Widget>[
-            ButtonTheme(child: OutlineButton(child: Text("Reply to The Literature Club", style:TextStyle(color: Colors.grey[400], fontWeight: FontWeight.bold)), 
+            ButtonTheme(child: OutlineButton(child: Text("Reply to " + widget.notice.author, style:TextStyle(color: Colors.grey[400], fontWeight: FontWeight.bold)), 
               highlightedBorderColor: Colors.grey, 
               onPressed: () { },), 
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25), side: BorderSide(width: 2),),),
