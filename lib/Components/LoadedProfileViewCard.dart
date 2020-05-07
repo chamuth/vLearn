@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Screens/Represents/ClassView.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,21 @@ class _LoadedProfileViewCardState extends State<LoadedProfileViewCard> {
     ClassAction(Icons.block, "Block", 0, () {}),
     ClassAction(Icons.report, "Report", 0, () {})
   ];
+
+  String profilePictureUrl = "";
+
+  @override
+  void initState() {
+
+    User.getProfilePicture(widget.user.uid).then((val) {
+      print(val);
+      setState(() {
+        profilePictureUrl = val;
+      });
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +66,21 @@ class _LoadedProfileViewCardState extends State<LoadedProfileViewCard> {
         Column(children: <Widget>[
 
           Padding(child: Row(children: <Widget>[
-
-            CircleAvatar(child: Text("C", style: TextStyle(color: Colors.white, fontSize: 20),), radius: 25, backgroundColor: Theme.of(context).primaryColor),
+            
+            if (profilePictureUrl != null && profilePictureUrl != "")
+              CachedNetworkImage(imageUrl: profilePictureUrl, imageBuilder: (context, provider) {
+                return CircleAvatar(
+                  backgroundImage: provider,
+                  radius: 25,
+                  backgroundColor: Theme.of(context).primaryColor
+                );
+              }),
+            
+            if (profilePictureUrl == "")
+              CircleAvatar(child: Text(widget.user.firstName.substring(0,1).toUpperCase(), style: TextStyle(color: Colors.white, fontSize: 20),),
+                radius: 25,
+                backgroundColor: Theme.of(context).primaryColor
+              ),
             
             VerticalDivider(color: Colors.transparent, width: 12),
 

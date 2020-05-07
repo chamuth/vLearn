@@ -3,6 +3,7 @@ import 'package:elearnapp/Core/PushNotifications.dart';
 import 'package:elearnapp/Data/Organization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class User
 {
@@ -12,6 +13,7 @@ class User
   String phone;
   bool teacher = false;
   String uid;
+  bool profilePicture = false;
 
   static User me = new User.empty();
 
@@ -29,11 +31,18 @@ class User
     me.phone =  ds.data["phone"];
     me.teacher =  ds.data["teacher"];
     me.uid =  ds.data["uid"];
+    me.profilePicture = ds.data["profilePicture"] ?? false;
     
     // Initialize firebase messaging
     PushNotificationsManager().init();
 
     return me;
+  }
+
+  static Future<String> getProfilePicture(String uid) async
+  {
+    var val = await FirebaseStorage.instance.ref().child("organizations").child(Organization.currentOrganizationId).child("profiles").child(uid + ".jpg").getDownloadURL();
+    return val.toString();
   }
 
   static DatabaseReference getLastOnline(String uid)
@@ -66,6 +75,7 @@ class User
       user.uid = uid;
       user.phone = data["phone"];
       user.teacher = data["teacher"];
+      user.profilePicture = data["profilePicture"] ?? false;
 
       return user;
     }

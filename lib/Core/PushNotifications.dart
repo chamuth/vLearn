@@ -22,7 +22,12 @@ class PushNotificationsManager {
       _firebaseMessaging.configure(
         onMessage: (message) async
         {
-          print("Message: $message");
+          var data = message["data"];
+
+          if (data["type"] == "message")
+          {
+            // notify the user
+          }
         },
         onResume: (message) async
         {

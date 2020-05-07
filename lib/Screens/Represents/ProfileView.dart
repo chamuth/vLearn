@@ -44,7 +44,7 @@ class _ProfileViewState extends State<ProfileView> {
 
           AnimatedCrossFade(
             firstChild: Padding(
-              child: LoadedProfileViewCard(user: user),
+              child: (profileLoaded) ? LoadedProfileViewCard(user: user) : Container(),
               padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
             ),
             secondChild: Padding(

@@ -276,7 +276,12 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
                   Padding(
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
                       if (group && messages[i].sender != User.me.uid && messages[i].senderName != null)
-                        Opacity(child: Text(messages[i].senderName ?? "", style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold), textAlign: TextAlign.start), opacity:0.65),
+                        GestureDetector(child: Opacity(child: Text(messages[i].senderName ?? "", style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold), textAlign: TextAlign.start), opacity:0.65), onTap: () { 
+                          Navigator.push(
+                            context, 
+                            CupertinoPageRoute(builder: (context) => ProfileView(uid: messages[i].sender,))
+                          );
+                        },),
 
                       Text(messages[i].content ?? "", style: TextStyle(fontSize: 17,), textAlign: TextAlign.start), 
                     ],),

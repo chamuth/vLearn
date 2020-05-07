@@ -15,6 +15,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../start.dart';
 import 'Class/Questionaires.dart';
+import 'ProfileView.dart';
 
 class ClassAction
 {
@@ -69,7 +70,12 @@ class _ClassViewState extends State<ClassView> {
         }),
         ClassAction(Icons.question_answer, "Discussion", 0, () => { }),
         ClassAction(Icons.videocam, "Conference", 0, () => { }),
-        ClassAction(Icons.more_horiz, "More", 0, () => { }),
+        ClassAction(Icons.person, "Teacher Profile", 0, () {
+          Navigator.push(
+            context, 
+            CupertinoPageRoute(builder: (context) => ProfileView(uid: host.uid,))
+          );
+        }),
       ];
     });
     var classID = widget.classId;
