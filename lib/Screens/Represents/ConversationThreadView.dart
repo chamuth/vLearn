@@ -166,9 +166,10 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
     list.add(LocalMessage(type: MessageItemType.DateTime, sent: DateTime.parse(_messages[0]["created"])));
     list.add(LocalMessage(type: MessageItemType.Start));
 
-    setState(() {
-      messages = list;
-    });
+    if (mounted)
+      setState(() {
+        messages = list;
+      });
   }
 
   @override
