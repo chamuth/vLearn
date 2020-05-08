@@ -3,7 +3,6 @@ import 'package:elearnapp/Screens/Register/register2.dart';
 import 'package:elearnapp/Screens/Represents/JoinClass.dart';
 import 'package:elearnapp/Screens/splash.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,6 +11,7 @@ import './Core/Preferences.dart';
 import './Screens/start.dart';
 import './Screens/login.dart';
 import 'Core/ThemeNotifier.dart';
+import 'Questionaires/CreateMCQ.dart';
 import 'Screens/Register/register.dart';
 import 'Questionaires/MCQ.dart';
 import 'Screens/Register/register3.dart';
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'vLearn',
       theme: Themes.themeNotifier.getTheme(),
-      home: SplashScreen(),
+      home: CreateMCQScreen(),
       
       routes: <String, WidgetBuilder>{
         '/login' : (BuildContext context) => LoginScreen(),

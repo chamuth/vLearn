@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:elearnapp/Components/ConversationItem.dart';
 import 'package:elearnapp/Core/Chats.dart';
 import 'package:elearnapp/Core/User.dart';
+import 'package:elearnapp/Model/Draft.dart';
 import 'package:elearnapp/Screens/Represents/ConversationThreadView.dart';
 import 'package:faker/faker.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -70,6 +71,9 @@ class ChatTabState extends State<ChatTab> {
         thread.title = snap.value["title"] ?? "Group Chat";
 
       thread.threadId = snap.key;
+
+      // get thread draft
+      var draft = await Draft.readDraft(snap.key);
       
       var last = (snap.value["thread"] as List).last;
       var senderName = "";
@@ -80,7 +84,13 @@ class ChatTabState extends State<ChatTab> {
       {
         senderName = last["senderName"];
       }
-      thread.lastMessage = Message(last["sender"], senderName, last["content"], last["messageType"]);
+
+      if (draft.content == null)
+      {
+        thread.lastMessage = Message(last["sender"], senderName, last["content"], last["messageType"]);
+      } else {
+        thread.lastMessage = Message(User.me.uid, "", draft.content, "draft");
+      }
 
       threads.add(thread);
     }

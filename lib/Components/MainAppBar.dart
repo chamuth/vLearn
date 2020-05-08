@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 
 class MainAppBar
 {
-  static AppBar get(BuildContext context, String title, { bool poppable = false } )
+  static AppBar get(BuildContext context, String title, { bool poppable = false, Function done } )
   {
     return AppBar(
         elevation: 0,
@@ -55,6 +55,18 @@ class MainAppBar
           if (!poppable)
             IconButton(icon: Icon(Icons.search), onPressed: () { log("search button clicked"); }, tooltip: "Search entire space", color: (Themes.darkMode) ? Colors.white : Colors.grey[800],),
           
+          if (done != null)
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 5, 0), 
+              child: IconButton(color: (Themes.darkMode) ? Colors.white : Colors.grey[800],
+                icon: Icon(Icons.done), 
+                onPressed: () {
+                  done();
+                }, tooltip: "Show notifications",
+              ) 
+            ),
+
+          if (done == null)
           Padding(
             padding: EdgeInsets.fromLTRB(0, 0, 5, 0), 
             child: (false) ?

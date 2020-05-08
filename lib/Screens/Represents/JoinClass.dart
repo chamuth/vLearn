@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:elearnapp/Components/ClassItem.dart';
 import 'package:elearnapp/Core/Preferences.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:flutter/services.dart';
 
 class JoinClassScreen extends StatefulWidget {
   JoinClassScreen({Key key}) : super(key: key);
@@ -19,9 +19,11 @@ class _JoinClassScreenState extends State<JoinClassScreen> {
     Future.delayed(Duration(milliseconds: 50), ()
     {
       Preferences.temporaryColorSwitching = true;
-
-      FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
-      FlutterStatusbarcolor.setNavigationBarColor(Colors.transparent);    
+      
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.transparent,
+      ));  
     });
 
     super.initState();

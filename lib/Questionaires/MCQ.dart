@@ -9,7 +9,6 @@ import 'package:elearnapp/Components/AllQuestionsDisplayItem.dart';
 import 'package:elearnapp/Components/MCQAnswerItem.dart';
 import 'package:elearnapp/Components/Seperator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
 
 class MCQScreen extends StatefulWidget {

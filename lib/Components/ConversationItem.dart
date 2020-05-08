@@ -16,9 +16,7 @@ class ConversationItem extends StatefulWidget {
 
 class _ConversationItemState extends State<ConversationItem> {
   @override
-  Widget build(BuildContext context) {
-    print(widget.group);
-    
+  Widget build(BuildContext context) {    
     return Container(
        child: Row(children: <Widget>[
          Padding(child: CircleAvatar(child: 
@@ -27,11 +25,15 @@ class _ConversationItemState extends State<ConversationItem> {
          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
           Text(widget.conversationTitle, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
           Divider(height: 2, color: Colors.transparent),
-          Row(children: <Widget>[
-            Text(widget.lastMessage.senderName + ": "),
-
-            Expanded(child: Text((widget.lastMessage.content.length > 30) ? widget.lastMessage.content.substring(0, 30) + "..." : widget.lastMessage.content, style: TextStyle(color: Colors.grey[400], fontSize:15)))
-          ],)
+          if (widget.lastMessage.messageType == "text")
+            Row(children: <Widget>[
+              Text(widget.lastMessage.senderName + ": "),
+              Expanded(child: Text((widget.lastMessage.content.length > 30) ? widget.lastMessage.content.substring(0, 30) + "..." : widget.lastMessage.content, style: TextStyle(color: Colors.grey[400], fontSize:15)))
+            ],),
+          if (widget.lastMessage.messageType == "draft")
+            Row(children: <Widget>[
+              Expanded(child: Text((widget.lastMessage.content.length > 35) ? widget.lastMessage.content.substring(0, 35) + "..." : widget.lastMessage.content, style: TextStyle(color: Colors.grey[400], fontSize:15, fontStyle: FontStyle.italic)))
+            ],),
          ],)),
 
         if (widget.unreadMessages > 0)

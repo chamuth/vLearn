@@ -2,6 +2,7 @@ import 'package:elearnapp/Components/MainAppBar.dart';
 import 'package:elearnapp/Components/Seperator.dart';
 import 'package:elearnapp/Core/Chats.dart';
 import 'package:elearnapp/Core/User.dart';
+import 'package:elearnapp/Model/Draft.dart';
 import 'package:faker/faker.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -179,6 +180,11 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
     // set My last seen time 
     User.setLastOnline(User.me.uid, DateTime.now());
 
+    Draft.readDraft(widget.threadId).then((d) {
+      if (d.content != null)
+        messageTextController.text = d.content;
+    });
+
     super.initState();
   }
 
@@ -209,6 +215,12 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
 
       Chats.sendMessage(widget.threadId, msg);
     }
+  }
+
+  void onDraft(String d)
+  {
+    // try to save the draft
+    Draft.insertOrUpdateDraft(Draft(widget.threadId, d));
   }
 
   @override
@@ -348,6 +360,8 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
                 Expanded(
                   child: Padding(
                     child: TextFormField(style: TextStyle(fontSize: 17), 
+                    onChanged: onDraft,
+                  
                       decoration: InputDecoration(
                         hintText: "Enter your message here",
                         border: InputBorder.none,

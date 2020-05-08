@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:elearnapp/Core/PushNotifications.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Data/Organization.dart';
+import 'package:elearnapp/Model/Draft.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,6 @@ class _SplashScreenState extends State<SplashScreen> {
     {
       if (val)
       {
-
         Future.delayed(const Duration(seconds: 1), () {
           FirebaseAuth.instance
               .currentUser()
@@ -36,23 +36,25 @@ class _SplashScreenState extends State<SplashScreen> {
                   Navigator.pushReplacementNamed(context, "/login");
                 else 
                 {
-                  User.retrieveUserData().then((res) {
-                    if (res.teacher && res.subjects.length == 0)
-                    {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(builder: (context) => Register2Screen()),
-                      );
-                    } 
-                    else if (!res.teacher && res.grade == -1)
-                    {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(builder: (context) => Register3Screen()),
-                      );  
-                    } else {
-                      Navigator.pushReplacementNamed(context, "/dashboard");
-                    }
+                  Draft.initialize().then((v) {
+                    User.retrieveUserData().then((res) {
+                      if (res.teacher && res.subjects.length == 0)
+                      {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(builder: (context) => Register2Screen()),
+                        );
+                      } 
+                      else if (!res.teacher && res.grade == -1)
+                      {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(builder: (context) => Register3Screen()),
+                        );  
+                      } else {
+                        Navigator.pushReplacementNamed(context, "/dashboard");
+                      }
+                    });
                   });
                 }
               });    

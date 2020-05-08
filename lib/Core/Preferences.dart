@@ -1,6 +1,6 @@
 import 'package:elearnapp/Themes/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Preferences
@@ -18,10 +18,12 @@ class Preferences
     {
       if (!Preferences.temporaryColorSwitching)
       {
-        FlutterStatusbarcolor.setStatusBarColor(Colors.white);
-        FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
-        FlutterStatusbarcolor.setNavigationBarColor(Colors.white);
-        FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
+        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+          statusBarColor: Colors.white,
+          statusBarBrightness: Brightness.light,
+          systemNavigationBarColor: Colors.white,
+          systemNavigationBarIconBrightness: Brightness.light
+        ));
       }
 
       themeNotifier.setTheme(Themes.light);
@@ -29,10 +31,12 @@ class Preferences
     } else {
       if (!Preferences.temporaryColorSwitching)
       {
-        FlutterStatusbarcolor.setStatusBarColor(Colors.grey[850]);
-        FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
-        FlutterStatusbarcolor.setNavigationBarColor(Colors.grey[850]);
-        FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
+        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+          statusBarColor: Colors.grey[850],
+          statusBarBrightness: Brightness.dark,
+          systemNavigationBarColor: Colors.grey[850],
+          systemNavigationBarIconBrightness: Brightness.dark
+        ));
       }
 
       themeNotifier.setTheme(Themes.dark);
