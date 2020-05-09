@@ -269,7 +269,12 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
         Align(
           alignment: Alignment.bottomRight,
           child: Padding(child: Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-            FloatingActionButton(mini: false, tooltip: "Create Test", child: Icon(Icons.done, size: 18), onPressed: () { },),
+            FloatingActionButton(mini: false, tooltip: "Add new question", child: Icon(Icons.add, size: 18), onPressed: () {
+              setState(() {
+                questions.add(Question(question: "", answers: [""]));
+                correctAnswers.add(-1);
+              });
+            },),
           ],), padding: EdgeInsets.all(15)) 
         ),
 

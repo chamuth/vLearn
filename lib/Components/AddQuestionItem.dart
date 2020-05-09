@@ -54,7 +54,7 @@ class _AddQuestionItemState extends State<AddQuestionItem> {
                 TouchableOpacity(child: Icon(Icons.arrow_downward, size: 20), onTap: () { widget.changeOrder(true); },),
               ],),
               Divider(height: 5, color: Colors.transparent),
-              Text(widget.question.question, style: TextStyle(color: Colors.grey[200], fontSize: 20, fontWeight: FontWeight.bold)),
+              Text((widget.question.question != "") ? widget.question.question : "[Question not provided]", style: TextStyle(color: Colors.grey[200], fontSize: 20, fontWeight: FontWeight.bold)),
               Divider(height: 10, color: Colors.transparent),
               Text("Answer: " + ((correctAnswer == -1) ? "Not selected yet" : answers[correctAnswer]), style: TextStyle(color: Colors.grey[400], fontSize: 16, fontWeight: FontWeight.bold)),
             ],))
@@ -136,7 +136,9 @@ class _AddQuestionItemState extends State<AddQuestionItem> {
           Column(children: List.generate(answers.length, (i) {
             return EditableAnswerItem(text: answers[i], editable: editable, correct: (i == correctAnswer), index: i, remove: () {
               // remove the item at that location
-              answers.removeAt(i);
+              if (answers.length != 1) // if there are at least one answer
+                answers.removeAt(i);
+
             }, updateText: (str) {
               
               setState(() {
