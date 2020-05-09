@@ -22,6 +22,7 @@ class _AddQuestionItemState extends State<AddQuestionItem> {
   bool editable = false;
   final TextEditingController questionTitleController = new TextEditingController();
   List<String> answers = [];
+  int correctAnswer = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +120,7 @@ class _AddQuestionItemState extends State<AddQuestionItem> {
           ],),
 
           Column(children: List.generate(answers.length, (i) {
-            return EditableAnswerItem(text: answers[i], editable: editable, index: i, remove: () {
+            return EditableAnswerItem(text: answers[i], editable: editable, correct: (i == correctAnswer), index: i, remove: () {
               // remove the item at that location
               answers.removeAt(i);
             }, updateText: (str) {
@@ -128,6 +129,8 @@ class _AddQuestionItemState extends State<AddQuestionItem> {
                 answers[i] = str;
               });
 
+            }, setCorrect: () {
+              correctAnswer = i;
             },);
           })),
 

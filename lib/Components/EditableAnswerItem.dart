@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 class EditableAnswerItem extends StatefulWidget {
-  EditableAnswerItem({Key key, this.editable, this.text, this.index, this.remove, this.updateText}) : super(key: key);
+  EditableAnswerItem({Key key, this.editable, this.text, this.index, this.remove, this.updateText, this.correct, this.setCorrect}) : super(key: key);
 
   bool editable = false;
   String text = "";
   int index = 0;
   Function remove;
   Function updateText;
+  Function setCorrect;
+  bool correct;
 
   @override
   _EditableAnswerItemState createState() => _EditableAnswerItemState();
@@ -46,8 +48,11 @@ class _EditableAnswerItemState extends State<EditableAnswerItem> {
         ),
         AnimatedOpacity(child: Padding(child: Text("Eg:- Data Structures Test 1", style: TextStyle(color: Colors.grey[600])), padding: EdgeInsets.fromLTRB(0, 26, 0, 0),), duration: Duration(milliseconds: 100), opacity: (textController.text == "") ? 1 : 0),
       ],),),
+
+      VerticalDivider(width: 10),
       
-      Padding(child: IconButton(icon: Icon(Icons.close, color: Colors.red), onPressed: () { if (widget.remove != null) widget.remove(); }, ), padding: EdgeInsets.fromLTRB(0, 5, 0, 0))
+      Padding(child: IconButton(tooltip: "Set as correct answer", icon: Icon(Icons.done, color: (widget.correct) ? Colors.green : Colors.grey), onPressed: () { if (widget.setCorrect != null) widget.setCorrect(); }, ), padding: EdgeInsets.fromLTRB(0, 5, 0, 0)),
+      Padding(child: IconButton(tooltip: "Remove answer", icon: Icon(Icons.close, color: Colors.red), onPressed: () { if (widget.remove != null) widget.remove(); }, ), padding: EdgeInsets.fromLTRB(0, 5, 0, 0))
 
     ]);
   }
