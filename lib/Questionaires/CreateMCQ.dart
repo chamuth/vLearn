@@ -19,6 +19,13 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
   bool publishNow = true;
   final TextEditingController titleController = new TextEditingController();
   final TextEditingController subtitleController = new TextEditingController();
+
+  List<Question> questions = [
+    Question(question: "Whats the recommended PH value for skin?", answers: ["0.0", "7.0", "3.5", "3.4", "5"]),
+    Question(question: "Whats the recommended PH value for skin?", answers: ["0.0", "7.0", "3.5", "3.4", "5"]),
+  ];
+
+  List<int> correctAnswers = [-1,-1];
   
   @override
   void initState() {
@@ -137,9 +144,19 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
           Padding(child: Text("Questions and Answers", style: TextStyle(fontWeight: FontWeight.bold, fontSize:20)), padding:EdgeInsets.fromLTRB(25, 5, 25, 0)),
           Padding(child: Divider(), padding:EdgeInsets.fromLTRB(25, 0, 25, 0)),
 
-          Column(children: List.generate(3, (i) {
+          Column(children: List.generate(questions.length, (i) {
 
-            return AddQuestionItem(index: i, question: Question(question: "What's the ISO standard unit of force?", answers: ["N", "Kgms-2", "E-1", "K", "idk man"]),);
+            return AddQuestionItem(
+              index: i,
+              question: questions[i],
+              correctAnswer: correctAnswers[i],
+              saveQuestion: (result) {
+                setState(() {
+                  questions[i] = (result["question"] as Question); 
+                  correctAnswers[i] = (result["correct"] as int);
+                });
+              }
+            ,);
 
           }).toList()),
 

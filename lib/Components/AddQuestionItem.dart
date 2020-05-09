@@ -7,10 +7,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'EditableAnswerItem.dart';
 
 class AddQuestionItem extends StatefulWidget {
-  AddQuestionItem({Key key, this.index, this.question}) : super(key: key);
+  AddQuestionItem({Key key, this.index, this.question, this.saveQuestion, this.correctAnswer}) : super(key: key);
 
   int index;
   Question question;
+  Function saveQuestion;
+  int correctAnswer;
 
   @override
   _AddQuestionItemState createState() => _AddQuestionItemState();
@@ -30,6 +32,7 @@ class _AddQuestionItemState extends State<AddQuestionItem> {
     {
       questionTitleController.text = widget.question.question;
       answers = widget.question.answers;
+      correctAnswer = widget.correctAnswer ?? -1;
     }
 
     return Padding(child: GestureDetector(child: Card(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), child: Padding(child: 
@@ -43,6 +46,8 @@ class _AddQuestionItemState extends State<AddQuestionItem> {
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
               Text("Question #" + (widget.index + 1).toString(), style: TextStyle(color: Colors.grey[400], fontSize: 16, fontWeight: FontWeight.bold)),
               Text(widget.question.question, style: TextStyle(color: Colors.grey[200], fontSize: 20, fontWeight: FontWeight.bold)),
+              Divider(height: 10, color: Colors.transparent),
+              Text("Answer: " + ((correctAnswer == -1) ? "Not selected yet" : answers[correctAnswer]), style: TextStyle(color: Colors.grey[400], fontSize: 16, fontWeight: FontWeight.bold)),
             ],))
           ]),
 
@@ -137,9 +142,23 @@ class _AddQuestionItemState extends State<AddQuestionItem> {
           Divider(color: Colors.transparent, height: 15),
 
           Row(children: <Widget>[
-            Expanded(child: RaisedButton(child: Text("Cancel"), color:Colors.grey[700], onPressed: () {},),),
+            Expanded(child: RaisedButton(child: Text("Cancel"), color:Colors.grey[700], onPressed: () {
+              setState(() {
+                open = false;
+              });
+            },),),
             VerticalDivider(width: 10),
-            Expanded(child: RaisedButton(child: Text("Save"), color: Theme.of(context).primaryColor, onPressed: () {},)),
+            Expanded(child: RaisedButton(child: Text("Save"), color: Theme.of(context).primaryColor, onPressed: () {
+              if(widget.saveQuestion != null)
+                widget.saveQuestion({
+                  "correct" : correctAnswer,
+                  "question" : Question(question: questionTitleController.text, answers: answers)
+                });
+              
+              setState(() {
+                open = false;
+              });
+            },)),
           ],)
 
         ]),
