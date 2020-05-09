@@ -128,9 +128,24 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
             Divider(color: Colors.transparent, height: 15),
           ],), secondChild: Container(), duration: Duration(milliseconds: 200))
 
-        ]), padding: EdgeInsets.fromLTRB(18, 15, 18, 0))), padding: EdgeInsets.fromLTRB(15, 15, 15, 15))
+        ]), padding: EdgeInsets.fromLTRB(18, 15, 18, 0))), padding: EdgeInsets.fromLTRB(15, 15, 15, 15)),
 
-        // 
+        // Questions and Answers
+        Padding(child: Text("Questions and Answers", style: TextStyle(fontWeight: FontWeight.bold, fontSize:20)), padding:EdgeInsets.fromLTRB(25, 5, 25, 0)),
+        Padding(child: Divider(), padding:EdgeInsets.fromLTRB(25, 0, 25, 0)),
+
+        Column(children: List.generate(10, (i) {
+
+          return Padding(child: Card(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), child: Padding(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+            Row(children: <Widget>[
+              Icon(Icons.live_help, size: 18, color: Colors.grey[200]),
+              VerticalDivider(width: 12),
+              Text("Question #" + (i + 1).toString(), style: TextStyle(color: Colors.grey[200], fontSize: 20, fontWeight: FontWeight.bold)),
+            ]),
+
+          ]), padding: EdgeInsets.fromLTRB(18, 13, 18, 13))), padding: EdgeInsets.fromLTRB(15, 5, 15, 5));
+
+        }).toList()),
 
       ],)),
       floatingActionButton: FloatingActionButton(child: Icon(Icons.add), onPressed: () {}, tooltip: "Add new question"),
