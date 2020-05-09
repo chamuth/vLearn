@@ -1,7 +1,10 @@
+import 'package:humanize/humanize.dart' as humanize;
+
 import 'package:elearnapp/Components/AddQuestionItem.dart';
 import 'package:elearnapp/Components/MainAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 import 'MCQ.dart';
 
@@ -12,29 +15,48 @@ class CreateMCQScreen extends StatefulWidget {
   _CreateMCQScreenState createState() => _CreateMCQScreenState();
 }
 
-
-
 class _CreateMCQScreenState extends State<CreateMCQScreen> {
   
   bool publishNow = true;
+  bool randomizeQuestions = false;
+  bool randomizeAnswers = false;
+
   final TextEditingController titleController = new TextEditingController();
   final TextEditingController subtitleController = new TextEditingController();
+  DateTime selectedPublishDateTime;
 
   List<Question> questions = [
-    Question(question: "Whats the recommended PH value for skin?", answers: ["0.0", "7.0", "3.5", "3.4", "5"]),
-    Question(question: "Whats the recommended PH value for skin?", answers: ["0.0", "7.0", "3.5", "3.4", "5"]),
+    Question(question: "First question?", answers: ["0.0", "7.0", "3.5", "3.4", "5"]),
+    Question(question: "This is the second question?", answers: ["0.0", "7.0", "3.5", "3.4", "5"]),
+    Question(question: "third one doe?", answers: ["0.0", "7.0", "3.5", "3.4", "5"]),
+    Question(question: "forth one bro?", answers: ["0.0", "7.0", "3.5", "3.4", "5"]),
   ];
 
-  List<int> correctAnswers = [-1,-1];
+  List<int> correctAnswers = [-1,-1,-1,-1];
   
   @override
   void initState() {
     super.initState();
   }
 
-  void selectPublishDate()
+  void selectPublishDate() async
   {
-    
+    DateTime date = await showDatePicker(
+      context: context,
+      initialDate: (selectedPublishDateTime ?? DateTime.now()),
+      firstDate: DateTime.now(), // dates starting from now
+      lastDate: DateTime.now().add(Duration(days: 365)), // dates advancing to a year
+      
+    );
+
+    TimeOfDay time = await showTimePicker(
+      context: context,
+      initialTime: selectedPublishDateTime ?? TimeOfDay.now()
+    );
+
+    setState(() {
+      selectedPublishDateTime = DateTime(date.year, date.month, date.day, time.hour, time.minute);
+    });
   }
 
   @override
@@ -89,7 +111,7 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
 
             Divider(height: 25),
 
-            Text("Questionnaire Publishing", style: TextStyle(fontSize: 15, color: Colors.grey[300])),
+            Text("Questionnaire Settings", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.grey[300])),
             Divider(color: Colors.transparent, height: 5),
 
             RawMaterialButton(child: 
@@ -117,14 +139,12 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
               padding: EdgeInsets.fromLTRB(5, 10, 5, 10)
             ),
 
-            Divider(color: Colors.transparent, height: 10),
-
             AnimatedCrossFade(crossFadeState: (!publishNow) ? CrossFadeState.showFirst : CrossFadeState.showSecond, firstChild: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
               Text("Publish Date and Time", style: TextStyle(fontSize: 15, color: Colors.grey[300])),
               Divider(color: Colors.transparent, height: 5),
               
               RawMaterialButton(child: Row(children: <Widget>[
-                  Expanded(child: Text(DateTime.now().toString(), style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.grey[300]))),
+                  Expanded(child: Text((new DateFormat('HH:mm of dd/MM/yyyy')).format(selectedPublishDateTime ?? DateTime.now()), style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.grey[300]))),
                   Text("Tap to set date", style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold))
                 ],),
                 onPressed: () {
@@ -135,8 +155,61 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
 
-              Divider(color: Colors.transparent, height: 15),
-            ],), secondChild: Container(), duration: Duration(milliseconds: 200))
+              Divider(color: Colors.transparent, height: 10),
+
+            ],), secondChild: Container(), duration: Duration(milliseconds: 200)),
+
+            RawMaterialButton(child: 
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+
+                Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                  SizedBox(child: Checkbox(
+                    value: randomizeQuestions,
+                    onChanged: (v) { randomizeQuestions = !randomizeQuestions; },
+                    activeColor: Theme.of(context).primaryColor,
+                    visualDensity: VisualDensity.compact,
+                  ), width: 20, height: 20),
+
+                  VerticalDivider(width: 10),
+
+                  Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                    Text("Randomize Questions", style: TextStyle(color: Colors.grey[300], fontWeight: FontWeight.bold, fontSize: 16)),
+                    Text("When enabled, each student will receive questions in a random order making it hard to cheat.", style: TextStyle(color: Colors.grey)),
+                  ],))
+
+                ],),
+
+              ],),
+              onPressed: () { randomizeQuestions = !randomizeQuestions; },
+              padding: EdgeInsets.fromLTRB(5, 10, 5, 10)
+            ),
+
+            RawMaterialButton(child: 
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+
+                Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                  SizedBox(child: Checkbox(
+                    value: randomizeAnswers,
+                    onChanged: (v) { randomizeAnswers = !randomizeAnswers; },
+                    activeColor: Theme.of(context).primaryColor,
+                    visualDensity: VisualDensity.compact,
+                  ), width: 20, height: 20),
+
+                  VerticalDivider(width: 10),
+
+                  Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                    Text("Randomize Answers", style: TextStyle(color: Colors.grey[300], fontWeight: FontWeight.bold, fontSize: 16)),
+                    Text("When enabled, each student will get different arrangements of answers making it even harder to cheat. The servers will automatically check the answers with the correct arrangement in mind.", style: TextStyle(color: Colors.grey)),
+                  ],))
+
+                ],),
+
+              ],),
+              onPressed: () { randomizeAnswers = !randomizeAnswers; },
+              padding: EdgeInsets.fromLTRB(5, 10, 5, 10)
+            ),
+
+            Divider(color: Colors.transparent, height: 15),
 
           ]), padding: EdgeInsets.fromLTRB(18, 15, 18, 0))), padding: EdgeInsets.fromLTRB(15, 15, 15, 15)),
 
@@ -155,6 +228,27 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
                   questions[i] = (result["question"] as Question); 
                   correctAnswers[i] = (result["correct"] as int);
                 });
+              },
+              changeOrder: (forward)
+              {
+                if (forward && i != (questions.length - 1))
+                {
+                  var temp = questions[i + 1];
+
+                  setState(() {
+                    questions[i + 1] = questions[i];
+                    questions[i] = temp;
+                  });
+                } 
+                else if (!forward && i != 0)
+                {
+                  var temp = questions[i - 1];
+
+                  setState(() {
+                    questions[i - 1] = questions[i];
+                    questions[i] = temp;
+                  });
+                }
               }
             ,);
 

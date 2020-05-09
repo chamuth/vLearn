@@ -3,16 +3,18 @@ import 'dart:math';
 import 'package:elearnapp/Questionaires/MCQ.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:touchable_opacity/touchable_opacity.dart';
 
 import 'EditableAnswerItem.dart';
 
 class AddQuestionItem extends StatefulWidget {
-  AddQuestionItem({Key key, this.index, this.question, this.saveQuestion, this.correctAnswer}) : super(key: key);
+  AddQuestionItem({Key key, this.index, this.question, this.saveQuestion, this.correctAnswer, this.changeOrder}) : super(key: key);
 
   int index;
   Question question;
   Function saveQuestion;
   int correctAnswer;
+  Function changeOrder;
 
   @override
   _AddQuestionItemState createState() => _AddQuestionItemState();
@@ -44,7 +46,14 @@ class _AddQuestionItemState extends State<AddQuestionItem> {
             VerticalDivider(width: 12),
 
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-              Text("Question #" + (widget.index + 1).toString(), style: TextStyle(color: Colors.grey[400], fontSize: 16, fontWeight: FontWeight.bold)),
+              Row(children: <Widget>[
+                Expanded(child: Text("Question #" + (widget.index + 1).toString(), style: TextStyle(color: Colors.grey[400], fontSize: 16, fontWeight: FontWeight.bold)),),
+                // Transform.scale(child: OutlineButton(visualDensity: VisualDensity.compact, child: Text("Up"), onPressed: () { },), scale: 0.9,),
+                TouchableOpacity(child: Icon(Icons.arrow_upward, size: 20), onTap: () { widget.changeOrder(false); },),
+                VerticalDivider(width: 10),
+                TouchableOpacity(child: Icon(Icons.arrow_downward, size: 20), onTap: () { widget.changeOrder(true); },),
+              ],),
+              Divider(height: 5, color: Colors.transparent),
               Text(widget.question.question, style: TextStyle(color: Colors.grey[200], fontSize: 20, fontWeight: FontWeight.bold)),
               Divider(height: 10, color: Colors.transparent),
               Text("Answer: " + ((correctAnswer == -1) ? "Not selected yet" : answers[correctAnswer]), style: TextStyle(color: Colors.grey[400], fontSize: 16, fontWeight: FontWeight.bold)),
