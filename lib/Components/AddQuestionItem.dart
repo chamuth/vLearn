@@ -8,13 +8,14 @@ import 'package:touchable_opacity/touchable_opacity.dart';
 import 'EditableAnswerItem.dart';
 
 class AddQuestionItem extends StatefulWidget {
-  AddQuestionItem({Key key, this.index, this.question, this.saveQuestion, this.correctAnswer, this.changeOrder}) : super(key: key);
+  AddQuestionItem({Key key, this.index, this.question, this.saveQuestion, this.correctAnswer, this.changeOrder, this.deleteQuestion}) : super(key: key);
 
   int index;
   Question question;
   Function saveQuestion;
   int correctAnswer;
   Function changeOrder;
+  Function deleteQuestion;
 
   @override
   _AddQuestionItemState createState() => _AddQuestionItemState();
@@ -52,6 +53,10 @@ class _AddQuestionItemState extends State<AddQuestionItem> {
                 TouchableOpacity(child: Icon(Icons.arrow_upward, size: 20), onTap: () { widget.changeOrder(false); },),
                 VerticalDivider(width: 10),
                 TouchableOpacity(child: Icon(Icons.arrow_downward, size: 20), onTap: () { widget.changeOrder(true); },),
+                VerticalDivider(width: 15),
+                TouchableOpacity(child: Icon(Icons.close, color: Colors.red, size: 20), onTap: () { 
+                  widget.deleteQuestion(); 
+                },),
               ],),
               Divider(height: 5, color: Colors.transparent),
               Text((widget.question.question != "") ? widget.question.question : "[Question not provided]", style: TextStyle(color: Colors.grey[200], fontSize: 20, fontWeight: FontWeight.bold)),

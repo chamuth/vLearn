@@ -1,3 +1,4 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:humanize/humanize.dart' as humanize;
 
 import 'package:elearnapp/Components/AddQuestionItem.dart';
@@ -217,42 +218,65 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
           Padding(child: Text("Questions and Answers", style: TextStyle(fontWeight: FontWeight.bold, fontSize:20)), padding:EdgeInsets.fromLTRB(25, 5, 25, 0)),
           Padding(child: Divider(), padding:EdgeInsets.fromLTRB(25, 0, 25, 0)),
 
-          Column(children: List.generate(questions.length, (i) {
+          if (questions.length > 0)
+            Column(children: List.generate(questions.length, (i) {
 
-            return AddQuestionItem(
-              index: i,
-              question: questions[i],
-              correctAnswer: correctAnswers[i],
-              saveQuestion: (result) {
-                setState(() {
-                  questions[i] = (result["question"] as Question); 
-                  correctAnswers[i] = (result["correct"] as int);
-                });
-              },
-              changeOrder: (forward)
-              {
-                if (forward && i != (questions.length - 1))
-                {
-                  var temp = questions[i + 1];
-
+              return AddQuestionItem(
+                index: i,
+                question: questions[i],
+                correctAnswer: correctAnswers[i],
+                saveQuestion: (result) {
                   setState(() {
-                    questions[i + 1] = questions[i];
-                    questions[i] = temp;
+                    questions[i] = (result["question"] as Question); 
+                    correctAnswers[i] = (result["correct"] as int);
                   });
-                } 
-                else if (!forward && i != 0)
+                },
+                deleteQuestion: ()
                 {
-                  var temp = questions[i - 1];
-
                   setState(() {
-                    questions[i - 1] = questions[i];
-                    questions[i] = temp;
+                    // remove the question and the correct answer at the given locations
+                    questions.removeAt(i);
+                    correctAnswers.removeAt(i);
                   });
+                },
+                changeOrder: (forward)
+                {
+                  if (forward && i != (questions.length - 1))
+                  {
+                    var temp = questions[i + 1];
+
+                    setState(() {
+                      questions[i + 1] = questions[i];
+                      questions[i] = temp;
+                    });
+                  } 
+                  else if (!forward && i != 0)
+                  {
+                    var temp = questions[i - 1];
+
+                    setState(() {
+                      questions[i - 1] = questions[i];
+                      questions[i] = temp;
+                    });
+                  }
                 }
-              }
-            ,);
+              ,);
 
-          }).toList()),
+            }).toList()),
+          
+          if (questions.length == 0)
+            GestureDetector(child: 
+              Padding(child: 
+                Column(children: <Widget>[
+                  Icon(Icons.add, color: Colors.grey, size: 40),
+                  Divider(color: Colors.transparent, height: 5),
+                  Text("You haven't added any questions yet", style: TextStyle(color: Colors.grey, fontSize: 17, fontWeight: FontWeight.bold)),
+                  Text("Tap the + button in the bottom right corner or tap here", style: TextStyle(color: Colors.grey[600], fontSize: 15)),
+                ],),
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 30)
+              ),
+              onTap: addQuestion
+            ),
 
           Divider(color: Colors.transparent, height: 75),
 
@@ -269,17 +293,20 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
         Align(
           alignment: Alignment.bottomRight,
           child: Padding(child: Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-            FloatingActionButton(mini: false, tooltip: "Add new question", child: Icon(Icons.add, size: 18), onPressed: () {
-              setState(() {
-                questions.add(Question(question: "", answers: [""]));
-                correctAnswers.add(-1);
-              });
-            },),
+            FloatingActionButton(mini: false, tooltip: "Add new question", child: Icon(Icons.add, size: 18), onPressed: addQuestion,),
           ],), padding: EdgeInsets.all(15)) 
         ),
 
       ],)),
     ));
+  }
+
+  void addQuestion()
+  {
+    setState(() {
+      questions.add(Question(question: "", answers: [""]));
+      correctAnswers.add(-1);
+    });
   }
 
   Future<bool> _onWillPop() {
