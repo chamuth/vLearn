@@ -44,6 +44,7 @@ dependencies:
   firebase_messaging: 6.0.13
   sembast: 2.4.3
   path_provider: 1.6.7
+  file_picker: 1.9.0+1
 
 flutter:
   uses-material-design: true

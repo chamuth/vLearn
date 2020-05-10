@@ -156,6 +156,33 @@ class User
     return returnClasses;
   }
 
+  static Future getMyClassesAsTeacher({String uid = ""}) async
+  {
+    if (me.uid == null)
+      await retrieveUserData();
+
+    if (uid == "")
+      uid = me.uid;
+    
+    var org = getMyOrg();
+    var classes = await org.collection("classes").where("host", isEqualTo: uid).getDocuments();
+    
+    var returnClasses = [];
+
+    for(var i = 0; i < classes.documents.length; i ++)
+    {
+      returnClasses.add({
+        "id": classes.documents[i].documentID,
+        "subject": classes.documents[i].data["subject"],
+        "grade": classes.documents[i].data["grade"],
+      });
+    }
+
+    print(returnClasses);
+
+    return returnClasses;
+  }
+
   static Future<String> getMyAssignmentsCount() async
   {
     if (me.uid == null)
