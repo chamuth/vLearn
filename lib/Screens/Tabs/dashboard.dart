@@ -52,7 +52,8 @@ class DashboardTabState extends State<DashboardTab> {
           Expanded(flex: 1, child: AssignmentsCard()),
           Expanded(flex: 1, child: ToDoListCard()),
         ],),
-        Seperator(title: "My Classes"),
+
+        Seperator(title: (User.me.teacher) ? "Classes by me" : "My Classes"),
 
         FutureBuilder(
           future: User.getMyClasses(),
@@ -102,9 +103,13 @@ class DashboardTabState extends State<DashboardTab> {
         Column(children: <Widget>[
           Padding(child: 
             Row(mainAxisAlignment: MainAxisAlignment.center,children: <Widget>[
+              if (User.me.teacher)
+                Expanded(child: OutlineButton(child: Text("CREATE NEW CLASS"), onPressed: () {},),),
+              if (User.me.teacher)
+                VerticalDivider(width: 10),
               Expanded(child: OutlineButton(child: Text("VIEW ALL CLASSES"), onPressed: () {},),),
             ],)
-          ,padding: EdgeInsets.fromLTRB(10, 10, 10, 0))
+          ,padding: EdgeInsets.fromLTRB(10, 10, 10, 10))
         ],),
 
       ],)

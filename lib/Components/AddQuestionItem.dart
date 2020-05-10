@@ -98,6 +98,7 @@ class _AddQuestionItemState extends State<AddQuestionItem> {
           Stack(children: <Widget>[
             TextField(
               controller: questionTitleController,
+              textCapitalization: TextCapitalization.sentences,
               decoration: InputDecoration(
                 floatingLabelBehavior: FloatingLabelBehavior.always, 
                 labelText: 'Question Title',

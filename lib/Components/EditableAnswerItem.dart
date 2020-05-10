@@ -37,6 +37,7 @@ class _EditableAnswerItemState extends State<EditableAnswerItem> {
         TextField(
           controller: textController,
           onChanged: changeText,
+          textCapitalization: TextCapitalization.sentences,
           decoration: InputDecoration(
             floatingLabelBehavior: FloatingLabelBehavior.always, 
             labelText: 'Answer #' + (widget.index + 1).toString(),

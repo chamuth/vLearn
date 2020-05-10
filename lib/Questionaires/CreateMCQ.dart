@@ -1,3 +1,4 @@
+import 'package:elearnapp/Core/Classes.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:humanize/humanize.dart' as humanize;
 
@@ -10,7 +11,9 @@ import 'package:intl/intl.dart';
 import 'MCQ.dart';
 
 class CreateMCQScreen extends StatefulWidget {
-  CreateMCQScreen({Key key}) : super(key: key);
+  CreateMCQScreen({Key key, this.classInfo}) : super(key: key);
+
+  ClassData classInfo;
 
   @override
   _CreateMCQScreenState createState() => _CreateMCQScreenState();
@@ -75,10 +78,14 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
             ]),
 
             Divider(color: Colors.transparent, height: 12),
+
+            Text("Questionaire for ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.grey[300])),
+            Text(widget.classInfo.subject + "(" + widget.classInfo.grade + ")", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.grey[300])),
             
             Stack(children: <Widget>[
               TextField(
                 controller: titleController,
+                textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.always, 
                   labelText: 'Questionnaire Title',
@@ -89,7 +96,7 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
                   helperText: "Title of the unit, lesson, or major heading"
                 )
               ),
-              AnimatedOpacity(child: Padding(child: Text("Eg:- Computer Engineering 101", style: TextStyle(color: Colors.grey[600])), padding: EdgeInsets.fromLTRB(0, 26, 0, 0),), duration: Duration(milliseconds: 100), opacity: (subtitleController.text == "") ? 1 : 0),
+              AnimatedOpacity(child: Padding(child: Text("Eg:- Computer Engineering 101", style: TextStyle(color: Colors.grey[600])), padding: EdgeInsets.fromLTRB(0, 26, 0, 0),), duration: Duration(milliseconds: 100), opacity: (titleController.text == "") ? 1 : 0),
             ],),
 
             Divider(color: Colors.transparent, height: 5),
@@ -97,6 +104,7 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
             Stack(children: <Widget>[
               TextField(
                 controller: subtitleController,
+                textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.always, 
                   labelText: 'Questionnaire Subtitle',
