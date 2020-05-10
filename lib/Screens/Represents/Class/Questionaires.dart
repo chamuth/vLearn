@@ -34,7 +34,7 @@ class _QuestionairesScreenState extends State<QuestionairesScreen> {
     List<Assignment> submittedQuests = [];
 
     quests.forEach((q) {
-      if (q.submissions.contains(User.me.uid) && !User.me.teacher)
+      if ((q.submissions ?? []).contains(User.me.uid) && !User.me.teacher)
         submittedQuests.add(q);
       else 
         if (q.duedate.isAfter(DateTime.now()))

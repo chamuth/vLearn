@@ -23,6 +23,7 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
 
   List<Assignment> assignments = [];
   List<Assignment> submittedAssignments = [];
+  List<Assignment> lapsedAssignments = [];
   bool loaded = false;
 
   @override
@@ -30,8 +31,24 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
   {
     Assignment.getAssignments(widget.classData.id).then((list)
     {
+      List<Assignment> newQuests = [];
+      List<Assignment> lapsedQuests = [];
+      List<Assignment> submittedQuests = [];
+
+      list.forEach((q) {
+        if ((q.submissions ?? []).contains(User.me.uid) && !User.me.teacher)
+          submittedQuests.add(q);
+        else 
+          if (q.duedate.isAfter(DateTime.now()))
+            newQuests.add(q);
+          else 
+            lapsedQuests.add(q);
+      });
+
       setState(() {
-        assignments = list;
+        assignments = newQuests;
+        submittedAssignments = submittedQuests;
+        lapsedAssignments = lapsedQuests;
       });
         
       Future.delayed(Duration(milliseconds: 250), () 
@@ -107,36 +124,65 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
                   Text("Not to worry", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 17)),
                   Divider(color: Colors.transparent, height: 3),
                   Text("you don't have any assignments to complete", style: TextStyle(color: Colors.grey, fontSize: 15))
-                ],), alignment: Alignment.center,),padding: EdgeInsets.fromLTRB(0, 50, 0, 15),
+                ],), alignment: Alignment.center,),padding: EdgeInsets.fromLTRB(0, 45, 0, 45),
               ) : Padding(child: Align(child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
                   FaIcon(FontAwesomeIcons.smile, size: 50, color: Colors.grey),
                   Divider(color: Colors.transparent, height: 10),
                   Text("No assignments found", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 17)),
                   Divider(color: Colors.transparent, height: 3),
                   Text("you haven't given any assignments", style: TextStyle(color: Colors.grey, fontSize: 15))
-                ],), alignment: Alignment.center,),padding: EdgeInsets.fromLTRB(0, 50, 0, 15),
+                ],), alignment: Alignment.center,),padding: EdgeInsets.fromLTRB(0, 45, 0, 45),
               )), duration: Duration(milliseconds: 300), crossFadeState: (assignments.length > 0) ? CrossFadeState.showFirst : CrossFadeState.showSecond),
 
-            if (submittedAssignments.length > 0)
+            if (!User.me.teacher)
+              if (loaded && submittedAssignments.length > 0)
+                Padding(child: Row(children: <Widget>[
+                  Icon(Icons.done, size: 18),
+                  VerticalDivider(color: Colors.transparent, width: 10),
+                  Text("SUBMITTED ASSIGNMENTS", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[200])),
+                  VerticalDivider(color: Colors.transparent, width: 5),
+                  Expanded(child: Divider()),
+                  VerticalDivider(color: Colors.transparent, width: 5),
+                  RotatedBox(quarterTurns: 1, child: Icon(Icons.chevron_right, color: Colors.grey[600], size: 20)),
+                ],), padding: EdgeInsets.fromLTRB(20, 5, 20, 8)),
+
+            if (!User.me.teacher && loaded && submittedAssignments.length > 0)
+              Column(children: List.generate(submittedAssignments.length, (index) {
+                return Opacity(child: AssignmentCard(
+                  dueDate: submittedAssignments[index].duedate, 
+                  title: submittedAssignments[index].title, 
+                  subtitle: submittedAssignments[index].subtitle, 
+                  assignmentDuration: submittedAssignments[index].duration,
+                  onTap: () 
+                  {
+
+                  }
+                ), opacity: 0.6);
+              })),
+
+            if(loaded && lapsedAssignments.length > 0)
               Padding(child: Row(children: <Widget>[
-                Icon(Icons.done, size: 18),
+                Icon(Icons.timelapse, size: 18),
                 VerticalDivider(color: Colors.transparent, width: 10),
-                Text("SUBMITTED ASSIGNMENTS", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[200])),
+                Text("DUEDATE LAPSED QUESTIONNAIRES", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[200])),
                 VerticalDivider(color: Colors.transparent, width: 5),
                 Expanded(child: Divider()),
                 VerticalDivider(color: Colors.transparent, width: 5),
                 RotatedBox(quarterTurns: 1, child: Icon(Icons.chevron_right, color: Colors.grey[600], size: 20)),
-              ],), padding: EdgeInsets.fromLTRB(20, 15, 20, 8)),
+              ],), padding: EdgeInsets.fromLTRB(20, 5, 20, 8)),
 
-            Column(children: List.generate(submittedAssignments.length, (index) 
-            {
-              return IgnorePointer(child: Opacity(child: AssignmentCard(
-                dueDate: submittedAssignments[index].duedate, 
-                title: submittedAssignments[index].title, 
-                subtitle: submittedAssignments[index].subtitle, 
-                assignmentDuration: submittedAssignments[index].duration,
-              ), opacity:0.5), ignoring: true);
-            })),
+            if (loaded && lapsedAssignments.length > 0)
+              Column(children: List.generate(lapsedAssignments.length, (index) {
+                return Opacity(child: AssignmentCard(
+                  dueDate: lapsedAssignments[index].duedate, 
+                  title: lapsedAssignments[index].title, 
+                  subtitle: lapsedAssignments[index].subtitle, 
+                  assignmentDuration: lapsedAssignments[index].duration,
+                  onTap: () 
+                  {
+                  }
+                ), opacity: 0.6);
+              })),
 
           ],)
         )
