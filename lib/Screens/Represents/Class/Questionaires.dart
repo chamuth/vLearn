@@ -3,6 +3,7 @@ import 'package:elearnapp/Components/MainAppBar.dart';
 import 'package:elearnapp/Core/Assignment.dart';
 import 'package:elearnapp/Core/Classes.dart';
 import 'package:elearnapp/Core/User.dart';
+import 'package:elearnapp/Questionaires/CreateMCQ.dart';
 import 'package:elearnapp/Questionaires/MCQ.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -73,6 +74,13 @@ class _QuestionairesScreenState extends State<QuestionairesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MainAppBar.get(context, "Questionnaire", poppable: true),
+      floatingActionButton: (User.me.teacher) ? 
+        FloatingActionButton(child: Icon(Icons.add), onPressed: () {
+          Navigator.push(
+            context,
+            CupertinoPageRoute(builder: (context) => CreateMCQScreen(classInfo: widget.classData)),
+          );
+        }, heroTag: "quest_fab",) : null,
       body: Container(child: Column(children: <Widget>[
 
         // Breadcrumbs

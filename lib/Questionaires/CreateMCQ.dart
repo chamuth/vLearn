@@ -27,7 +27,9 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
 
   final TextEditingController titleController = new TextEditingController();
   final TextEditingController subtitleController = new TextEditingController();
+  final TextEditingController durationController = new TextEditingController();
   DateTime selectedPublishDateTime;
+  DateTime dueDateDateTime;
 
   List<Question> questions = [
     Question(question: "First question?", answers: ["0.0", "7.0", "3.5", "3.4", "5"]),
@@ -80,8 +82,11 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
             Divider(color: Colors.transparent, height: 12),
 
             Text("Questionaire for ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.grey[300])),
-            Text(widget.classInfo.subject + "(" + widget.classInfo.grade + ")", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.grey[300])),
+            Divider(color: Colors.transparent, height: 1),
+            Text(widget.classInfo.subject + "(" + widget.classInfo.grade + ")", style: TextStyle(fontSize: 15, color: Colors.grey[300])),
             
+            Divider(color: Colors.transparent, height: 5),
+
             Stack(children: <Widget>[
               TextField(
                 controller: titleController,
@@ -116,6 +121,27 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
                 )
               ),
               AnimatedOpacity(child: Padding(child: Text("Eg:- Data Structures Test 1", style: TextStyle(color: Colors.grey[600])), padding: EdgeInsets.fromLTRB(0, 26, 0, 0),), duration: Duration(milliseconds: 100), opacity: (subtitleController.text == "") ? 1 : 0),
+            ],),
+
+            Divider(color: Colors.transparent, height: 5),
+
+            Stack(children: <Widget>[
+              TextField(
+                controller: durationController,
+                textCapitalization: TextCapitalization.sentences,
+                decoration: InputDecoration(
+                  floatingLabelBehavior: FloatingLabelBehavior.always, 
+                  labelText: 'Questionnaire Duration',
+                  suffix: Text("Minutes"),
+                  contentPadding: EdgeInsets.fromLTRB(0, 7, 0, 0),
+                  alignLabelWithHint: true,
+                  labelStyle: TextStyle(fontSize: 20, color: Colors.grey[300]),
+                  suffixIcon: AnimatedOpacity(child: Padding(child: Icon(Icons.done, color: Colors.green, size: 20), padding: EdgeInsets.fromLTRB(15,10,0,0)), opacity:0, duration: Duration(milliseconds: 100)),
+                  helperText: "Name of the test with number or sub-heading"
+                ),
+                keyboardType: TextInputType.number,
+              ),
+              AnimatedOpacity(child: Padding(child: Text("Eg:- 30", style: TextStyle(color: Colors.grey[600])), padding: EdgeInsets.fromLTRB(0, 26, 0, 0),), duration: Duration(milliseconds: 100), opacity: (durationController.text == "") ? 1 : 0),
             ],),
 
             Divider(height: 25),
@@ -293,15 +319,15 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
         Align(
           alignment: Alignment.bottomLeft,
           child: Padding(child: Row(children: <Widget>[
-            FloatingActionButton(mini: true, tooltip: "Undo", child: Icon(Icons.undo, size: 18), onPressed: () { },),
-            FloatingActionButton(mini: true, tooltip: "Redo", child: Icon(Icons.redo, size: 18), onPressed: () { },),
+            FloatingActionButton(heroTag: "undo_fab", mini: true, tooltip: "Undo", child: Icon(Icons.undo, size: 18), onPressed: () { },),
+            FloatingActionButton(heroTag: "redo_fab", mini: true, tooltip: "Redo", child: Icon(Icons.redo, size: 18), onPressed: () { },),
           ],), padding: EdgeInsets.all(15)) 
         ),
 
         Align(
           alignment: Alignment.bottomRight,
           child: Padding(child: Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-            FloatingActionButton(mini: false, tooltip: "Add new question", child: Icon(Icons.add, size: 18), onPressed: addQuestion,),
+            FloatingActionButton(heroTag: "add_fab", mini: false, tooltip: "Add new question", child: Icon(Icons.add, size: 18), onPressed: addQuestion,),
           ],), padding: EdgeInsets.all(15)) 
         ),
 
