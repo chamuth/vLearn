@@ -38,9 +38,9 @@ class _AddQuestionItemState extends State<AddQuestionItem> {
       correctAnswer = widget.correctAnswer ?? -1;
     }
 
-    return Padding(child: GestureDetector(child: Card(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), child: Padding(child: 
+    return Padding(child: Card(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)), child: Padding(child: 
       AnimatedCrossFade(firstChild: 
-        Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+        GestureDetector(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
 
           Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
             Icon(Icons.live_help, size: 18, color: Colors.grey[200]),
@@ -75,8 +75,14 @@ class _AddQuestionItemState extends State<AddQuestionItem> {
             alignment: Alignment.center,
           )
 
-        ]),
-        secondChild: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+        ]), onTap: () { 
+          if (!open)
+            setState(() {
+              open = true;
+              editable = true;
+            });
+        },),
+        secondChild: IgnorePointer(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
 
           Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
             Icon(Icons.edit, size: 18, color: Colors.grey[200]),
@@ -101,7 +107,6 @@ class _AddQuestionItemState extends State<AddQuestionItem> {
                 suffixIcon: AnimatedOpacity(child: Padding(child: Icon(Icons.done, color: Colors.green, size: 20), padding: EdgeInsets.fromLTRB(15,10,0,0)), opacity:0, duration: Duration(milliseconds: 100)),
               )
             ),
-            AnimatedOpacity(child: Padding(child: Text("Eg:- Data Structures Test 1", style: TextStyle(color: Colors.grey[600])), padding: EdgeInsets.fromLTRB(0, 26, 0, 0),), duration: Duration(milliseconds: 100), opacity: (questionTitleController.text == "") ? 1 : 0),
           ],),
 
           Divider(color: Colors.transparent, height: 10),
@@ -177,16 +182,10 @@ class _AddQuestionItemState extends State<AddQuestionItem> {
             },)),
           ],)
 
-        ]),
+        ]), ignoring: (!open)),
         crossFadeState: (open) ? CrossFadeState.showSecond : CrossFadeState.showFirst, duration: Duration(milliseconds: 250),
       ),
-    padding: EdgeInsets.fromLTRB(18, 13, 18, 13),),), onTap: () { 
-      if (!open)
-        setState(() {
-          open = true;
-          editable = true;
-        });
-    },), padding: EdgeInsets.fromLTRB(15, 5, 15, 5));
+    padding: EdgeInsets.fromLTRB(18, 13, 18, 13),),), padding: EdgeInsets.fromLTRB(15, 5, 15, 5));
   }
 }
 

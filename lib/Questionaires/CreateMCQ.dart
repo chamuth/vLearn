@@ -47,7 +47,6 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
       initialDate: (selectedPublishDateTime ?? DateTime.now()),
       firstDate: DateTime.now(), // dates starting from now
       lastDate: DateTime.now().add(Duration(days: 365)), // dates advancing to a year
-      
     );
 
     TimeOfDay time = await showTimePicker(
@@ -56,7 +55,8 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
     );
 
     setState(() {
-      selectedPublishDateTime = DateTime(date.year, date.month, date.day, time.hour, time.minute);
+      if (date != null && time != null)
+        selectedPublishDateTime = DateTime(date.year, date.month, date.day, time.hour, time.minute);
     });
   }
 
@@ -78,7 +78,7 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
             
             Stack(children: <Widget>[
               TextField(
-                controller: subtitleController,
+                controller: titleController,
                 decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.always, 
                   labelText: 'Questionnaire Title',
