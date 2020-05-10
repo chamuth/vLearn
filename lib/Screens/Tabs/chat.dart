@@ -89,7 +89,10 @@ class ChatTabState extends State<ChatTab> {
       {
         thread.lastMessage = Message(last["sender"], senderName, last["content"], last["messageType"]);
       } else {
-        thread.lastMessage = Message(User.me.uid, "", draft.content, "draft");
+        if (draft.content == "")
+          thread.lastMessage = Message(last["sender"], senderName, last["content"], last["messageType"]);
+        else 
+          thread.lastMessage = Message(User.me.uid, "", draft.content, "draft");
       }
 
       threads.add(thread);
@@ -127,8 +130,15 @@ class ChatTabState extends State<ChatTab> {
               CupertinoPageRoute(
                 builder: (context) => ConversationThreadView(threadId: myChats[index].threadId),
               )
-            );
+            ).then((value) {
 
+              setState(() {
+                threadsReady = false;
+              });
+
+              loadChats();
+
+            });
           }
         );
       }),
