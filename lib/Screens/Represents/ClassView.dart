@@ -65,7 +65,7 @@ class _ClassViewState extends State<ClassView> {
         ClassAction(Icons.folder_shared, "Class Folder", 0, () {
           Navigator.pushReplacement(
             context, 
-            CupertinoPageRoute(builder: (context) => StartScreen(startupIndex: 1,))
+            CupertinoPageRoute(builder: (context) => StartScreen(startupIndex: 1, startUrl: "/" + widget.classId +"/"))
           );
         }),
         ClassAction(Icons.question_answer, "Discussion", 0, () => { }),

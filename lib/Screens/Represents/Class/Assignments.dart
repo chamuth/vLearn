@@ -3,6 +3,7 @@ import 'package:elearnapp/Components/MainAppBar.dart';
 import 'package:elearnapp/Components/Seperator.dart';
 import 'package:elearnapp/Core/Assignment.dart';
 import 'package:elearnapp/Core/Classes.dart';
+import 'package:elearnapp/Core/User.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_breadcrumb/flutter_breadcrumb.dart';
@@ -100,14 +101,21 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
 
                   ])
                 ]))), padding: EdgeInsets.fromLTRB(15, 3, 15, 3));
-              })) : Padding(child: Align(child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+              })) : ((User.me.teacher) ? Padding(child: Align(child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
                   FaIcon(FontAwesomeIcons.smile, size: 50, color: Colors.grey),
                   Divider(color: Colors.transparent, height: 10),
                   Text("Not to worry", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 17)),
                   Divider(color: Colors.transparent, height: 3),
                   Text("you don't have any assignments to complete", style: TextStyle(color: Colors.grey, fontSize: 15))
                 ],), alignment: Alignment.center,),padding: EdgeInsets.fromLTRB(0, 50, 0, 15),
-              ), duration: Duration(milliseconds: 300), crossFadeState: (assignments.length > 0) ? CrossFadeState.showFirst : CrossFadeState.showSecond),
+              ) : Padding(child: Align(child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                  FaIcon(FontAwesomeIcons.smile, size: 50, color: Colors.grey),
+                  Divider(color: Colors.transparent, height: 10),
+                  Text("No assignments found", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 17)),
+                  Divider(color: Colors.transparent, height: 3),
+                  Text("you haven't given any assignments", style: TextStyle(color: Colors.grey, fontSize: 15))
+                ],), alignment: Alignment.center,),padding: EdgeInsets.fromLTRB(0, 50, 0, 15),
+              )), duration: Duration(milliseconds: 300), crossFadeState: (assignments.length > 0) ? CrossFadeState.showFirst : CrossFadeState.showSecond),
 
             if (submittedAssignments.length > 0)
               Padding(child: Row(children: <Widget>[

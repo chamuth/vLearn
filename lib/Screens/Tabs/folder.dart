@@ -29,7 +29,9 @@ class FileData
 }
 
 class FolderTab extends StatefulWidget {
-  FolderTab({Key key}) : super(key: key);
+  FolderTab({Key key, this.startUrl}) : super(key: key);
+
+  String startUrl;
 
   @override
   FolderTabState createState() => FolderTabState();
@@ -155,6 +157,12 @@ class FolderTabState extends State<FolderTab> {
   @override
   void initState() {
     Preferences.temporaryColorSwitching = false;
+
+    if (widget.startUrl != null)
+    {
+      currentFolder = widget.startUrl;
+      readableFolder = convertIdsToNames("My Classes" + widget.startUrl);
+    }
     
     super.initState();
   }

@@ -91,6 +91,11 @@ class _AssignmentCardState extends State<AssignmentCard> {
     {
       return RemainingStatus(duration.inSeconds.toString() + " seconds remaining", Colors.red);
     }
+
+    if (!dueDate.isAfter(DateTime.now()))
+    {
+      return RemainingStatus("Due date lapsed", Colors.red);
+    }
   }
 }
 

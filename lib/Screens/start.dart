@@ -16,9 +16,10 @@ import './Tabs/settings.dart';
 import 'Tabs/timetable.dart';
 
 class StartScreen extends StatefulWidget {
-  StartScreen({Key key, this.startupIndex = 0}) : super(key: key);
+  StartScreen({Key key, this.startupIndex = 0, this.startUrl}) : super(key: key);
 
   int startupIndex = 0;
+  String startUrl;
 
   @override
   _StartScreenState createState() => _StartScreenState();
@@ -35,6 +36,9 @@ class _StartScreenState extends State<StartScreen> {
   @override
   void initState() 
   {
+    if (widget.startUrl != null)
+      tabs[1] = FolderTab(startUrl: widget.startUrl,);
+
     // Count for user activity
     User.setLastOnline(User.me.uid, DateTime.now());
     
