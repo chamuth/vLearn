@@ -5,6 +5,7 @@ import 'package:elearnapp/Components/Seperator.dart';
 import 'package:elearnapp/Core/Events.dart';
 import 'package:elearnapp/Data/Organization.dart';
 import 'package:flutter/material.dart';
+import 'package:touchable_opacity/touchable_opacity.dart';
 
 class OrganizationTab extends StatefulWidget {
   OrganizationTab({Key key}) : super(key: key);
@@ -37,7 +38,7 @@ class _OrganizationTabState extends State<OrganizationTab> {
         Divider(color: Colors.transparent, height: 10),
         
         Column(children: List.generate(events.length, (index) {
-          return EventCard(event: events[index]);
+          return TouchableOpacity(child: EventCard(event: events[index]), onTap: () { }, activeOpacity: 0.85,);
         }))
 
       ],

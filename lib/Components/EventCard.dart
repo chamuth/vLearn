@@ -5,6 +5,7 @@ import 'package:elearnapp/Core/Ellipsis.dart';
 import 'package:elearnapp/Core/Events.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class EventCard extends StatefulWidget {
@@ -66,28 +67,34 @@ class _EventCardState extends State<EventCard>
 
             ],), padding: EdgeInsets.fromLTRB(10, 7, 10, 7),
           ),
-          GridView.count(physics: NeverScrollableScrollPhysics(), crossAxisCount: 3, shrinkWrap: true, crossAxisSpacing: 0, mainAxisSpacing: 0, children: 
-          List.generate((files.length > 6) ? 6 : files.length, (index)
-          {
-            if (files.length > 6 && index == 5)
-            {
-              return Stack(fit: StackFit.expand, children: <Widget>[
-                CachedNetworkImage(imageUrl: files[index]["url"], imageBuilder: (context, imageProvider) {
-                  return Image(fit: BoxFit.cover, image: imageProvider);
-                }, progressIndicatorBuilder: (context, url, progress) {
-                  return CircularProgressIndicator(value: progress.downloaded / progress.totalSize);
-                },),
-                Container(color: Colors.grey[900].withOpacity(0.65)),
-                Align(child: Text("+" + (files.length - 6).toString(), style: TextStyle(fontSize: 30), textAlign: TextAlign.center,), alignment: Alignment.center,)
-              ],);
-            } else {
-              return CachedNetworkImage(imageUrl: files[index]["url"], imageBuilder: (context, imageProvider) {
-                return Image(fit: BoxFit.cover, image: imageProvider);
-              }, progressIndicatorBuilder: (context, url, progress) {
-                return CircularProgressIndicator(value: progress.downloaded / progress.totalSize);
-              },);
-            }
-          }),)
+
+          if(widget.event.type == EventType.album)
+            AnimatedCrossFade(crossFadeState: (files.length > 0) ? CrossFadeState.showFirst: CrossFadeState.showSecond, firstChild: 
+              GridView.count(physics: NeverScrollableScrollPhysics(), crossAxisCount: 3, shrinkWrap: true, crossAxisSpacing: 0, mainAxisSpacing: 0, children: 
+              List.generate((files.length > 6) ? 6 : files.length, (index)
+              {
+                if (files.length > 6 && index == 5)
+                {
+                  return Stack(fit: StackFit.expand, children: <Widget>[
+                    CachedNetworkImage(imageUrl: files[index]["url"], imageBuilder: (context, imageProvider) {
+                      return Image(fit: BoxFit.cover, image: imageProvider);
+                    }, progressIndicatorBuilder: (context, url, progress) {
+                      return CircularProgressIndicator(value: progress.downloaded / progress.totalSize);
+                    },),
+                    Container(color: Colors.grey[900].withOpacity(0.65)),
+                    Align(child: Text("+" + (files.length - 6).toString(), style: TextStyle(fontSize: 30), textAlign: TextAlign.center,), alignment: Alignment.center,)
+                  ],);
+                } else {
+                  return CachedNetworkImage(imageUrl: files[index]["url"], imageBuilder: (context, imageProvider) {
+                    return Image(fit: BoxFit.cover, image: imageProvider);
+                  }, progressIndicatorBuilder: (context, url, progress) {
+                    return CircularProgressIndicator(value: progress.downloaded / progress.totalSize);
+                  },);
+                }
+              }),), duration: Duration(milliseconds: 250), secondChild: GridView.count(physics: NeverScrollableScrollPhysics(), crossAxisCount: 3, shrinkWrap: true, crossAxisSpacing: 0, mainAxisSpacing: 0, children: List.generate(6, (i) {
+                return Shimmer.fromColors(child: Card(margin: EdgeInsets.all(2)), baseColor: Colors.grey[700], highlightColor: Colors.grey[500]);
+            })))
+
 
         ],),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
