@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:elearnapp/Data/Organization.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
@@ -42,6 +43,28 @@ class API
     });
 
     return folders + files;
+  }
+
+  static Future<List<FileData>> loadEventPhotos(String eventId) async
+  {
+    var queryParameters = {
+      'org': Organization.me.id,
+      'eventId': eventId,
+    };
+
+    var uri = Uri.https(APIEndpoint, '/api/events', queryParameters);
+    Response response = await http.get(uri);
+
+    var res = json.decode(response.body);
+    List<FileData> media = [];
+    (res["files"] as List).forEach((f)
+    {
+      var file = FileData.fromJson(f);
+      file.folder = false;
+      media.add(file);
+    });
+
+    return media;
   }
 }
 

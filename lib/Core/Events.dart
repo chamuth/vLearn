@@ -22,7 +22,7 @@ class Event
   Event.fromSnapshot(snap)
   {
     var data = snap["data"];
-    
+
     id = snap["id"];
     name = data["name"];
     description = data["description"];

@@ -1,6 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:elearnapp/Core/API.dart';
 import 'package:elearnapp/Core/Ellipsis.dart';
 import 'package:elearnapp/Core/Events.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -16,6 +19,34 @@ class EventCard extends StatefulWidget {
 
 class _EventCardState extends State<EventCard> 
 {
+  List files = [];
+
+  void loadEventPhotos() async
+  {
+    var f = await API.loadEventPhotos(widget.event.id);
+    f.forEach((element) {
+      
+      FirebaseStorage.instance.ref().child(element.fullPath).getDownloadURL().then((url) {
+        print(url);
+
+        setState(() {
+          files.add({
+            "url" : url,
+            "data": element
+          });
+        });
+      });
+      
+    });
+  }
+
+  @override
+  void initState() {
+    loadEventPhotos();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -34,19 +65,27 @@ class _EventCardState extends State<EventCard>
               Divider(color: Colors.transparent, height: 3),
 
             ],), padding: EdgeInsets.fromLTRB(10, 7, 10, 7),
-          ),         
-
-          GridView.count(physics: NeverScrollableScrollPhysics(), crossAxisCount: 3, shrinkWrap: true, crossAxisSpacing: 0, mainAxisSpacing: 0, children: List.generate(6, (index)
+          ),
+          GridView.count(physics: NeverScrollableScrollPhysics(), crossAxisCount: 3, shrinkWrap: true, crossAxisSpacing: 0, mainAxisSpacing: 0, children: 
+          List.generate((files.length > 6) ? 6 : files.length, (index)
           {
-            if (10 > 6 && index == 5)
+            if (files.length > 6 && index == 5)
             {
               return Stack(fit: StackFit.expand, children: <Widget>[
-                Image(fit: BoxFit.fitHeight, image: AssetImage("assets/images/83585711_119296336285671_5760048956415410176_n.jpg")),
+                CachedNetworkImage(imageUrl: files[index]["url"], imageBuilder: (context, imageProvider) {
+                  return Image(fit: BoxFit.cover, image: imageProvider);
+                }, progressIndicatorBuilder: (context, url, progress) {
+                  return CircularProgressIndicator(value: progress.downloaded / progress.totalSize);
+                },),
                 Container(color: Colors.grey[900].withOpacity(0.65)),
-                Align(child: Text("+35", style: TextStyle(fontSize: 30), textAlign: TextAlign.center,), alignment: Alignment.center,)
+                Align(child: Text("+" + (files.length - 6).toString(), style: TextStyle(fontSize: 30), textAlign: TextAlign.center,), alignment: Alignment.center,)
               ],);
             } else {
-              return Image(fit: BoxFit.fitHeight, image: AssetImage("assets/images/83585711_119296336285671_5760048956415410176_n.jpg"));
+              return CachedNetworkImage(imageUrl: files[index]["url"], imageBuilder: (context, imageProvider) {
+                return Image(fit: BoxFit.cover, image: imageProvider);
+              }, progressIndicatorBuilder: (context, url, progress) {
+                return CircularProgressIndicator(value: progress.downloaded / progress.totalSize);
+              },);
             }
           }),)
 
