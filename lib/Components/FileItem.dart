@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:elearnapp/Core/Ellipsis.dart';
 import 'package:elearnapp/Core/Preferences.dart';
 import 'package:elearnapp/Themes/themes.dart';
 import 'package:filesize/filesize.dart';
@@ -62,13 +63,6 @@ class _FileItemState extends State<FileItem> {
     }
   }
 
-  String ellipsis(String long)
-  {
-    if (long.length > 25)
-      return long.substring(0, 25) + "...";
-    else return long;
-  }
-
   @override
   void initState() {
     loadThumbnails();
@@ -113,7 +107,7 @@ class _FileItemState extends State<FileItem> {
             if (widget.type == FileItemType.classItem)
               Expanded(child: 
                 Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
-                  Text(ellipsis(widget.title), overflow: TextOverflow.fade, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor)),
+                  Text(ellipsis(widget.title, 25), overflow: TextOverflow.fade, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor)),
                   Divider(color: Colors.transparent, height: 3),
                   Text(widget.subtitle, style: TextStyle(color: Colors.grey)),
                 ],)
@@ -122,25 +116,25 @@ class _FileItemState extends State<FileItem> {
               if (widget.type == FileItemType.folderItem)
                 Expanded(child: 
                   Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
-                    Text(ellipsis(widget.subtitle), style: TextStyle(color: Colors.grey)),
+                    Text(ellipsis(widget.subtitle, 25), style: TextStyle(color: Colors.grey)),
                     Divider(color: Colors.transparent, height: 2),
-                    Text(ellipsis(widget.title), overflow: TextOverflow.fade, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor)),
+                    Text(ellipsis(widget.title, 25), overflow: TextOverflow.fade, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor)),
                   ],)
                 ),
               if (widget.type == FileItemType.imageItem)
                 Expanded(child: 
                   Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[                    
-                    Text(ellipsis(widget.title), overflow: TextOverflow.fade, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor)),
+                    Text(ellipsis(widget.title, 25), overflow: TextOverflow.fade, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor)),
                     Divider(color: Colors.transparent, height: 2),
-                    Text(ellipsis(filesize(widget.size)), style: TextStyle(color: Colors.grey)),
+                    Text(ellipsis(filesize(widget.size), 25), style: TextStyle(color: Colors.grey)),
                   ],)
                 ),
               if (widget.type == FileItemType.fileItem)
                 Expanded(child: 
                   Column(crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
-                    Text(ellipsis(widget.title), overflow: TextOverflow.fade, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor)),
+                    Text(ellipsis(widget.title, 25), overflow: TextOverflow.fade, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: (Themes.darkMode) ? Colors.white : Theme.of(context).primaryColor)),
                     Divider(color: Colors.transparent, height: 2),
-                    Text(ellipsis(filesize(widget.size)), style: TextStyle(color: Colors.grey)),
+                    Text(ellipsis(filesize(widget.size), 25), style: TextStyle(color: Colors.grey)),
                   ],)
                 ),
           ],)

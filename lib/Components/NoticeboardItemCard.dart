@@ -1,3 +1,4 @@
+import 'package:elearnapp/Core/Ellipsis.dart';
 import 'package:elearnapp/Screens/Noticeboard/Noticeboard.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/gestures.dart';
@@ -29,10 +30,11 @@ class _NoticeboardItemCardState extends State<NoticeboardItemCard> {
     }
   }
 
-  String ellipsis(String str, int len)
+  void enableReadMore()
   {
-    if (str.length > len) return str.substring(0, len) + "...";
-    else return str;
+    setState(() {
+      readmore = true;
+    });
   }
 
   bool readmore = false;
@@ -53,13 +55,13 @@ class _NoticeboardItemCardState extends State<NoticeboardItemCard> {
           if (widget.notice.content != null)
             AnimatedCrossFade(crossFadeState: (!readmore) ? CrossFadeState.showFirst : CrossFadeState.showSecond, duration: Duration(milliseconds: 250), 
               firstChild: 
-                RichText(text: TextSpan(children: <TextSpan>[
+                TouchableOpacity(child: RichText(text: TextSpan(children: <TextSpan>[
                   TextSpan(text: ellipsis(widget.notice.content ?? "", 150).trimRight()),
                   TextSpan(text: " "),
                   TextSpan(text: "Read more", style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor)) 
                 ], 
                 style: TextStyle(fontSize: 14, fontFamily: "GoogleSans", 
-                color: Colors.grey[100]), recognizer: new TapGestureRecognizer()..onTap = () {readmore = true; },),),
+                color: Colors.grey[100]), recognizer: new TapGestureRecognizer()..onTap = () {readmore = true; },),), onTap: enableReadMore,),
               secondChild:
                 RichText(text: TextSpan(children: <TextSpan>[
                   TextSpan(text: widget.notice.content ?? ""),

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:badges/badges.dart';
 import 'package:elearnapp/Components/MainAppBar.dart';
 import 'package:elearnapp/Core/User.dart';
+import 'package:elearnapp/Data/Organization.dart';
 import 'package:elearnapp/Themes/themes.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +14,7 @@ import './Tabs/dashboard.dart';
 import './Tabs/folder.dart';
 import './Tabs/notifications.dart';
 import './Tabs/settings.dart';
+import 'Tabs/organization.dart';
 import 'Tabs/timetable.dart';
 
 class StartScreen extends StatefulWidget {
@@ -27,9 +29,9 @@ class StartScreen extends StatefulWidget {
 
 class _StartScreenState extends State<StartScreen> {
 
-  List<Widget> tabs  = <Widget>[DashboardTab(), FolderTab(), ChatTab(), TimetableTab(), SettingsTab()]; 
-  List<String> tabNames = ["Dashboard", "Shared Folder", "Chats", "Timetable", "Settings"];
-  List<IconData> tabIcons = [Icons.dashboard, Icons.folder_shared, Icons.chat, Icons.table_chart, Icons.settings];
+  List<Widget> tabs  = <Widget>[DashboardTab(), FolderTab(), ChatTab(), OrganizationTab(), SettingsTab()]; 
+  List<String> tabNames = ["Dashboard", "Shared Folder", "Chats", "Organization", "Settings"];
+  List<IconData> tabIcons = [Icons.dashboard, Icons.folder_shared, Icons.chat, Icons.school, Icons.settings];
   int selectedIndex = 0;
   double pageOpacity = 1;
 
@@ -43,6 +45,7 @@ class _StartScreenState extends State<StartScreen> {
     User.setLastOnline(User.me.uid, DateTime.now());
     
     setState(() {
+      tabNames[3] = Organization.me.name;
       selectedIndex = widget.startupIndex;
     });
 

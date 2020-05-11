@@ -15,6 +15,14 @@ eLearnApp for companies, institutions to use to collaborate with teachers, stude
 * Voice and Video chat solutions
 * Event planning and announcement notifications
 
+## Direct Features
+* Write MCQ / Essay type papers with anti-cheat features
+* Access a shared folder that can be used to share files between students in a specific class
+* A digital school noticeboard
+* Uploading assignments, and assignment management
+* Todo List for teachers and students
+* A gallery to store and upload school photos and videos
+
 ## TODO List
 
 ### AUTHENTICATION
