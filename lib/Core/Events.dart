@@ -40,12 +40,11 @@ class Event
         type = EventType.celebration;
         break;
     }
-    type = EventType.album;
   }
 
   static Future<List<Event>> loadAllEvents() async
   {
-    var snapshot = await User.getMyOrg().collection("events").getDocuments();
+    var snapshot = await User.getMyOrg().collection("events").orderBy("created", descending: true).getDocuments();
 
     List<Event> events = [];
 

@@ -41,6 +41,38 @@ class _EventCardState extends State<EventCard>
     });
   }
 
+  double calcProgressBar(progress)
+  {
+    try
+    {
+      var d = progress.downloaded / progress.totalSize;
+      return d;
+    }
+    catch(ex)
+    {
+      return 0;
+    }
+  }
+
+  int crossAxisCount()
+  {
+    if (files.length > 3)
+      return 3;
+    else if (files.length > 0)
+      return files.length;
+    else 
+      return 3;
+  }
+  int crossAxisLength()
+  {
+    if (files.length > 6)
+      return 6;
+    if (files.length > 3)
+      return 3;
+    else
+      return files.length;
+  }
+
   @override
   void initState() {
     loadEventPhotos();
@@ -62,7 +94,7 @@ class _EventCardState extends State<EventCard>
               ],),
 
               Divider(color: Colors.transparent, height: 2),
-              Text(ellipsis(widget.event.description, 100), textAlign: TextAlign.start, style: TextStyle(color: Colors.grey[400])),
+              Text(ellipsis(widget.event.description, 200), textAlign: TextAlign.start, style: TextStyle(color: Colors.grey[400])),
               Divider(color: Colors.transparent, height: 3),
 
             ],), padding: EdgeInsets.fromLTRB(10, 7, 10, 7),
@@ -70,25 +102,25 @@ class _EventCardState extends State<EventCard>
 
           if(widget.event.type == EventType.album)
             AnimatedCrossFade(crossFadeState: (files.length > 0) ? CrossFadeState.showFirst: CrossFadeState.showSecond, firstChild: 
-              GridView.count(physics: NeverScrollableScrollPhysics(), crossAxisCount: 3, shrinkWrap: true, crossAxisSpacing: 0, mainAxisSpacing: 0, children: 
-              List.generate((files.length > 6) ? 6 : files.length, (index)
+              GridView.count(physics: NeverScrollableScrollPhysics(), crossAxisCount: crossAxisCount(), shrinkWrap: true, crossAxisSpacing: 0, mainAxisSpacing: 0, children: 
+              List.generate((files.length > crossAxisLength()) ? crossAxisLength() : files.length, (index)
               {
-                if (files.length > 6 && index == 5)
+                if (files.length > crossAxisLength() && index == crossAxisLength() - 1)
                 {
                   return Stack(fit: StackFit.expand, children: <Widget>[
                     CachedNetworkImage(imageUrl: files[index]["url"], imageBuilder: (context, imageProvider) {
                       return Image(fit: BoxFit.cover, image: imageProvider);
                     }, progressIndicatorBuilder: (context, url, progress) {
-                      return CircularProgressIndicator(value: progress.downloaded / progress.totalSize);
+                      return Padding(child: CircularProgressIndicator(value: calcProgressBar(progress)), padding: EdgeInsets.all(25));
                     },),
                     Container(color: Colors.grey[900].withOpacity(0.65)),
-                    Align(child: Text("+" + (files.length - 6).toString(), style: TextStyle(fontSize: 30), textAlign: TextAlign.center,), alignment: Alignment.center,)
+                    Align(child: Text("+" + (files.length - crossAxisLength()).toString(), style: TextStyle(fontSize: 30), textAlign: TextAlign.center,), alignment: Alignment.center,)
                   ],);
                 } else {
                   return CachedNetworkImage(imageUrl: files[index]["url"], imageBuilder: (context, imageProvider) {
                     return Image(fit: BoxFit.cover, image: imageProvider);
                   }, progressIndicatorBuilder: (context, url, progress) {
-                    return CircularProgressIndicator(value: progress.downloaded / progress.totalSize);
+                    return Padding(child: CircularProgressIndicator(value: calcProgressBar(progress)), padding: EdgeInsets.all(25));
                   },);
                 }
               }),), duration: Duration(milliseconds: 250), secondChild: GridView.count(physics: NeverScrollableScrollPhysics(), crossAxisCount: 3, shrinkWrap: true, crossAxisSpacing: 0, mainAxisSpacing: 0, children: List.generate(6, (i) {

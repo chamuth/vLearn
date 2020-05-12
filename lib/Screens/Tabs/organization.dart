@@ -15,7 +15,7 @@ class OrganizationTab extends StatefulWidget {
 }
 
 class _OrganizationTabState extends State<OrganizationTab> {
-  List<Event> events = [];
+  List<Event> events;
 
   @override
   void initState() {
@@ -37,9 +37,17 @@ class _OrganizationTabState extends State<OrganizationTab> {
 
         Divider(color: Colors.transparent, height: 10),
         
-        Column(children: List.generate(events.length, (index) {
-          return TouchableOpacity(child: EventCard(event: events[index]), onTap: () { }, activeOpacity: 0.85,);
-        }))
+        if (events != null)
+          Column(children: List.generate(events.length, (index) {
+            return TouchableOpacity(child: EventCard(event: events[index]), onTap: () { }, activeOpacity: 0.85,);
+          }))
+        else 
+          Column(children: <Widget>[
+            Divider(color: Colors.transparent, height: 15),
+            SizedBox(child: CircularProgressIndicator(), width: 25, height: 25),
+            Divider(color: Colors.transparent, height: 12),
+            Text("Please wait...")
+          ],),
 
       ],
     );
