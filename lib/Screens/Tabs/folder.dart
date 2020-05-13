@@ -203,9 +203,17 @@ class FolderTabState extends State<FolderTab> {
 
           if (snapshot.connectionState == ConnectionState.done)
           {
+            print(snapshot.data.files);
             if (snapshot.data.files.length == 0)
             {
               if (isUploadingAnything())
+                return Expanded(child: Align(alignment: Alignment.center, child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                  Icon(Icons.cloud_upload, size: 40, color: Colors.grey),
+                  Divider(color: Colors.transparent, height: 10),
+                  Text("Uploading", style: TextStyle(color: Colors.grey, fontSize: 17, fontWeight: FontWeight.bold)),
+                  Divider(color: Colors.transparent, height: 2),
+                  Text("Please wait, uploading a file...", style: TextStyle(color: Colors.grey[600], fontSize: 15)),
+                ],)));
 
               if (!isUploadingAnything())
                 if (User.me.teacher)
@@ -235,6 +243,8 @@ class FolderTabState extends State<FolderTab> {
                         history.add(currentFolder);
                         currentFolder = snapshot.data.files[index].to;
                         readableFolder = convertIdsToNames("My Classes" + snapshot.data.files[index].to);
+
+                        print(currentFolder);
                       });
                     },);
                   }),
@@ -291,7 +301,7 @@ class FolderTabState extends State<FolderTab> {
 
   void startUploadFiles() async
   { 
-    print(currentFolder);
+    setState(() { });
 
     List<File> files = await FilePicker.getMultiFile(
       type: FileType.custom,
@@ -308,7 +318,7 @@ class FolderTabState extends State<FolderTab> {
           tasks.add(task);
 
           task.onComplete.then((value) {
-            setState(() {});
+            setState(() { });
           });
         });
       }    

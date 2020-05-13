@@ -63,6 +63,7 @@ class _EventCardState extends State<EventCard>
     else 
       return 3;
   }
+  
   int crossAxisLength()
   {
     if (files.length > 6)
@@ -126,7 +127,6 @@ class _EventCardState extends State<EventCard>
               }),), duration: Duration(milliseconds: 250), secondChild: GridView.count(physics: NeverScrollableScrollPhysics(), crossAxisCount: 3, shrinkWrap: true, crossAxisSpacing: 0, mainAxisSpacing: 0, children: List.generate(6, (i) {
                 return Shimmer.fromColors(child: Card(margin: EdgeInsets.all(2)), baseColor: Colors.grey[700], highlightColor: Colors.grey[500]);
             })))
-
 
         ],),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

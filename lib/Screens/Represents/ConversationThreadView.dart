@@ -214,6 +214,7 @@ class _ConversationThreadViewState extends State<ConversationThreadView> {
       }
 
       Chats.sendMessage(widget.threadId, msg);
+      Draft.insertOrUpdateDraft(Draft(widget.threadId, ""));
     }
   }
 
