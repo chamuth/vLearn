@@ -3,6 +3,7 @@ import 'package:elearnapp/Components/EventCard.dart';
 import 'package:elearnapp/Components/LoadedOrganizationCard.dart';
 import 'package:elearnapp/Components/Seperator.dart';
 import 'package:elearnapp/Core/Events.dart';
+import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Data/Organization.dart';
 import 'package:flutter/material.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
@@ -28,12 +29,26 @@ class _OrganizationTabState extends State<OrganizationTab> {
     super.initState();
   }
 
+  void postOnOrganization()
+  {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: <Widget>[
         
         LoadedOrganizationCard(),
+
+        if (User.me.teacher)
+          Row(children: <Widget>[
+            Expanded(child: RaisedButton(child: Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+              Icon(Icons.edit, size: 15),
+              VerticalDivider(width: 8),
+              Text("POST ON SCHOOL TIMELINE", style: TextStyle(fontWeight: FontWeight.bold))
+            ],), onPressed: postOnOrganization, color: Colors.grey[700])),
+          ],),
 
         Divider(color: Colors.transparent, height: 10),
         

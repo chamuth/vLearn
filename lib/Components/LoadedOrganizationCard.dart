@@ -56,7 +56,7 @@ class _LoadedOrganizationCardState extends State<LoadedOrganizationCard> {
               Text(Organization.me.subtitle, style: TextStyle(fontSize: 16, color: Colors.grey)),
             ],))
             
-          ],), padding: EdgeInsets.fromLTRB(15, 110, 15, 0)),
+          ],), padding: EdgeInsets.fromLTRB(15, 115, 15, 0)),
             
 
         ],));

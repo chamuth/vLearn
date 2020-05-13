@@ -31,14 +31,9 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
   DateTime selectedPublishDateTime;
   DateTime dueDateDateTime;
 
-  List<Question> questions = [
-    Question(question: "First question?", answers: ["0.0", "7.0", "3.5", "3.4", "5"]),
-    Question(question: "This is the second question?", answers: ["0.0", "7.0", "3.5", "3.4", "5"]),
-    Question(question: "third one doe?", answers: ["0.0", "7.0", "3.5", "3.4", "5"]),
-    Question(question: "forth one bro?", answers: ["0.0", "7.0", "3.5", "3.4", "5"]),
-  ];
+  List<Question> questions = [];
 
-  List<int> correctAnswers = [-1,-1,-1,-1];
+  List<int> correctAnswers = [];
   
   @override
   void initState() {
@@ -65,10 +60,75 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
     });
   }
 
+  void submitQuestionnaire()
+  {
+    bool valid = true;
+    String message;
+
+    // title is required
+    if (titleController.text.trim() == "")
+    {
+      valid = false;
+      message = "Please enter a title for the questionnaire";
+    }
+    // subtitle is optional
+
+    // there should at least be one question
+    if (questions.length == 0)
+      valid = false;
+
+    for(var i = 0; i < questions.length; i ++)
+    {
+      var q = questions[i];
+
+      if (q.question.trim() != "")
+      {
+        valid = false;
+        message = "Question #" + (i + 1).toString() + " not provided";
+        break;
+      }
+
+      if (q.answers.length == 0)
+      {
+        valid = false;
+        message = "No answers provided for question #" + (i + 1).toString();
+        break;
+      }
+
+      if (correctAnswers[i] == -1)
+      {
+        valid = false;
+        message = "No correct answer selected for question #" + (i + 1).toString();
+        break;
+      }
+    }
+
+    if (!valid)
+    {
+      scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(message, style:TextStyle(color: Colors.white)), backgroundColor: Colors.red,));
+    }
+
+  }
+  
+  void addQuestion()
+  {
+    setState(() {
+      questions.add(Question(question: "", answers: [""]));
+      correctAnswers.add(-1);
+    });
+  }
+
+  Future<bool> _onWillPop() {
+
+  }
+
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(onWillPop: _onWillPop, child: Scaffold(
-      appBar: MainAppBar.get(context, "Create New Questionnaire", poppable: true, done: () { }),
+      key: scaffoldKey,
+      appBar: MainAppBar.get(context, "Create New Questionnaire", poppable: true, done: submitQuestionnaire),
       body: Container(color: Colors.grey[900], child: Stack(children: <Widget>[ 
         ListView(children: <Widget>[
           // BASIC INFORMATION CARD
@@ -137,7 +197,7 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
                   alignLabelWithHint: true,
                   labelStyle: TextStyle(fontSize: 20, color: Colors.grey[300]),
                   suffixIcon: AnimatedOpacity(child: Padding(child: Icon(Icons.done, color: Colors.green, size: 20), padding: EdgeInsets.fromLTRB(15,10,0,0)), opacity:0, duration: Duration(milliseconds: 100)),
-                  helperText: "Name of the test with number or sub-heading"
+                  helperText: "The duration for the questionnaire in minutes"
                 ),
                 keyboardType: TextInputType.number,
               ),
@@ -333,17 +393,5 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
 
       ],)),
     ));
-  }
-
-  void addQuestion()
-  {
-    setState(() {
-      questions.add(Question(question: "", answers: [""]));
-      correctAnswers.add(-1);
-    });
-  }
-
-  Future<bool> _onWillPop() {
-
   }
 }
