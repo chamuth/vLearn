@@ -1,4 +1,6 @@
+import 'package:elearnapp/Core/AlertDialog.dart';
 import 'package:elearnapp/Core/Classes.dart';
+import 'package:elearnapp/Core/Questionnaire.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:humanize/humanize.dart' as humanize;
 
@@ -7,8 +9,6 @@ import 'package:elearnapp/Components/MainAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-
-import 'MCQ.dart';
 
 class CreateMCQScreen extends StatefulWidget {
   CreateMCQScreen({Key key, this.classInfo}) : super(key: key);
@@ -107,6 +107,10 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
     {
       scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(message, style:TextStyle(color: Colors.white)), backgroundColor: Colors.red,));
     }
+    else 
+    {
+      
+    }
 
   }
   
@@ -119,7 +123,22 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
   }
 
   Future<bool> _onWillPop() {
-
+    Widget yesButton = FlatButton(
+      child: Text("Yes"),
+      onPressed:  () { 
+        int count = 0;
+        Navigator.of(context).popUntil((_) => count++ >= 2);
+      },
+    );
+    Widget noButton = FlatButton(
+      child: Text("No"),
+      onPressed:  () {  
+        Navigator.of(context).pop(); 
+      },
+    );
+    
+    
+    showAlertDialog(context, "Exiting", " The questionnaire will not be published if you exit, are you sure you want to discard the changes?", [yesButton, noButton] );
   }
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();

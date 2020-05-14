@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:elearnapp/Core/AlertDialog.dart';
 import 'package:elearnapp/Core/Assignment.dart';
+import 'package:elearnapp/Core/Questionnaire.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:wakelock/wakelock.dart';
@@ -19,18 +21,6 @@ class MCQScreen extends StatefulWidget {
 
   @override
   _MCQScreenState createState() => _MCQScreenState();
-}
-
-class Question
-{
-  String question = "";
-  List<String> answers = [];
-  
-  Question({String question, List<String> answers})
-  {
-    this.question = question;
-    this.answers = answers;
-  }
 }
 
 class _MCQScreenState extends State<MCQScreen> {
@@ -80,25 +70,6 @@ class _MCQScreenState extends State<MCQScreen> {
       "Something wrong", "Jm-1K-1", "J m-1K-1", "J m-1K-1", "J m-1K-1"
     ]),
   ];
-
-  showAlertDialog(BuildContext context,String title, String question, buttons) {
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text(title),
-      content: Text(question),
-      actions: buttons,
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (_) => Material(
-        type: MaterialType.transparency,
-        child: alert
-      )
-    );
-  }
 
   // StreamSubscription _homeButtonSubscription;
   Timer timer;

@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:elearnapp/Questionaires/MCQ.dart';
+import 'package:elearnapp/Core/Questionnaire.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';

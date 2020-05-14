@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:elearnapp/Core/Questionnaire.dart';
 import 'package:elearnapp/Data/Organization.dart';
-import 'package:elearnapp/Questionaires/MCQ.dart';
 
 class Assignment
 {

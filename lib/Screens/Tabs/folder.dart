@@ -301,7 +301,6 @@ class FolderTabState extends State<FolderTab> {
 
   void startUploadFiles() async
   { 
-    setState(() { });
 
     List<File> files = await FilePicker.getMultiFile(
       type: FileType.custom,
@@ -316,6 +315,7 @@ class FolderTabState extends State<FolderTab> {
           var task = FirebaseStorage.instance.ref().child("organizations").child(Organization.me.id).child("shared").child(currentFolder.substring(1) + basename(f.path)).putFile(f);
 
           tasks.add(task);
+          setState(() { });
 
           task.onComplete.then((value) {
             setState(() { });
