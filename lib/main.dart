@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
         '/register' : (BuildContext context) => RegisterScreen(),
         '/test' : (BuildContext context) => MCQScreen(),
         '/class' : (BuildContext context) => ClassView(),
-      },
+      }, 
 
       debugShowCheckedModeBanner: false,
     );

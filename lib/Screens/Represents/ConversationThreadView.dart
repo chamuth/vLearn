@@ -1,13 +1,9 @@
-import 'package:elearnapp/Components/MainAppBar.dart';
 import 'package:elearnapp/Components/Seperator.dart';
 import 'package:elearnapp/Core/Chats.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Model/Draft.dart';
-import 'package:faker/faker.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:touchable_opacity/touchable_opacity.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import 'ProfileView.dart';
@@ -16,7 +12,7 @@ import 'ProfileView.dart';
 class ConversationThreadView extends StatefulWidget {
   ConversationThreadView({Key key, this.threadId}) : super(key: key);
 
-  String threadId;
+  final String threadId;
 
   @override
   _ConversationThreadViewState createState() => _ConversationThreadViewState();

@@ -5,7 +5,6 @@ import 'package:elearnapp/Components/Seperator.dart';
 import 'package:elearnapp/Components/Shimmer/NoticeboardShimmer.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
 
 class Notice
 {

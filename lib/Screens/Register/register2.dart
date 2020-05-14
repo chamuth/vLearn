@@ -9,7 +9,6 @@ import 'package:elearnapp/Screens/start.dart';
 import 'package:elearnapp/Themes/themes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:touchable_opacity/touchable_opacity.dart';
 
 class Register2Screen extends StatefulWidget {
   Register2Screen({Key key}) : super(key: key);
@@ -18,11 +17,8 @@ class Register2Screen extends StatefulWidget {
   Register2ScreenState createState() => Register2ScreenState();
 }
 
-enum Gender { Male, Female }
-
 class Register2ScreenState extends State<Register2Screen> {
 
-  Gender _accType = Gender.Male;
   List<String> subjects = ["Physics (A/L)", "Mathematics (A/L)", "Combined Maths (A/L)", "Chemistry (A/L)", "Information Technology (A/L)", "Biology (A/L)"];
   List<String> filteredSubjects = [];
   List<int> selectedSubjects = [];

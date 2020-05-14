@@ -180,7 +180,7 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
                   helperText: "Title of the unit, lesson, or major heading"
                 )
               ),
-              AnimatedOpacity(child: Padding(child: Text("Eg:- Computer Engineering 101", style: TextStyle(color: Colors.grey[600])), padding: EdgeInsets.fromLTRB(0, 26, 0, 0),), duration: Duration(milliseconds: 100), opacity: (titleController.text == "") ? 1 : 0),
+              IgnorePointer(ignoring:true, child: AnimatedOpacity(child: Padding(child: Text("Eg:- Computer Engineering 101", style: TextStyle(color: Colors.grey[600])), padding: EdgeInsets.fromLTRB(0, 26, 0, 0),), duration: Duration(milliseconds: 100), opacity: (titleController.text == "") ? 1 : 0),),
             ],),
 
             Divider(color: Colors.transparent, height: 5),
@@ -220,7 +220,7 @@ class _CreateMCQScreenState extends State<CreateMCQScreen> {
                 ),
                 keyboardType: TextInputType.number,
               ),
-              AnimatedOpacity(child: Padding(child: Text("Eg:- 30", style: TextStyle(color: Colors.grey[600])), padding: EdgeInsets.fromLTRB(0, 26, 0, 0),), duration: Duration(milliseconds: 100), opacity: (durationController.text == "") ? 1 : 0),
+              IgnorePointer(ignoring: true, child: AnimatedOpacity(child: Padding(child: Text("Eg:- 30", style: TextStyle(color: Colors.grey[600])), padding: EdgeInsets.fromLTRB(0, 26, 0, 0),), duration: Duration(milliseconds: 100), opacity: (durationController.text == "") ? 1 : 0),),
             ],),
 
             Divider(height: 25),

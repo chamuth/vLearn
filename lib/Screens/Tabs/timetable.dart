@@ -1,9 +1,6 @@
-import 'dart:math';
-
 import 'package:elearnapp/Components/TimetableItem.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
-import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 class TimetableTab extends StatefulWidget {
   TimetableTab({Key key}) : super(key: key);

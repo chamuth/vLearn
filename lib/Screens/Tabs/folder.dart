@@ -31,7 +31,7 @@ class FileData
 class FolderTab extends StatefulWidget {
   FolderTab({Key key, this.startUrl}) : super(key: key);
 
-  String startUrl;
+  final String startUrl;
 
   @override
   FolderTabState createState() => FolderTabState();
@@ -251,6 +251,8 @@ class FolderTabState extends State<FolderTab> {
                 ),
               );
             }
+
+            return Expanded(child: Container());
           } else {
             return Expanded(child: Center(child: CircularProgressIndicator()));
           }

@@ -14,7 +14,7 @@ import 'package:shimmer/shimmer.dart';
 class QuestionairesScreen extends StatefulWidget {
   QuestionairesScreen({Key key, this.classData}) : super(key: key);
 
-  ClassData classData;
+  final ClassData classData;
 
   @override
   _QuestionairesScreenState createState() => _QuestionairesScreenState();

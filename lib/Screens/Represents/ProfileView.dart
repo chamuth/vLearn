@@ -15,7 +15,9 @@ import 'package:touchable_opacity/touchable_opacity.dart';
 
 class ProfileView extends StatefulWidget {
   ProfileView({Key key, this.uid}) : super(key: key);
-  String uid;
+  
+  final String uid;
+  
   @override
   _ProfileViewState createState() => _ProfileViewState();
 }

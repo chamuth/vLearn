@@ -1,15 +1,11 @@
-import 'dart:math';
-
 import 'package:elearnapp/Components/ConversationItem.dart';
 import 'package:elearnapp/Core/Chats.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Model/Draft.dart';
 import 'package:elearnapp/Screens/Represents/ConversationThreadView.dart';
 import 'package:faker/faker.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ChatTab extends StatefulWidget {
@@ -143,7 +139,6 @@ class ChatTabState extends State<ChatTab> {
         );
       }),
       secondChild: IgnorePointer(child: ListView.builder(shrinkWrap: true, itemBuilder: (ctx, index) {
-        var rand = RandomGenerator();
 
         return Padding(child: Row(children: <Widget>[
 

@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:elearnapp/Core/Classes.dart';
 import 'package:elearnapp/Screens/Represents/ClassView.dart';
 import 'package:elearnapp/Themes/themes.dart';
 import 'package:flutter/material.dart';

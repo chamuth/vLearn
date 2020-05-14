@@ -1,27 +1,22 @@
 import 'dart:developer';
-
-import 'package:badges/badges.dart';
 import 'package:elearnapp/Components/MainAppBar.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Data/Organization.dart';
 import 'package:elearnapp/Themes/themes.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import './Tabs/chat.dart';
 import './Tabs/dashboard.dart';
 import './Tabs/folder.dart';
-import './Tabs/notifications.dart';
 import './Tabs/settings.dart';
 import 'Tabs/organization.dart';
-import 'Tabs/timetable.dart';
 
 class StartScreen extends StatefulWidget {
-  StartScreen({Key key, this.startupIndex = 0, this.startUrl}) : super(key: key);
+  StartScreen({Key key, this.startupIndex, this.startUrl}) : super(key: key);
 
-  int startupIndex = 0;
-  String startUrl;
+  final int startupIndex;
+  final String startUrl;
 
   @override
   _StartScreenState createState() => _StartScreenState();

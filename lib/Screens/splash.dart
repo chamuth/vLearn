@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:elearnapp/Core/PushNotifications.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Data/Organization.dart';
 import 'package:elearnapp/Model/Draft.dart';
@@ -8,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import './../Core/PushNotifications.dart';
 import 'Register/register2.dart';
 import 'Register/register3.dart';
 

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elearnapp/Data/Organization.dart';
+import 'package:flutter/material.dart';
 
 class ClassData
 {
@@ -17,5 +18,14 @@ class ClassData
     data.id = id;
     return data;
   }
+}
 
+class ClassAction
+{
+  IconData actionIcon = Icons.add;
+  String actionName = "Sample Action";
+  int notificationCount = 0;
+  Function onTap;
+  
+  ClassAction (this.actionIcon, this.actionName, this.notificationCount, this.onTap);
 }

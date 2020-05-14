@@ -1,12 +1,12 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:elearnapp/Components/EventCard.dart';
 import 'package:elearnapp/Components/LoadedOrganizationCard.dart';
-import 'package:elearnapp/Components/Seperator.dart';
 import 'package:elearnapp/Core/Events.dart';
 import 'package:elearnapp/Core/User.dart';
-import 'package:elearnapp/Data/Organization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:touchable_opacity/touchable_opacity.dart';
+
+import 'Organization/PostOnTimeline.dart';
 
 class OrganizationTab extends StatefulWidget {
   OrganizationTab({Key key}) : super(key: key);
@@ -31,7 +31,10 @@ class _OrganizationTabState extends State<OrganizationTab> {
 
   void postOnOrganization()
   {
-
+    Navigator.push(
+      context, 
+      CupertinoPageRoute(builder: (context) => PostOnTimeline())
+    );
   }
 
   @override

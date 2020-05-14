@@ -1,6 +1,5 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:elearnapp/Data/Organization.dart';
 
 import 'User.dart';
 
