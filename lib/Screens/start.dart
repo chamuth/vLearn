@@ -13,10 +13,10 @@ import './Tabs/settings.dart';
 import 'Tabs/organization.dart';
 
 class StartScreen extends StatefulWidget {
-  StartScreen({Key key, this.startupIndex, this.startUrl}) : super(key: key);
+  StartScreen({Key key, this.startupIndex = 0, this.startUrl}) : super(key: key);
 
-  final int startupIndex;
-  final String startUrl;
+  int startupIndex = 0;
+  String startUrl;
 
   @override
   _StartScreenState createState() => _StartScreenState();
