@@ -11,6 +11,7 @@ import 'package:elearnapp/Screens/Tabs/Organization/PostOnTimeline.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_share/flutter_share.dart';
 import '../start.dart';
 import 'Class/Questionaires.dart';
 import 'ProfileView.dart';
@@ -60,7 +61,12 @@ class _ClassViewState extends State<ClassView> {
         ClassAction(Icons.question_answer, "Discussion", 0, () { }),
         ClassAction(Icons.videocam, "Conference", 0, () { }),
         (User.me.teacher) ? ClassAction(Icons.share, "Invite", 0, () {
-          
+          FlutterShare.share(
+            title: data.subject + " (" + data.grade + ")",
+            text: User.getSanitizedName(User.me) + " invites you to join this class",
+            linkUrl: 'https://flutter.dev/',
+            chooserTitle: 'Invite Students via'
+          );
         })
         : ClassAction(Icons.person, "Teacher Profile", 0, () {
           Navigator.push(

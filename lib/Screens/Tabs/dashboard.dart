@@ -52,7 +52,7 @@ class DashboardTabState extends State<DashboardTab> {
           Expanded(flex: 1, child: ToDoListCard()),
         ],),
 
-        Seperator(title: (User.me.teacher) ? "Classes by me" : "My Classes"),
+        Seperator(title: (User.me.teacher) ? "Classes hosted by me" : "My Classes"),
 
         FutureBuilder(
           future: User.getMyClasses(teacher: User.me.teacher),
