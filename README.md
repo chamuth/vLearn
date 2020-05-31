@@ -2,6 +2,20 @@
 
 eLearnApp for companies, institutions to use to collaborate with teachers, students and parents in the teaching and learning process.
 
+## Contribution Guide
+### Requirements
+1. Git (https://git-scm.com/downloads)
+2. Flutter (https://flutter.dev/docs/get-started/install)
+3. Android Studio (https://developer.android.com/studio/install)
+
+### Steps
+1. Setup Android Studio, and download basic SDK.
+2. Add Android SDK folder to `PATH` and `ANDROID_SDK_ROOT` Environment Variable. Also add `platform-tools` folder to the PATH.
+3. Extract flutter sdk on C:/ drive and add it to `PATH`
+4. Install `dart` and `flutter` plugins for Android Studio.
+5. Connect an Android device to your computer and turn on USB Debugging (might have to enable developer options)
+6. Run `flutter doctor` and see if everything is fine
+
 ## Features
 
 * Sign in as a student, teacher or a parent. 

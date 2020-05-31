@@ -2,6 +2,7 @@ import 'package:elearnapp/Components/ClassItem.dart';
 import 'package:elearnapp/Components/Seperator.dart';
 import 'package:elearnapp/Core/User.dart';
 import 'package:elearnapp/Screens/Represents/ClassView.dart';
+import 'package:elearnapp/Screens/Represents/CreateClassView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -54,7 +55,7 @@ class DashboardTabState extends State<DashboardTab> {
         Seperator(title: (User.me.teacher) ? "Classes by me" : "My Classes"),
 
         FutureBuilder(
-          future: User.getMyClasses(),
+          future: User.getMyClasses(teacher: User.me.teacher),
           builder: (context, results)
           {
             if (results.data != null)
@@ -64,15 +65,11 @@ class DashboardTabState extends State<DashboardTab> {
                 return AnimatedCrossFade(
                   duration: Duration(milliseconds: 250), 
                   crossFadeState: (results.connectionState == ConnectionState.done) ? CrossFadeState.showFirst : CrossFadeState.showSecond, 
-                  firstChild: ListView.builder(
-                    itemCount : results.data.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index)
-                    {
+                  firstChild: Column(children: List.generate(results.data.length, (index) {
                       return TouchableOpacity(child: ClassItem(subject: results.data[index]["subject"], grade: results.data[index]["grade"], hostName: results.data[index]["host"]), onTap: () { 
                         Navigator.push(context, CupertinoPageRoute(builder: (context) => ClassView(classId: results.data[index]["id"])));
                       });
-                    },
+                    }),
                   ),
                   secondChild: Container(
                     child: Center(child: 
@@ -102,7 +99,9 @@ class DashboardTabState extends State<DashboardTab> {
           Padding(child: 
             Row(mainAxisAlignment: MainAxisAlignment.center,children: <Widget>[
               if (User.me.teacher)
-                Expanded(child: OutlineButton(child: Text("CREATE NEW CLASS"), onPressed: () {},),),
+                Expanded(child: OutlineButton(child: Text("CREATE NEW CLASS"), onPressed: () {
+                  Navigator.push(context, CupertinoPageRoute(builder: (context) => CreateClassView()));
+                },),),
               if (User.me.teacher)
                 VerticalDivider(width: 10),
               Expanded(child: OutlineButton(child: Text("VIEW ALL CLASSES"), onPressed: () {},),),

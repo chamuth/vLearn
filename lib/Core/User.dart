@@ -115,7 +115,7 @@ class User
     return Firestore.instance.collection("organizations").document(Organization.currentOrganizationId);
   }
 
-  static Future getMyClasses({bool withHost = true, String uid = ""}) async
+  static Future getMyClasses({bool withHost = true, String uid = "", bool teacher = false}) async
   {
     if (me.uid == null)
       await retrieveUserData();
@@ -123,37 +123,52 @@ class User
     if (uid == "")
       uid = me.uid;
 
-    var result = await Firestore.instance.collection("users").document(me.uid).get();
-    var returnClasses = [];
-
-    var classes = result.data["classes"];
-    var org = getMyOrg();
-
-    if (classes != null)
+    if (teacher)
     {
-      for (var i = 0; i < classes.length; i ++)
-      {        
-        var classResult = await org.collection("classes").document(classes[i]).get();
-        if (withHost)
-        {
-          var host = await getUserData(classResult["host"]);
-          returnClasses.add({
-            "id" : classes[i],
-            "host": host["first_name"] + " " + host["last_name"], 
-            "subject" : classResult["subject"],
-            "grade" : classResult["grade"]
-          });
-        } else {
-          returnClasses.add({
-            "id" : classes[i],
-            "subject" : classResult["subject"],
-            "grade" : classResult["grade"]
-          });
+      var classes = await getMyOrg().collection("classes").where("host", isEqualTo: uid).getDocuments();
+
+      return classes.documents.map((e) {
+        return {
+          "id" : e.documentID,
+          "host" : User.getSanitizedName(me),
+          "subject" : e.data["subject"],
+          "grade" : e.data["grade"],
+        };
+      }).toList();
+
+    } else {
+      var result = await Firestore.instance.collection("users").document(me.uid).get();
+      var returnClasses = [];
+
+      var classes = result.data["classes"];
+      var org = getMyOrg();
+
+      if (classes != null)
+      {
+        for (var i = 0; i < classes.length; i ++)
+        {        
+          var classResult = await org.collection("classes").document(classes[i]).get();
+          if (withHost)
+          {
+            var host = await getUserData(classResult["host"]);
+            returnClasses.add({
+              "id" : classes[i],
+              "host": host["first_name"] + " " + host["last_name"], 
+              "subject" : classResult["subject"],
+              "grade" : classResult["grade"]
+            });
+          } else {
+            returnClasses.add({
+              "id" : classes[i],
+              "subject" : classResult["subject"],
+              "grade" : classResult["grade"]
+            });
+          }
         }
       }
-    }
 
-    return returnClasses;
+      return returnClasses;
+    }
   }
 
   static Future getMyClassesAsTeacher({String uid = ""}) async

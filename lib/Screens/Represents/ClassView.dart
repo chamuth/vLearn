@@ -75,14 +75,19 @@ class _ClassViewState extends State<ClassView> {
     var tempHost = await User.getUser(temp.host);
 
     var ref = FirebaseStorage.instance.ref().child("organizations").child(Organization.currentOrganizationId).child("class_backdrops").child(classID.toString() + ".jpg");
-    var url = await ref.getDownloadURL();
+    try {
+      var url = await ref.getDownloadURL();
+      
+      setState(() {
+        backdropImageURL = url.toString();
+      });
+    }catch (e){}
 
     if (mounted)
     {
       setState(() {
         host = tempHost;
         data = temp;
-        backdropImageURL = url.toString();
 
         classDataLoaded = true;
       });
