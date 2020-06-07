@@ -5,8 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:uni_links/uni_links.dart';
 import 'Register/register2.dart';
 import 'Register/register3.dart';
+import 'Represents/JoinClass.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key key}) : super(key: key);
@@ -48,7 +50,37 @@ class _SplashScreenState extends State<SplashScreen> {
                           CupertinoPageRoute(builder: (context) => Register3Screen()),
                         );  
                       } else {
-                        Navigator.pushReplacementNamed(context, "/dashboard");
+                        getInitialLink().then((link) {
+                          print(link);
+
+                          if (link != null)
+                          {
+                            Navigator.pushReplacement(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => JoinClassScreen(invite: link)
+                              )
+                            );
+                          } else {
+                            Navigator.pushReplacementNamed(context, "/dashboard");
+                          }
+                        });
+
+                        getLinksStream().listen((link) {
+                          try {
+                            
+                            if (link != null) 
+                              Navigator.pushReplacement(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => JoinClassScreen(invite: link)
+                                )
+                              );
+
+                          } on FormatException {
+                            print("--- A link got here but was invalid");
+                          }
+                        });
                       }
                     });
                   });

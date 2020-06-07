@@ -46,6 +46,7 @@ dependencies:
   path_provider: 1.6.7
   file_picker: 1.9.0+1
   flutter_share: 1.0.2+1
+  uni_links: 0.4.0
 
 flutter:
   uses-material-design: true

@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:elearnapp/Questionaires/MCQ.dart';
 import 'package:elearnapp/Screens/Register/register2.dart';
 import 'package:elearnapp/Screens/Represents/JoinClass.dart';
 import 'package:elearnapp/Screens/splash.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uni_links/uni_links.dart';
 
 import './Themes/themes.dart';
 import './Core/Preferences.dart';
@@ -34,12 +38,11 @@ class MyApp extends StatelessWidget {
       Preferences.setColors(themeNotifier);
     });
   }
-
+  
   @override
   Widget build(BuildContext context) 
   {
     Themes.themeNotifier = Provider.of<ThemeNotifier>(context);
-    
     updateTheme(Themes.themeNotifier);
 
     return MaterialApp(

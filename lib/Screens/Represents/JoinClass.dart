@@ -1,12 +1,17 @@
 import 'dart:ui';
 
 import 'package:elearnapp/Components/ClassItem.dart';
+import 'package:elearnapp/Core/Classes.dart';
+import 'package:elearnapp/Core/Invite.dart';
 import 'package:elearnapp/Core/Preferences.dart';
+import 'package:elearnapp/Core/User.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class JoinClassScreen extends StatefulWidget {
-  JoinClassScreen({Key key}) : super(key: key);
+  JoinClassScreen({Key key, this.invite}) : super(key: key);
+
+  String invite;
 
   @override
   _JoinClassScreenState createState() => _JoinClassScreenState();
@@ -16,6 +21,12 @@ class _JoinClassScreenState extends State<JoinClassScreen> {
 
   @override
   void initState() {
+
+    if (User.me.teacher)
+    {
+      Navigator.pop(context);
+    }
+
     Future.delayed(Duration(milliseconds: 50), ()
     {
       Preferences.temporaryColorSwitching = true;
@@ -26,6 +37,37 @@ class _JoinClassScreenState extends State<JoinClassScreen> {
       ));  
     });
 
+    if (widget.invite == null)
+    {
+      Future.delayed(Duration(seconds:1), () {
+        scaffoldKey.currentState.showSnackBar(
+          SnackBar(
+            content: Text(
+              "The invite link you entered is invalid. Please request the class host for a new invite link", 
+              style:TextStyle(color: Colors.white)
+            ),
+            backgroundColor: Colors.red,
+            action: SnackBarAction(
+              label: 'EXIT',
+              textColor: Colors.grey[400],
+              onPressed: () {
+                SystemNavigator.pop();
+              },
+            ),
+            duration: Duration(seconds: 50),
+          )
+        );
+      });
+    } else {
+      Invite.processInvite(widget.invite).then((value) {
+        setState(() {
+          wait = false;
+          classData = value["classData"];
+          host = value["host"];
+        });
+      });
+    }
+
     super.initState();
   }
 
@@ -35,10 +77,17 @@ class _JoinClassScreenState extends State<JoinClassScreen> {
 
     super.dispose();
   }
+
+  bool wait = true;
+  ClassData classData;
+  User host;
+
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       body: Stack(children: <Widget>[
 
         Container(
@@ -57,9 +106,9 @@ class _JoinClassScreenState extends State<JoinClassScreen> {
             ),
         ),
 
-        Opacity(child: Container(color: Colors.black), opacity: 0.75),
+        Opacity(child: Container(color: Colors.black), opacity: (wait) ? 0.9 : 0.75),
 
-        Center(child: ListView(shrinkWrap: true, children: <Widget>[
+        AnimatedOpacity(child: Center(child: ListView(shrinkWrap: true, children: <Widget>[
           
           Center(child: Stack(children: <Widget>[
             Padding(child: CircleAvatar(radius: 35, backgroundImage: NetworkImage("https://1.bp.blogspot.com/-9yDQk5VYLyE/XXtJcG4K7kI/AAAAAAAADQA/ikeFKLP5I1wSsUhB6J4-Gwb7s-wSdc4IgCNcBGAsYHQ/s400/Screenshot_20190911-234830_Multi%2BParallel-min.jpg"),), padding: EdgeInsets.fromLTRB(60, 0, 0, 0)),
@@ -78,13 +127,13 @@ class _JoinClassScreenState extends State<JoinClassScreen> {
           Divider(color: Colors.transparent, height: 10),
 
           Padding(child: RichText(text: TextSpan(children: <TextSpan>[
-            TextSpan(text: "Mrs. Sandra Korvacs", style: TextStyle(color: Colors.grey[200], fontWeight: FontWeight.bold)),
+            TextSpan(text: User.getSanitizedName(host), style: TextStyle(color: Colors.grey[200], fontWeight: FontWeight.bold)),
             TextSpan(text: " sent an invitation for you to join a class,", style: TextStyle(color: Colors.grey))
           ], style: TextStyle(fontFamily: "GoogleSans")), textAlign: TextAlign.center,),padding: EdgeInsets.fromLTRB(50, 0, 50, 0),),
 
           Divider(color: Colors.transparent, height: 20),
 
-          Padding(child: ClassItem(subject: "Chemistry", grade: "Grade 13",hostName: "Mrs. Sandra Korvacs"), padding: EdgeInsets.fromLTRB(25, 0, 25, 0),),
+          Padding(child: ClassItem(subject: classData.subject, grade: classData.grade, hostName: User.getSanitizedName(host)), padding: EdgeInsets.fromLTRB(25, 0, 25, 0),),
 
           Divider(color: Colors.transparent, height: 20),
 
@@ -120,7 +169,9 @@ class _JoinClassScreenState extends State<JoinClassScreen> {
             ),)
           ],), padding: EdgeInsets.fromLTRB(45, 0, 45, 0),)
 
-        ],),)
+        ],),),duration: Duration(milliseconds: 150), opacity: (wait) ? 0.2 : 1,),
+
+        AnimatedOpacity(child: Center(child: CircularProgressIndicator()), duration: Duration(milliseconds: 250), opacity: (!wait) ? 0 : 1)
 
       ],)
     );

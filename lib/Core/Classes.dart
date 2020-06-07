@@ -18,6 +18,13 @@ class ClassData
     data.id = id;
     return data;
   }
+
+  static ClassData fromData(snapshot)
+  {
+    var cd = ClassData(snapshot.data["subject"], snapshot.data["grade"], snapshot.data["host"]);
+    cd.id = snapshot.documentID;
+    return cd;
+  }
 }
 
 class ClassAction
